@@ -6,6 +6,11 @@
     color: #eec07b;
   }
 
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  
 .sidebar-wrapper {
     padding-top: 20px;
     padding-left: 10px;
