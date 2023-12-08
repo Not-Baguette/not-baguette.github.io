@@ -1,2 +1,2 @@
 # baguette-web
-all important information about Baguette
+Revisioning on-progress
