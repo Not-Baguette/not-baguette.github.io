@@ -89,3 +89,21 @@
     text-align: center;
     padding: 10px 0;
 }
+
+@keyframes slide-in {
+  0% {
+      transform: translateX(-100%);
+      opacity: 0;
+  }
+  100% {
+      transform: translateX(0);
+      opacity: 1;
+  }
+}
+.slide-in-animation {
+  animation: slide-in 2s;
+}
+
+.initial-hidden {
+  opacity: 0;
+}
