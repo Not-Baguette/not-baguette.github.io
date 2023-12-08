@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 .navbar-custom {
     background-color: #422308;
   }
@@ -100,10 +104,30 @@
       opacity: 1;
   }
 }
+
+@keyframes slide-in2 {
+  0% {
+      transform: translateX(100%);
+      opacity: 0;
+  }
+  100% {
+      transform: translateX(0);
+      opacity: 1;
+  }
+}
+
 .slide-in-animation {
   animation: slide-in 2s;
+}
+.slide-in2-animation {
+  animation: slide-in2 2s ease-in-out;
+  animation-fill-mode: forwards;
 }
 
 .initial-hidden {
   opacity: 0;
+}
+
+.visible {
+  opacity: 1;
 }

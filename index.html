@@ -25,7 +25,7 @@
                 <div class="col-sm slide-in-animation initial-hidden" style="animation-delay: 1s;">
                     <a href="baguette.html" class="btn btn-dark btn-lg" target="_blank" style="margin-bottom: 10px">Baguette Information Archive</a>
                 </div>
-                <div class="col-sm slide-in-animation initial-hidden" style="animation-delay: 2s;">
+                <div class="col-sm slide-in2-animation initial-hidden" style="animation-delay: 2s;">
                     <a href="tabsv2.html" class="btn btn-dark btn-lg" target="_blank" style="margin-bottom: 10px">Disabling Discord New UI</a>
                 </div>
             </div>
@@ -39,7 +39,7 @@
         <script>
             // Fade in animation without it dissapearing after the animation
             window.onload = function () {
-                var elements = document.querySelectorAll('.slide-in-animation');
+                var elements = document.querySelectorAll('.slide-in-animation') || document.querySelectorAll('.slide-in2-animation');
                 elements.forEach(function (element) {
                     element.addEventListener('animationend', function () {
                         this.classList.remove('initial-hidden');
