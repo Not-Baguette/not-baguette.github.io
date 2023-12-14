@@ -66,7 +66,7 @@
         <!-- Main Content -->
         <div class="col">
         <h1 class="mt-4" style="font-weight: bold;">How to disable Tabsv2 on discord</h1>
-        <h2 style="color: #888;">Tested on latest versions like 206.16 & 207.23</h2>
+        <h2 style="color: #888;">Tested on latest versions like 206.16, 207.23, and 208.17</h2>
         <h2 id="section1">- What is Tabsv2?</h2>
         <img width="200" height="300" class="text-center" style="animation-delay: 2s;" src="https://pbs.twimg.com/media/FrJDGQMaYAADcPQ.jpg:large">
         <p>Tabsv2 is a new UI for discord mobile that is currently being rolled out. It is a new way to view your servers and DMs. It has been tested 
@@ -74,6 +74,9 @@
             cause a minor backlash from the community.</p>
 
         <h2 id="section2">- How to disable Tabsv2?</h2>
+        <div class="video-container">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/JAgFvdfWqIE?si=3Ru9go_GXuwaRNg4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
         <h3 id="section2p1">Step 1: Get Vendetta</h3>
         <img width="160" height="160" class="text-center" style="animation-delay: 3s;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSg2WotAsA9LFdkbk5yr1_bUgg_r_sdA4IgccIG0lTo9mpCQcLNG3Y3yI0Z6Ci-ReyZeKc&usqp=CAU">
         <p>In order to get into the settings, you need to get Vendetta. Vendetta is a mod for discord that allows you to change settings that are not 
@@ -129,17 +132,17 @@
     </div>
     <p></p> <!-- Lazy Margin -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-    $(document).ready(function () {
-        $('#navbarDropdown').on('show.bs.dropdown', function () {
-            $('#dropdownTitle').css('color', '#FFFFFF'); // Red color when dropdown is open
-        });
-
-        $('#navbarDropdown').on('hide.bs.dropdown', function () {
-            $('#dropdownTitle').css('color', ''); // Reset color when dropdown is closed
-        });
-    });
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    </body>
+    <script>
+        $(document).ready(function () {
+            $('#navbarDropdown').on('show.bs.dropdown', function () {
+                $('#dropdownTitle').css('color', '#FF0000');
+            });
+    
+            $('#navbarDropdown').on('hide.bs.dropdown', function () {
+                $('#dropdownTitle').css('color', '');
+            });
+        });
+    </script>    
+</body>
 </html>
