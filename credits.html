@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Baguette: Credits</title>
+        <link rel="icon" type="image/png" href="https://em-content.zobj.net/source/twitter/71/baguette-bread_1f956.png">
+        <!-- Bootstrap CSS Script and CSS rules -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="stylesheet" href="style.css">
+        <meta name="description" content="Shameless self plugs"/>
+    </head>
+</head>
+
+<body>
+    <!-- Navbar (Just titlebar) -->
+    <nav class="navbar py-4 navbar-custom">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">Baguette</span>
+        </div>
+    </nav>
+
+    <!-- I hate how I cant put this on css lazily without breaking the navbar -->
+    <div style="padding: 0 20px;">
+        <h1 style="padding-left: 10px;">Credits</h1>
+
+        <!-- Flexbox to show information and image side-by-side -->
+        <div class="flex-container owner slide-in-animation initial-hidden" style="animation-delay: 0s;">
+            <div>
+                <img width="200" height="200" src="https://cdn.discordapp.com/emojis/949158962907979818.gif"
+                    alt="owner">
+            </div>
+            <div>
+                <h2>Made by <a href="https://not-baguette.github.io/">Baguette</a></h2>
+            </div>
+        </div>
+
+        <div class="flex-container slide-in-animation initial-hidden" style="animation-delay: 1s;">
+            <div>
+                <img width="200" height="200" src="https://cdn.discordapp.com/avatars/573237016377032745/6b42f976ac3ae58da7f9bc18b7ffaacd.webp?size=4096" alt="Danilwhite">
+            </div>
+            <div>
+                <h2>Thank you for giving me ideas!</h2>
+                <ul>
+                    <li>Name: Danilwhite</li>
+                    <li>Age: -</li>
+                    <li>Gender: -</li>
+                    <li>Birthdate: example</li>
+                    <li>Links: <a href="">Github</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <h1>People who asked me to include them</h1>
+        <div class="flex-container slide-in-animation initial-hidden" style="animation-delay: 2s;">
+            <div>
+                <img width="200" height="200" src="https://cdn.discordapp.com/avatars/290610400763052035/03a34cad429811ab159424c3d3601a0a.webp?size=4096" alt="Moonie">
+            </div>
+            <div>
+                <h2>Information</h2>
+                <ul>
+                    <li>Name: Moonie</li>
+                    <li>Discord: @meltymooncakes</li>
+                    <li>Links: <a href="https://www.twitch.tv/meltymooncakes">Twitch</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="flex-container slide-in-animation initial-hidden" style="animation-delay: 3s;">
+            <div>
+                <img width="200" height="200" src="https://cdn.discordapp.com/avatars/883815804683030539/bd41fd18e5a0e2256438ff60ebc3ee93.webp?size=4096" alt="vendetta.cat">
+            </div>
+            <div>
+                <h2>Information</h2>
+                <ul>
+                    <li>Name: vendetta.cat</li>
+                    <li>Discord: @vendetta.cat</li>
+                    <li>Links: meow</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="flex-container slide-in-animation initial-hidden" style="animation-delay: 4s;">
+            <div>
+                <img width="200" height="200" src="https://cdn.discordapp.com/avatars/586962558435590154/958c851d151e3396b2631004b400855c.webp?size=4096" alt="Deko">
+            </div>
+            <div>
+                <h2>Information</h2>
+                <ul>
+                    <li>Name: Deko</li>
+                    <li>Discord: @ukrio</li>
+                    <li>Links: <a href="https://ukrioo.github.io/">Github</a></li>
+                </ul>
+            </div>
+        </div>
+    
+    
+    </div>
+        
+
+    <!-- Javascript Stuff -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+
+    <script>
+        // Fade in animation without it dissapearing after the animation
+        window.onload = function () {
+            var elements = document.querySelectorAll('.slide-in-animation');
+            elements.forEach(function (element) {
+                element.addEventListener('animationend', function () {
+                    this.classList.remove('initial-hidden');
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>
