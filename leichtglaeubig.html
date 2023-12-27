@@ -44,7 +44,7 @@
                                 'IP Address: ' + data.ip + '<br>' +
                                 'City: ' + data.city + '<br>' +
                                 'Region: ' + data.region + '<br>' +
-                                'Coordinates: ' + data.lat + '<br>' +
+                                'Coordinates: ' + data.loc + '<br>' +
                                 'Timezone: ' + data.timezone + '<br>' +
                                 'ISP: ' + data.org;
                     document.getElementById('ip-data').appendChild(h3);
@@ -60,10 +60,9 @@
                             j++;
                         } else {
                             clearInterval(intervalId2);
-                            // You can add more code here if you want something to happen after the second animation
                         }
                     }, 13);
-                }); // Moved closing bracket and parenthesis here
+                });
             };
         }, 13);
     </script>
