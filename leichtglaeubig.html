@@ -38,17 +38,15 @@
             } else {
                 clearInterval(intervalId);
                 // IP check
-                $.getJSON('http://ip-api.com/json', function(data) {
+                $.getJSON('https://ipinfo.io/json', function(data) {
                     var h3 = document.createElement('h3');
-                    h3.innerHTML = 'Status: ' + data.status + '<br>' +
-                                'Country: ' + data.country + '<br>' +
-                                'Region: ' + data.regionName + '<br>' +
+                    h3.innerHTML =
+                                'IP Address: ' + data.ip + '<br>' +
                                 'City: ' + data.city + '<br>' +
-                                'Zip: ' + data.zip + '<br>' +
-                                'Latitude: ' + data.lat + '<br>' +
-                                'Longitude: ' + data.lon + '<br>' +
+                                'Region: ' + data.region + '<br>' +
+                                'Coordinates: ' + data.lat + '<br>' +
                                 'Timezone: ' + data.timezone + '<br>' +
-                                'ISP: ' + data.isp;
+                                'ISP: ' + data.org;
                     document.getElementById('ip-data').appendChild(h3);
                 
                     // Start the second animation
