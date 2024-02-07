@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Baguette's Common Issues Fix Page [Dark Mode]</title>
+        <link rel="icon" type="image/png" href="https://em-content.zobj.net/source/twitter/71/baguette-bread_1f956.png">
+        <!-- Bootstrap CSS Script and CSS rules -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="stylesheet" href="style.css">
+        <meta name="description" content="[Dark mode] Baguette's Common Issues Fix Page, Downgrading, disabling tabsv2, enabling server dock, version comparison list, fix experiments plugin, etc."/>
+        <meta name="author" content="Baguette">
+        <meta name="keywords" content="TabsV2, tutorial, discord, new UI, old UI, downgrade, UI, fix, version, disable, video">
+        <meta property="og:image" content="https://media.discordapp.net/attachments/922011606827806760/1198446314137075782/N1Vk7NWM.png?ex=65beef1b&is=65ac7a1b&hm=0f707a6e7e0b9d3dd9d9affe9ecc5c39733a9f4f4b6c54f148faab87a83754b9&=&format=webp&quality=lossless&width=554&height=554">
+        <meta proprety="og:image:type" content="image/png">
+        <style>
+            /* Placed here so it doesn't fk up other pages */
+            img {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 20px;
+                margin-bottom: 20px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- Navigation Bar, make it expanding -->
+        <nav class="navbar py-4 navbar-custom navbar-expand-lg">
+            <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">Baguette</span>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- List of Navigations on a navigation bar-->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://discord.gg/n9QQ4XhhJP">Help</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span id="dropdownTitle1">Disabling the New UI</span>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown1">
+                            <li><a class="dropdown-item" href="#section2p1">Step 1: Install Vendetta</a></li>
+                            <li><a class="dropdown-item" href="#section2p2">Step 2: Get Experiments Plugin</a></li>
+                            <li><a class="dropdown-item" href="#section2p3">Step 3: Stop Tabs UI Experiment in settings</a></li>
+                            <li><a class="dropdown-item" href="#section2p4">Step 4: Couldn't Find it</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span id="dropdownTitle2">Common Issues</span>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                            <li><a class="dropdown-item" href="#section3p1">Experiments Tab not showing up</a></li>
+                            <li><a class="dropdown-item" href="#section3p2">Illiteracy</a></li>
+                            <li><a class="dropdown-item" href="#section3p3">How to enable server dock</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span id="dropdownTitle3">Downgrading Vendetta</span>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown3">
+                            <li><a class="dropdown-item" href="#section4">How to downgrade Vendetta</a></li>
+                            <li><a class="dropdown-item" href="#section5">What version should I pick?</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        </nav>
+
+    <div class="container-fluid">
+        <!-- Main Content -->
+        <div class="col">
+        <h1 class="mt-4" style="font-weight: bold;">Vendetta Common Solutions page</h1>
+        <p>Get your quick solutions here! Currently available: How to downgrade, how to get old UI, how to enable server dock, 
+            how to fix experiments page not showing up</p>
+        
+        <div id="text-block2">
+            <b>Announcement</b>
+            <p>vendet is kil (rill)</p>
+            <img role="presentation" src="https://media.discordapp.net/stickers/1039992459209490513.png" alt="" height="128" style="image-rendering: pixelated; margin-left: auto; margin-right: auto;">
+        </div>
+        <p></p> <!-- Lazy margin -->
+        <div id="text-block3">
+            <b>Need further help?</b>
+            <p>Ping @bagubaguu at discord in Vendetta server!</p>
+        </div>
+
+        <h2 style="color: #888;">Tested on latest versions like 206.16, 207.23, 208.17, 209.14, 211.11, and 212.11</h2>
+        <h2 id="section2">- How to disable Tabsv2?</h2>
+        <div class="video-container">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/JAgFvdfWqIE?si=3Ru9go_GXuwaRNg4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+        <h3 id="section2p1">Step 1: Get Vendetta</h3>
+        <img width="160" height="160" class="text-center" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSg2WotAsA9LFdkbk5yr1_bUgg_r_sdA4IgccIG0lTo9mpCQcLNG3Y3yI0Z6Ci-ReyZeKc&usqp=CAU">
+        <p>In order to get into the settings, you need to get Vendetta. Vendetta is a mod for discord that allows you to change settings that are not 
+            normally accessible. It is also a mod that allows you to change the UI of discord. I must warn you that this is <b>against discord's TOS</b>, so 
+            use it at your own risk. You can get Vendetta <a href="https://github.com/vendetta-mod/Vendetta">here</a>.</p>
+
+        <h3 id="section2p2">Step 2: Get Experiments Plugin</h3>
+        <img class="text-center" src="https://media.discordapp.net/attachments/1068304660269641738/1182713734641242203/Y8iHWavx.png?ex=6585b300&is=65733e00&hm=2c05f6dc6dd9876134811dbcdff28d01b860eb848f69e19fa0bbdc4111e517e8&=&format=webp&quality=lossless&width=293&height=555">
+        <p>You can find experiments plugin in the vendetta discord server. You can find the discord server <a href="https://discord.gg/n9QQ4XhhJP">here</a>. 
+            Once you have joined the server, go to the <b>#plugins</b> channel and download the plugin by long pressing it and clicking Install plugin. 
+            Once you have downloaded the plugin, proceed to the next step.
+        </p>
+
+        <h3 id="section2p3">Step 3: Disable it in settings</h3>
+        <img width="400" height="600" class="text-center" src="https://media.discordapp.net/attachments/1068304660269641738/1198310292237582426/6fi64HOA.png?ex=65be706d&is=65abfb6d&hm=ea022038d33bbf0e4b87c4238b07fb6664ebf86c1f6cc06e847a07cec457e6d8&=&format=webp&quality=lossless&width=254&height=554">
+        <img width="400" height="600" class="text-center" src="https://media.discordapp.net/attachments/1015931590741872712/1182713271011266600/image.png?ex=6585b291&is=65733d91&hm=a0aef993f7b47092a746b9b30507b7a60b4cd2f97fc5651dce165be1f448a13a&=&format=webp&quality=lossless">
+        <p>Disable <b>Tabs UI Experiment</b> in the settings page as shown above. (You will need to scroll wayyy down) 
+            However, <b>if you couldn't find it, Please refer to step 4.</b></p>
+
+        <h3 id="section2p4">Step 4: Couldn't find it?</h3>
+        <p>Go to settings, Experiments, and then search for these two options below</p>
+        <img width="400" height="600" class="text-center" src="https://media.discordapp.net/attachments/1015931590741872712/1191976599474667590/0Cu1df9.png?ex=65a765b7&is=6594f0b7&hm=b00514ef227c7606b3387ed8abea8793a0c04657893981fbfde99f3033f10f7f&=&format=webp&quality=lossless">
+        <p>Once you have found it, change both of them to <b>treatment 1:show</b> and <b>treatment 1:control</b>. You should now be able to find the option on step 3.</p>
+        <img width="400" height="600" class="text-center" src="https://media.discordapp.net/attachments/1068304660269641738/1183040289821163561/image.png?ex=6586e320&is=65746e20&hm=6d1d23ceebbf94e05a00cc419b0069ab7491b0ef99914749eb86d0cb1457cd89&=&format=webp&quality=lossless"> 
+    
+        <h2 id="section3p1">- Extras 1: Experiments tab not showing up</h2>
+        <p>Info: This is different with <b>Cannot read property 'on' of undefined</b> error. For that I recommend 
+            downgrading to 206.16 or lower. You can find the tutorial <a href="#section4">here</a></p>
+        <p>So, your experiments tab not showing up. Don't worry, we've got the solution for you.</p>
+        <p>Firstly, Open your plugins tab on settings</p>
+        <p>And then search for your experiments plugin</p>
+
+        <h2 id="section3p2">- Extras 2: Illiteracy</h2>
+        <p>Even with a video guide, two websites (Shout out to Danilwhale), somehow some people still managed to fuck it up. Unfortunately, I cannot 
+            help you all the time, thus I've made this section just for you all that decided it is the best to ask questions and complain rather than 
+            reading. Fortunately, there might be a video that might help you with this.</p>
+        <div class="video-container">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/eqVoNfxdHao?si=vHudhmSxNN8h0-tG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+                
+        <h2 id="section3p3">- Extras 3: How to enable server dock?</h2>
+        <p>Okay so you want to enable server dock like the old tabsv2, if so you're in the right place! First, <a href="section2p1">download vendetta</a> 
+            and then <a href="section2p2">download Experiments plugin</a>, once you're done, navigate to the bottom of settings page and then 
+            find experiments</p>
+        <img width="400" height="600" class="text-center" src="https://media.discordapp.net/attachments/1068304660269641738/1198310292237582426/6fi64HOA.png?ex=65be706d&is=65abfb6d&hm=ea022038d33bbf0e4b87c4238b07fb6664ebf86c1f6cc06e847a07cec457e6d8&=&format=webp&quality=lossless&width=254&height=554">
+        <p>Once you find it, search "tabs" on the search bar and locate the experiment in the picture below</p>
+        <img width="400" height="600" class="text-center" src="https://media.discordapp.net/attachments/1068304660269641738/1198308810549366794/APeqSnRt.jpg?ex=65be6f0b&is=65abfa0b&hm=a3c42437ed6820f61fbbf58a64e3cd08e4b1524f40ab9448d4f92ef809e5bc09&=&format=webp&width=409&height=554">
+        <p>and then you simply need to change it to <b>treatment 1: Redesign</b></p>
+        <img width="400" height="600" class="text-center" src="https://media.discordapp.net/attachments/1068304660269641738/1198308810842984618/Dalu6yUy.jpg?ex=65be6f0c&is=65abfa0c&hm=0fbedba7bde0d8acb47ad35d32a48f75b667714233196647d2b39dd481039464&=&format=webp&width=322&height=554">
+        <p>and you're done! Enjoy your server dock!</p>
+        <img width="400" height="600" class="text-center" src="https://media.discordapp.net/attachments/1068304660269641738/1198308811061076130/eovAM5JE.jpg?ex=65be6f0c&is=65abfa0c&hm=1403c3141634a5687231524c3ccde762b0ee98f4430065b57da6522c0a6811aa&=&format=webp">
+        <p></p>
+
+        <h2 id="section4">- Extras 3: How to Downgrade Vendetta</h2>  <!-- Wont change section name so it wont break on vendetta support -->
+        <p>You can check your vendetta manager by opening the app and checking if there's an 'i' on the top 
+            right corner (1.1.0 or below) or a gear icon there (1.1.1 or above)</p>
+        <section class="row">
+            <div class="col-sm">
+                <a id="managernew" class="btn btn-dark btn-lg">I am using vendetta manager 1.1.1 or above</a>
+            </div>
+            <div class="col-sm">
+                <a id="managerold" class="btn btn-dark btn-lg">I am using vendetta manager 1.1.0 or below</a>
+            </div>
+        </section>
+        
+        <div id="contentnew">
+            <div class="video-container">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/X9V68ZB4xH8?feature=share" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <p>First, go to vendetta manager, and click the gear icon on top right.</p>
+            <img width="400" height="600" class="text-center" src="https://media.discordapp.net/attachments/1068304660269641738/1198424993617420418/nkOfOXdb.png?ex=65bedb40&is=65ac6640&hm=79e50df4c8b2dab93fb0dca39232683c2a44d7dcc9abab5bb7193ac833c90035&=&format=webp&quality=lossless&width=253&height=553">
+            <p>Then, click the 'about' option with the i icon on the bottom.</p>
+            <img width="400" height="600" class="text-center" src="https://media.discordapp.net/attachments/1068304660269641738/1198424994179461121/Eji3owHQ.png?ex=65bedb40&is=65ac6640&hm=66cd6922d9afd397f8162619263c67dd2dabcf7c96c3aaf98b57d1abe22eb16c&=&format=webp&quality=lossless&width=335&height=553">
+            <p>Then, click the version text around ten times to access the developer options.</p>
+            <img width="400" height="600" class="text-center" src="https://media.discordapp.net/attachments/1068304660269641738/1182867922209751200/iwG3XzqO.png?ex=65864299&is=6573cd99&hm=1e167310ef2f4c8b5b76e4a8b0a2504d4e6e4eefb9be229de5ff66f3a0d8663b&=&format=webp&quality=lossless&width=270&height=554">
+            <p>There should be a pop-up confirming so, after that, click settings on bottom right of the app. 
+                Now go to 'developer options' above 'about' option on the settings. And then press on 
+                the "Discord Version" entrybox and write the version you wanted</p>
+            <img class="text-center" src="https://media.discordapp.net/attachments/1068304660269641738/1198424994565324862/TU1xsmvQ.png?ex=65bedb40&is=65ac6640&hm=ae78514488b3f4ec381bcee76e562a581b6bbd84ab2cb2718e70b9bcbf5ceac0&=&format=webp&quality=lossless&width=243&height=554">
+            <p>after that go back to the main page and click uninstall so we can re-install it again and you're done!</p>
+        </div>
+
+        <div id="contentold">
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/Iw8sPCe8SkU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <p>First, go to vendetta manager, and click the 'i' button on top right.</p>
+            <img width="400" height="600" class="text-center" src="https://media.discordapp.net/attachments/1068304660269641738/1182867922956324864/HtfnQCBE.jpg?ex=65864299&is=6573cd99&hm=4d9c2ba6addc3dfe5f4ae01eb74f504ca2d21b593f2641f2cde8d37d0b82cb96&=&format=webp&width=1025&height=555">
+            <p>Then, click the version text around ten times to access the developer options.</p>
+            <img width="400" height="600" class="text-center" src="https://media.discordapp.net/attachments/1068304660269641738/1182867922209751200/iwG3XzqO.png?ex=65864299&is=6573cd99&hm=1e167310ef2f4c8b5b76e4a8b0a2504d4e6e4eefb9be229de5ff66f3a0d8663b&=&format=webp&quality=lossless&width=270&height=554">
+            <p>There should be a pop-up confirming so, after that, click settings on bottom right of the app</p>
+            <img class="text-center" src="https://media.discordapp.net/attachments/1068304660269641738/1182868987546193930/dABcV0gb.jpg?ex=65864397&is=6573ce97&hm=3ad0b316dcf41a6f523e2980003369c5c04d3e8cbe1b8b6f86e17116e89322ad&=&format=webp&width=271&height=554">
+            <p>Once you've clicked it, press on the "Discord Version" entrybox and write the version you wanted. after that go back to the main page 
+                and click uninstall so we can re-install it again and you're done!</p>
+            <img class="text-center" src="https://media.discordapp.net/attachments/1068304660269641738/1182867922721439814/FP47NHJ0.png?ex=65864299&is=6573cd99&hm=4b1aec7c61a3c0ce7e85e0b286f6a01477f7bbbd9aae2ae823fd437c5067e1f8&=&format=webp&quality=lossless&width=273&height=555">
+
+        </div>
+            <h2 id="section5">What version should I pick?</h2>
+            <div class="responsive-table" style="margin-bottom: 10px;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Specification</th>
+                    <th>205.15 (Stable, 205015)</th>
+                    <th>206.16 (Stable, 206016)</th>
+                    <th>207.23 (Stable, 207023) & 208.17 (Stable, 208017) & 209.14 (Stable, 209014)</th>
+                    <th>212.11 (Stable, 212011)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Base Vendetta</td>
+                    <td>Working [Bugged, Stickers tab not working, Hotfix: Click the search bar]</td>
+                    <td>Working</td>
+                    <td>Working [Fixed]</td>
+                    <th>Buggy (Crashes alot), Corrupt APKs issue on several devices</th>
+                </tr>
+                <tr>
+                    <td>Experiments Plugin [refer to <a href="#section3p1">Experiment Plugin not showing up</a> if you have issues]</td>
+                    <td>Working</td>
+                    <td>Working</td>
+                    <td>Working</td>
+                    <td>Working</td>
+                </tr>
+                <tr>
+                    <td>Plugins</td>
+                    <td>Majority Working</td>
+                    <td>Majority Working</td>
+                    <td>Majority Working</td>
+                    <td>Majority Working</td>
+                </tr>
+                <tr>
+                    <td>Themes</td>
+                    <td>Working [Tabsv2 supported ones]</td>
+                    <td>Working [Tabsv2 supported ones]</td>
+                    <td>Working [Tabsv2 supported ones]</td>
+                    <td>Working [Tabsv2 supported ones]</td>
+                </tr>
+                <tr>
+                    <td>New Features</td>
+                    <td>See full update notes at <a href="https://discord.com/fallrelease">here</a></td>
+                    <td>See full update notes at <a href="https://discord.com/fallrelease">here</a></td>
+                    <td>Note on discord gift, shop is open to everyone, New games added to Activities, Server shop, Latin American Spanish Language support</td>
+                    <td>No new major features</td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+        </div>
+
+        <footer>Note: Please notify me at discord @bagubaguu if there's any inaccuracy</footer>
+
+    </div>
+    <p></p> <!-- Lazy Margin -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script>
+    $(document).ready(function () {
+        
+
+        for (let i = 1; i <= 3; i++) {
+            $('#navbarDropdown' + i).on('show.bs.dropdown', function () {
+                $('#dropdownTitle' + i).css('color', '#FF0000');
+            });
+
+            $('#navbarDropdown' + i).on('hide.bs.dropdown', function () {
+                $('#dropdownTitle' + i).css('color', '');
+            });
+        }
+
+        // Initially hide both content divs
+        document.getElementById('contentnew').style.display = 'none';
+        document.getElementById('contentold').style.display = 'none';
+        
+        document.getElementById('managernew').addEventListener('click', function() {
+            // Show contentnew and hide contentold
+            document.getElementById('contentnew').style.display = 'block';
+            document.getElementById('contentold').style.display = 'none';
+        });
+
+        document.getElementById('managerold').addEventListener('click', function() {
+            // Show contentold and hide contentnew
+            document.getElementById('contentnew').style.display = 'none';
+            document.getElementById('contentold').style.display = 'block';
+        });
+    });
+    </script>    
+</body>
+</html>
