@@ -3,11 +3,11 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width">
-        <title>GSIs Quick Support</title>
+        <title>GSI Quick Support</title>
         <link rel="icon" type="image/png" href="https://em-content.zobj.net/source/twitter/71/baguette-bread_1f956.png">
         <!-- Bootstrap CSS Script and CSS rules -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-        <meta name="description" content="Explains what is a gsi and their naming conventions like 'vndklite' or 'bgN'"/>
+        <meta name="description" content="All you need to know about GSIs"/>
         <meta name="author" content="Baguette">
         <meta name="keywords" content="GSI bgN bgS bvN vndklite lite slim">
         <meta property="og:image" content="assets/">  <!-- logo pending -->
@@ -82,9 +82,7 @@
     <li>[Both] Unlocked bootloader</li>
     <li>[Both] A GSI (find one that is the same or higher than your current firmware level for DSU method). 
         find it <a href="https://github.com/phhusson/treble_experimentations/wiki/Generic-System-Image-%28GSI%29-list">here.</a></li>
-    <li>[DSU method] Dynamic Partitions: Enabled</li>
-    <li>[DSU method (Might be optional)] Seamless Updates: Enabled (Check via <a href=https://play.google.com/store/apps/details?id=tk.hack5.treblecheck>this app</a>.)</li>
-    <li>[DSU method (Might be optional)] System-as-Root: Enabled (Check via <a href=https://play.google.com/store/apps/details?id=tk.hack5.treblecheck>this app</a>.)</li>
+    <li>[DSU method] Dynamic Partitions: Enabled (Check via <a href=https://play.google.com/store/apps/details?id=tk.hack5.treblecheck>this app</a>.)</li>
     <li>[Both] A little faith in yourself</li>
 
     <h2 id="naming">Naming conventions and which one to pick</h2>
@@ -123,7 +121,7 @@
             <ul><h4>[N/S]</h4>
                 <p>refers to the Superuser state</p>
                 <li>N: Normal/No, No Superuser (You can still manually patch it via magisk or such)</li>
-                <li>S: Superuser built-in, you'll need <a href="https://f-droid.org/en/packages/me.phh.superuser/"></a>this app.</li>
+                <li>S: Superuser built-in, you'll need <a href="https://f-droid.org/en/packages/me.phh.superuser/">this app</a>.</li>
             </ul>
         </ul>
         <ul><h3 id="n-system">[vndklite/secure/personal]</h3>
@@ -152,8 +150,9 @@
         a Recovery project like PBRP, Orangefox, or TWRP. Make sure to backup your data before doing this. You 
         usually want to flash it to system.img (probably won't work on super.img). But sometimes also needing you 
         to patch vbmeta and/or switch kernel to a permissive SELinux rather than enforcing. <b>Find tutorials for 
-            your device on XDA forums or <a href="https://github.com/phhusson/treble_experimentations/wiki">here.</a></b></p>
-    </p>
+        your device on XDA forums or <a href="https://github.com/phhusson/treble_experimentations/wiki">here.</a></b></p>
+
+    <p>The general tutorial is usually</p>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
