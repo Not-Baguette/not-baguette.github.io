@@ -144,7 +144,7 @@
             <li>Personal: Personal modifications, you probably wont need this</li>
         </ul></li>
 
-    <li><ul style="list-style-type:disc"><h3 id="n-slim">slim/lite</h3>
+    <li><ul style="list-style-type:disc"><h3 id="n-slim">slim/lite/core</h3>
         <li>both usually refers to a version of the gsi with less stuff in it, resulting in smaller size albeit 
             with less features sometimes</li>
         </ul></li>
@@ -164,7 +164,7 @@
     <p>While I recommend against this, (The success rate is probably around 40%). This is very much possible.
         <b>Continue at your own risk.</b> Make sure to backup your data before doing this. Only use 
         this tutorial if your device is not in XDA forums or <a href="https://github.com/phhusson/treble_experimentations/wiki">here.</a></p>
-        <ol><p>What we basically will do:</p>
+        <ol>What we basically will do:
         <li>Flash the GSI as system image via fastboot/recovery</li>
         <li>Patch vbmeta </li>
         <li>Switch to a permissive SELinux (Unneeded usually, only try if you know what you're doing)</li>
@@ -190,7 +190,7 @@
 
     <h3 id="#common-issues">Common Issues</h3>
     <ol>
-        <li id="no-such">(system) No such partition'</li>
+        <li id="no-such">'(system) No such partition'</li>
         <p>Try going to fastbootd via <code>fastboot reboot fastboot</code> and try flashing it there</p>
 
         <li id="not-enough">'Not enough space to resize partition'</li>
