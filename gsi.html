@@ -28,7 +28,7 @@
     <!-- Navigation Bar, make it expanding -->
     <nav class="navbar py-4 navbar-custom navbar-expand-lg">
         <div class="container-fluid">
-            <span class="navbar-brand mb-0 h1">Revenge</span>
+            <span class="navbar-brand mb-0 h1">Baguette</span>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -63,7 +63,7 @@
                 </ul>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="#common-issues" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <span id="dropdownTitle2">Common Issues</span>
                 </a>
             </ul>
@@ -80,18 +80,25 @@
     <h2 id="requirements">What are the requirements?</h2>
     <li>[Both] A device that supports treble. Check via <a href=https://play.google.com/store/apps/details?id=tk.hack5.treblecheck>this app</a>.</li>
     <li>[Both] Unlocked bootloader</li>
-    <li>[Both] A GSI (find one that is the same or higher than your current firmware level for DSU method). 
+    <li>[Both] A GSI (find one that is the same or higher than your current SDK)
         find it <a href="https://github.com/phhusson/treble_experimentations/wiki/Generic-System-Image-%28GSI%29-list">here.</a></li>
     <li>[DSU method] Dynamic Partitions: Enabled (Check via <a href=https://play.google.com/store/apps/details?id=tk.hack5.treblecheck>this app</a>.)</li>
     <li>[Both] A little faith in yourself</li>
+    <p></p> <!-- Lazy fix -->
+
+    <div class="alert alert-warning">
+        <strong>Warning!</strong> We don't recommend using GSI because of various side effects faced 
+        on most devices, such as instability, performance, battery and feature issues. Proceed at your 
+        own risk.
+    </div>
 
     <h2 id="naming">Naming conventions and which one to pick</h2>
     <img src="assets/gsi/crdroid-a13-gsis.png" alt="GSI examples"></img>
     <p>You can usually check what features are working on your phone and what doesn't by going to
-        <a href="https://github.com/phhusson/treble_experimentations/wiki">This site</a> and then finding your phone</p>
+        <a href="https://github.com/phhusson/treble_experimentations/wiki">This site</a> and then locate your phone</p>
     <p>This is barely talked about lately as some people assume everyone knew the meaning. Other GSIs might 
         have different naming conventions so this is a very broad conventions. These are simply ones I know of;</p>
-    <ul>
+    <ol type="1">
         <li><h3 id="n-arch">arm/a64/arm64</h3>
             <ul>
                 <p>You can find this under 'CPU Architecture' on Treble info app.</p>
@@ -101,58 +108,106 @@
             </ul>
         </li>
         <li><h3 id="n-bgn">bgN/bgS/etc.</h3></li>
-        <ul>
+        <!-- BGN rant List for naming conventions -->
+        <ul style="list-style-type:square">
+            <!-- What the fuck is this shitfuckery of a nested fuck -->
             <p>This part will be separated into three parts, as their characters do [a/b][v/g/f/o][N/S]</p>
-            <ul><h4>[a/b]</h4>
+            <li><ul style="list-style-type:disc"><h4>[a/b]</h4>
                 <p>refers to Android feature to have two sets of android system, one for each slot. 
                     This usually used for seamless Updates and fallbacks. Check this via 'System-as-root' 
                     and 'Seamless Updates' on Treble info. (If enabled - ab. if not, a)</p>
                 <li>a: A-only system, If you have an A-only system, then you need to flash the GSI 
                     directly as system as DSU method wont be possible</li>
                 <li>b: A/B, The GSI is meant to be flashed on an A/B phone. Common nowdays.</li>
-            </ul>
-            <ul><h4>[v/g/f/o]</h4>
+                </ul></li>
+            
+            <li><ul style="list-style-type:disc"><h4>[v/g/f/o]</h4>
                 <p>refers to the google apps condition.</p>
                 <li>v: Vanilla, no google apps</li>
                 <li>g: Google, with google apps</li>
                 <li>f: FOSS, Free Open Source Softwares alongside Microg usually</li>
                 <li>o: Android Go Google Apps built in</li>
-            </ul>
-            <ul><h4>[N/S]</h4>
+                </ul></li>
+
+            <li><ul style="list-style-type:disc"><h4>[N/S]</h4>
                 <p>refers to the Superuser state</p>
                 <li>N: Normal/No, No Superuser (You can still manually patch it via magisk or such)</li>
                 <li>S: Superuser built-in, you'll need <a href="https://f-droid.org/en/packages/me.phh.superuser/">this app</a>.</li>
-            </ul>
-        </ul>
-        <ul><h3 id="n-system">[vndklite/secure/personal]</h3>
+            </ul></li>
+        
+        <li><ul style="list-style-type:disc"><h3 id="n-system">[vndklite/secure/personal]</h3>
             <li>vndklite: Use this for vndklite devices, check via treble info. This makes system partition read-writeable (rw rather than RO)</li>
             <li>Secure: Superuser removed and build.prop is spoofed to pass safetynet and Play Integrity</li>
             <li>Personal: Personal modifications, you probably wont need this</li>
-    </ul>
-    <ul><h3 id="n-slim">Slim/lite</h3>
+        </ul></li>
+
+    <li><ul style="list-style-type:disc"><h3 id="n-slim">slim/lite</h3>
         <li>both usually refers to a version of the gsi with less stuff in it, resulting in smaller size albeit 
             with less features sometimes</li>
-    </ul>
+        </ul></li>
     </ul>
 
+    <!-- Installation guide -->
     <h2 id="install">How to Install a GSI?</h2>
     <h3>DSU Method</h3>
     <p>It depends heavily on your phone. I <i>personally</i> recommend to install it via Vegabobo's 
         <a href=https://github.com/VegaBobo/DSU-Sideloader/releases/>DSU sideloader</a>. This is 
         because if the GSI fails to boot up, it will fall back to your original OS without losing any data 
         (Considering your bootloader is unlocked beforehand). However there's a huge limit on storage size 
-        (More than 50% of your storage might be unavailable).</p>
+        (More than 50% of your storage might be unavailable). <b>Just remember to unlock your bootloader else
+        you might hardbrick it.</b></p>
 
     <h3>Direct Method</h3>
-    <p>While I recommend against this, (The success rate is probably around half). This is very much possible.
-        <b>Continue at your own risk.</b> This is usually a broad method, with most devices having their own way.
-        But usually, it usually involves resizing system partition and then flashing the GSI via fastboot or 
-        a Recovery project like PBRP, Orangefox, or TWRP. Make sure to backup your data before doing this. You 
-        usually want to flash it to system.img (probably won't work on super.img). But sometimes also needing you 
-        to patch vbmeta and/or switch kernel to a permissive SELinux rather than enforcing. <b>Find tutorials for 
-        your device on XDA forums or <a href="https://github.com/phhusson/treble_experimentations/wiki">here.</a></b></p>
+    <p>While I recommend against this, (The success rate is probably around 40%). This is very much possible.
+        <b>Continue at your own risk.</b> Make sure to backup your data before doing this. Only use 
+        this tutorial if your device is not in XDA forums or <a href="https://github.com/phhusson/treble_experimentations/wiki">here.</a></p>
+        <ol><p>What we basically will do:</p>
+        <li>Flash the GSI as system image via fastboot/recovery</li>
+        <li>Patch vbmeta </li>
+        <li>Switch to a permissive SELinux (Unneeded usually, only try if you know what you're doing)</li>
+    </ol>
+    
+    <h4>Devices with fastboot:</h4>
+        <ol>
+            <li>Go to your bootloader (fastboot) via <code>adb reboot bootloader</code> or vol- & power combo</li>
+            <li>Flash the GSI (Unzip it until you get a .img file) as system image via <code>fastboot flash system C:/path/to/gsi</code> (Do NOT flash it to super partition)</li>
+            <li>Flash vbmeta (Make sure it's the same build or it'll brick) via <code>fastboot flash vbmeta C:/path/to/vbmeta --disable-verity --disable-verification</code></li>
+            <li>erase userdata via <code>fastboot erase userdata</code></li>
+            <li>Try booting up, if it still does not boot up, try other GSIs. If none works, try disabling selinux by patching boot.img</li>
+        </ol>
+    <h4>Samsung:</h4>
+        <ol>
+            <li>Go to download mode</li>
+            <li>Flash a custom recovery onto your device alongside vbmeta-disabler (important for both the gsi and )</li>
+            <li>Reboot to custom recovery</li>
+            <li>Go to install menu and then select the GSI</li>
+            <li>Wipe Data, Dalvik, and cache</li>
+            <li>Try booting up.</li>
+        </ol>
 
-    <p>The general tutorial is usually</p>
+    <h3 id="#common-issues">Common Issues</h3>
+    <ol>
+        <li>(system) No such partition'</li>
+        <p>Try going to fastbootd via <code>fastboot reboot fastboot</code> and try flashing it there</p>
+
+        <li>'Not enough space to resize partition'</li>
+        <p>Your gsi image is too big, find a lighter GSI. You can also resize your system partition via
+            fastbootd (<code>fastboot reboot fastboot</code>) and then resizing it. This depends on the 
+            device itself but usually system_ext/product is the best to minimize/erase to make room.</p>
+        <code>fastboot delete-logical-partition product_a</code>
+        <p>Or/and</p>
+        <code>fastboot delete-logical-partition system_ext_a</code>
+
+        <p>Or you can resize it</p>
+        <code>fastboot create-logical-partition system_ext_a 33500</code>
+        <p></p> <!-- lazy fix -->
+        <code>fastboot create-logical-partition product_a 33500</code>
+        <p>Now try reflashing it</p>
+    </ol>
+
+    <div class="alert alert-info">
+        <strong>Info:</strong> Please only try to install a GSI if you know what you're doing. If you don't, you might brick your device.
+    </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -182,10 +237,10 @@
         });
 
         document.getElementById('managerold').addEventListener('click', function() {
-            // Show contentold and hide contentnew
             document.getElementById('contentnew').style.display = 'none';
             document.getElementById('contentold').style.display = 'block';
         });
     });
     </script>  
 </body>
+</html>
