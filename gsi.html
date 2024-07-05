@@ -66,6 +66,9 @@
                 <a class="nav-link dropdown-toggle" href="#common-issues" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <span id="dropdownTitle2">Common Issues</span>
                 </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                <li><a class="dropdown-item" href="#no-such">No such partition</a></li>
+                <li><a class="dropdown-item" href="#not-enough">Not enough space</a></li>
             </ul>
         </div>
     </div>
@@ -187,10 +190,10 @@
 
     <h3 id="#common-issues">Common Issues</h3>
     <ol>
-        <li>(system) No such partition'</li>
+        <li id="no-such">(system) No such partition'</li>
         <p>Try going to fastbootd via <code>fastboot reboot fastboot</code> and try flashing it there</p>
 
-        <li>'Not enough space to resize partition'</li>
+        <li id="not-enough">'Not enough space to resize partition'</li>
         <p>Your gsi image is too big, find a lighter GSI. You can also resize your system partition via
             fastbootd (<code>fastboot reboot fastboot</code>) and then resizing it. This depends on the 
             device itself but usually system_ext/product is the best to minimize/erase to make room.</p>
@@ -206,7 +209,7 @@
     </ol>
 
     <div class="alert alert-info">
-        <strong>Info:</strong> Please only try to install a GSI if you know what you're doing. If you don't, you might brick your device.
+        <strong>Info:</strong> Thank you to all my friends in XDA discord server for helping me learn this far!
     </div>
     </div>
 
