@@ -69,6 +69,7 @@
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
                 <li><a class="dropdown-item" href="#no-such">No such partition</a></li>
                 <li><a class="dropdown-item" href="#not-enough">Not enough space</a></li>
+                <li><a class="dropdown-item" href="#recov-no-system">No flash to system option on recovery</a></li>
             </ul>
         </div>
     </div>
@@ -79,7 +80,8 @@
     <p>A generic system image (GSI) is a system image that is runnable on a variety of Android devices. Different 
         than custom ROM builds which are only runnable on a few specific devices, GSIs can run on <i>most</i> devices that 
         supports treble. You can check this via <a href=https://play.google.com/store/apps/details?id=tk.hack5.treblecheck>This app</a>.</p>
-    
+    <p>You also can find more in <a href=https://sourceforge.net/projects/nippongsi/files>Nippon GSI</a> and 
+        <a href=https://sourceforge.net/projects/mystic-gsi-updates/files>Mystic GSI</a>.</p>
     <h2 id="requirements">What are the requirements?</h2>
     <li>[Both] A device that supports treble. Check via <a href=https://play.google.com/store/apps/details?id=tk.hack5.treblecheck>this app</a>.</li>
     <li>[Both] Unlocked bootloader</li>
@@ -88,7 +90,7 @@
     <li>[DSU method] Dynamic Partitions: Enabled (Check via <a href=https://play.google.com/store/apps/details?id=tk.hack5.treblecheck>this app</a>.)</li>
     <li>[Both] A little faith in yourself</li>
     <p></p> <!-- Lazy fix -->
-
+    
     <div class="alert alert-warning">
         <strong>Warning!</strong> We don't recommend using GSI because of various side effects faced 
         on most devices, such as instability, performance, battery and feature issues. Proceed at your 
@@ -178,7 +180,7 @@
             <li>erase userdata via <code>fastboot erase userdata</code></li>
             <li>Try booting up, if it still does not boot up, try other GSIs. If none works, try disabling selinux by patching boot.img</li>
         </ol>
-    <h4>Samsung:</h4>
+    <h4>Samsung (Older):</h4>
         <ol>
             <li>Go to download mode</li>
             <li>Flash a custom recovery onto your device alongside vbmeta-disabler (important for both the gsi and )</li>
@@ -186,6 +188,13 @@
             <li>Go to install menu and then select the GSI</li>
             <li>Wipe Data, Dalvik, and cache</li>
             <li>Try booting up.</li>
+        </ol>
+
+    <h4>Samsung (Newer)</h4>
+        <ol>
+            <li>Go to download mode</li>
+            <li>Use <a href=https://github.com/ratcoded/fastboot-patcher>fastboot-patcher</a> to get fastboot</li>
+            <li>follow the guide for fastboot devies</li>
         </ol>
 
     <h3 id="#common-issues">Common Issues</h3>
@@ -206,6 +215,11 @@
         <p></p> <!-- lazy fix -->
         <code>fastboot create-logical-partition product_a 33500</code>
         <p>Now try reflashing it</p>
+    </ol>
+
+    <li id="recov-no-system">'No flash to system option on recovery'</li>
+    <ol>
+        <li>Use the fastboot method, or if you're on samsung, try using the guide for newer samsung</li>
     </ol>
 
     <div class="alert alert-info">
