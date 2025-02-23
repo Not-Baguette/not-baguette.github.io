@@ -1,0 +1,104 @@
+@keyframes fadeDown{
+    from{
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-down{
+    opacity: 0; /* Make sure the opacity is 0 before the transition for delays */
+    animation: fadeDown 1s ease-in-out forwards; /* forwards so the thing doesnt return back to 0 opacity */
+}
+.fade-down-1{
+    animation-delay: 0s;
+}
+.fade-down-2{
+    animation-delay: 0.5s;
+}
+.fade-down-3{
+    animation-delay: 1s;
+}
+.fade-down-4{
+    animation-delay: 1.5s;
+}
+
+/* Announcement blocks */
+.text-block{
+    max-width: 750px;
+    margin: auto;
+    background-color: #4b4b4b;
+    margin: 10px auto; /* Add auto to auto recenter*/
+    padding: 20px;
+    border: 2px solid #fd1d1d;
+  } 
+  .text-block2 {
+    text-align: center;
+    background-color: rgba(49, 44, 36, 255);
+    border: 2px solid rgba(225, 169, 49, 25);
+    border-radius: 15px;
+    color: #c7c8ce;
+    padding: 10px;
+    margin: 20px auto; /* Adjusted margin for better spacing */
+}
+.text-block3{
+    text-align: center;
+    max-width: 750px;
+    background-color: rgba(23, 121, 82, 0.56);
+    border: 2px solid rgba(0, 255, 153, 0.56);
+    border-radius: 15px;
+    color: #c7c8ce;
+    margin: 60px auto; /* Add auto to auto recenter*/
+    padding: 10px;
+}
+
+/* Modifications/addition to bootstrap stuff */
+.row{
+    margin-bottom: 30px;
+}
+
+.project-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+.project-box img {
+    margin-right: 20px; 
+}
+.project-box h2 {
+    margin-bottom: 10px;
+}
+.project-box p {
+    margin: 0; 
+}
+
+/* Image related stuff */
+.pfp{
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    margin: 10px auto;
+    display: block;
+    border: 5px solid;
+}
+
+.pfp.discord{
+    border-color: #fd1d1d;
+}
+
+.pfp.telegram{
+    border-color: #0099cc;
+}
+
+/* Contact animations */
+.contact{
+    transition: transform 0.5s;
+}
+
+.contact:hover{
+    transform: scale(1.1);
+}
