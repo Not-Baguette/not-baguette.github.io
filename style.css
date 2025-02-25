@@ -27,6 +27,13 @@
 }
 
 /* Announcement blocks */
+.text-block2, .text-block3 {
+    /* merge this shitty code into one */
+    text-align: center;
+    border-radius: 15px;
+    padding: 10px;
+    margin: 20px auto;
+}
 .text-block{
     max-width: 750px;
     margin: auto;
@@ -36,26 +43,44 @@
     border: 2px solid #fd1d1d;
   } 
   .text-block2 {
-    text-align: center;
     background-color: rgba(49, 44, 36, 255);
     border: 2px solid rgba(225, 169, 49, 25);
-    border-radius: 15px;
-    color: #c7c8ce;
-    padding: 10px;
-    margin: 20px auto; /* Adjusted margin for better spacing */
 }
 .text-block3{
-    text-align: center;
-    max-width: 750px;
     background-color: rgba(23, 121, 82, 0.56);
     border: 2px solid rgba(0, 255, 153, 0.56);
-    border-radius: 15px;
-    color: #c7c8ce;
-    margin: 60px auto; /* Add auto to auto recenter*/
-    padding: 10px;
 }
 
 /* Modifications/addition to bootstrap stuff */
+@media (max-width: 768px) { /* Mobile support */
+    .navbar-brand {
+        font-size: 1.5rem;
+        padding: 0.75rem 1rem;
+    }
+    .navbar-nav .nav-link {
+        font-size: 1.25rem;
+        padding: 0.75rem 1rem;
+    }
+    .navbar-toggler {
+        padding: 0.5rem 1rem;
+    }
+
+    #body{
+        font-size: large;
+    }
+
+    .text-block, .text-block2, .text-block3 {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+}
+@media (max-width:992px) {
+    /* I give up on fixing this bug so I'll just hide the image on smaller ratios */
+    .text-block2 img, .text-block3 img {
+        display: none;
+    }
+}
+
 .row{
     margin-bottom: 30px;
 }
@@ -63,11 +88,12 @@
 .project-box {
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: flex-start;
 }
 .project-box img {
-    margin-right: 20px; 
+    margin-right: 20px;
 }
 .project-box h2 {
     margin-bottom: 10px;
@@ -77,10 +103,11 @@
 }
 
 /* Image related stuff */
-.pfp{
+.pfp {
     border-radius: 50%;
-    width: 200px;
-    height: 200px;
+    width: 100%;
+    max-width: 200px;
+    height: auto;
     margin: 10px auto;
     display: block;
     border: 5px solid;
@@ -88,10 +115,14 @@
 
 .pfp.discord{
     border-color: #fd1d1d;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .pfp.telegram{
     border-color: #0099cc;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Contact animations */
