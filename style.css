@@ -74,12 +74,6 @@
         margin-right: 20px;
     }
 }
-@media (max-width:992px) {
-    /* I give up on fixing this bug so I'll just hide the image on smaller ratios */
-    .text-block2 img, .text-block3 img {
-        display: none;
-    }
-}
 
 .row{
     margin-bottom: 30px;
@@ -101,6 +95,11 @@
 .project-box p {
     margin: 0; 
 }
+
+.project_div {
+    @apply col-md-12 col-lg-5 mb-4 project-box text-block3 fade-down fade-down-4 d-flex align-items-center flex-column flex-md-row justify-content-center;
+}
+
 
 /* Image related stuff */
 .pfp {
