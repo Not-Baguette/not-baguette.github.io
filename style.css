@@ -96,11 +96,6 @@
     margin: 0; 
 }
 
-.project_div {
-    @apply col-md-12 col-lg-5 mb-4 project-box text-block3 fade-down fade-down-4 d-flex align-items-center flex-column flex-md-row justify-content-center;
-}
-
-
 /* Image related stuff */
 .pfp {
     border-radius: 50%;
