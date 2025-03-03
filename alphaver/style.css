@@ -1,0 +1,20 @@
+canvas {
+    background-color: #1e293b;
+    border: 2px solid white;
+    margin-top: 20px;
+}
+.bar-container {
+    display: flex;
+    gap: 2px;
+    margin: 10px;
+}
+.bar-block {
+    width: 50px;
+    height: 30px;
+    border: 2px solid white;
+}
+
+.hp { background-color: red; }
+.energy { background-color: orange; }
+.mana { background-color: blue; }
+.hunger { background-color: green; }

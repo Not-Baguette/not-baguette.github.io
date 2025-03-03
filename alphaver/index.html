@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Timeless Adventure</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="flex flex-col items-center bg-gray-900 text-white min-h-screen">
+
+    <!-- Top Row for Usernames n logo, good luck sis :sparkles: -->
+    <div class="w-full bg-gray-800 p-4 text-center mb-4">
+        <h1 class="text-3xl font-bold my-4">The Timeless Adventure</h1>
+        <h2 class="text-xl">lorem ipsum dewi jamet</h2>
+        <div class="grid grid-cols-2 gap-4 mt-4">
+            <div id="hpContainer" class="bar-container"></div>
+            <div id="energyContainer" class="bar-container"></div>
+            <div id="manaContainer" class="bar-container"></div>
+            <div id="hungerContainer" class="bar-container"></div>
+        </div>
+    </div>
+
+    <!-- The main game and the interaction menu -->
+    <div class="flex flex-row">
+        <!-- Canvas -->
+        <canvas id="gameCanvas" width="800" height="600" class="m-4"></canvas>
+        <!-- Area interaction menu -->
+        <div class="w-64 bg-gray-700 p-4 m-4 rounded">
+            <h2 class="text-xl mb-2">Area Interactions</h2>
+            <p id="interactionText" class="mb-2"></p>
+            <button id="action1" class="hidden bg-blue-500 px-4 py-2 rounded mb-2"></button>
+            <button id="action2" class="hidden bg-green-500 px-4 py-2 rounded mb-2"></button>
+            <button id="action3" class="hidden bg-red-500 px-4 py-2 rounded"></button>
+        </div>
+    </div>
+
+    <!-- bottom text -->
+    <p class="mb-4">Click to move</p>
+    
+    <script src="index.js"></script>
+</body>
+</html>
