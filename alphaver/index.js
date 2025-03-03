@@ -3,6 +3,7 @@ const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 let isMoving = false;
 
+// Player stats
 let player = {
     x: 75,
     y: 75,
@@ -20,6 +21,7 @@ let player = {
 let destination = null;
 let visitedAreas = new Set(["Home"]);
 
+// Area props
 const areas = {
     "Home": { x: 50, y: 50, width: 50, height: 50, cost: 2 },
     "Pontianak": { x: 200, y: 300, width: 50, height: 50, cost: 1 },
@@ -28,6 +30,7 @@ const areas = {
     "Ponegoro": { x: 600, y: 450, width: 50, height: 50, cost: 2, requires: ["Pontianak", "Padang", "Papua"] }
 };
 
+// Button texts
 const areaActions = {
     "Home": {
         action1: "Rest",
@@ -40,9 +43,9 @@ const areaActions = {
         action3: ""
     },
     "Padang": {
-        action1: "Fight",
-        action2: "Explore",
-        action3: ""
+        action1: "Stay on an Inn",
+        action2: "Go to a Restaurant",
+        action3: "Go to a Library"
     },
     "Papua": {
         action1: "Fight",
@@ -50,89 +53,121 @@ const areaActions = {
         action3: ""
     },
     "Ponegoro": {
-        action1: "Fight the Boss",
+        action1: "",
         action2: "",
-        action3: ""
+        action3: "Fight the Boss"
     }
 };
 
 // Event listeners
 canvas.addEventListener("click", (e) => {
-    if (isMoving) return;
+    if (isMoving) return; // stop the user if they are already moving
 
-    const rect = canvas.getBoundingClientRect();
+    const rect = canvas.getBoundingClientRect(); // get the canvas rect for calculation
     const clickX = e.clientX - rect.left;
     const clickY = e.clientY - rect.top;
 
+    // map the area clicked to the area object and see if it's valid
     for (const area in areas) {
         const loc = areas[area];
-        if (
-            clickX >= loc.x && clickX <= loc.x + loc.width &&
+        if (clickX >= loc.x && clickX <= loc.x + loc.width && 
             clickY >= loc.y && clickY <= loc.y + loc.height
         ) {
-            if (player.area === area) return;
-            if (loc.requires && !loc.requires.every(r => visitedAreas.has(r))) {
+            if (player.area === area) return; // if same area, dont do anything
+            if (loc.requires && !loc.requires.every(r => visitedAreas.has(r))) { // locked areas logic
                 console.log(`You must visit ${loc.requires.join(" and ")} first!`);
                 return;
             }
-            destination = { x: loc.x + loc.width / 2, y: loc.y + loc.height / 2, area: area, cost: loc.cost };
+            // set the destination to the center of the area clicked
+            destination = { x: loc.x + loc.width / 2, y: loc.y + loc.height / 2, 
+                            area: area, cost: loc.cost };
             isMoving = true;
             return;
         }
     }
 });
 
-// TODO: Popup confirmation, use more than 1 cost/earnings
-function showPopup(action, cost, earnings) {
-    if (confirm(`${action} will cost ${cost} hunger and earn ${earnings} coins. Do you want to proceed?`)) {
-        player.hunger = Math.max(0, player.hunger - cost);
+// Helper function to check if the player has enough resources
+function hasEnoughResources(hp, mana, hunger, energy, money) {
+    if (player.hp < hp) {
+        alert("Not enough HP.");
+        return false;
+    }
+    if (player.mana < mana) {
+        alert("Not enough mana.");
+        return false;
+    }
+    if (player.hunger < hunger) {
+        alert("Not enough hunger.");
+        return false;
+    }
+    if (player.energy < energy) {
+        alert("Not enough energy.");
+        return false;
+    }
+    if (player.money < money) {
+        alert("Not enough money.");
+        return false;
+    }
+    return true;
+}
+
+// TODO: Make an ingame popup for this rather than calling js confirm shi
+function showPopup(action, hp, mana, hunger, energy, earnings) {
+    if (confirm(`Are you sure you want to ${action}? This will cost/earn you ${hp} HP, ${mana} mana, ${hunger} Hunger, ${energy} energy, and ${earnings} money`)) {
+        player.hp = Math.max(0, player.hp + hp);
+        player.mana = Math.max(0, player.mana + mana);
+        player.hunger = Math.max(0, player.hunger + hunger);
+        player.energy = Math.max(0, player.energy + energy);
         player.money += earnings;
     }
 }
 
-// Button actions, TODO: USE showPopup and CHANGE THE VALUES
+// Button actions using showPopup, TODO: Balancing. I'm sorry for the shit code below
 document.getElementById("action1").addEventListener("click", () => {
-    if (player.area === "Pontianak") {
-        player.hp = Math.max(0, player.hp - 1);
-        player.mana = Math.max(0, player.mana - 2);
-        player.money += 10;
+    const actions = areaActions[player.area];
+    if (player.area === "Home") {
+        showPopup(actions.action1, 0, 0, 0, 1, 0); 
+    } else if (player.area === "Pontianak") {
+        if (!hasEnoughResources(1, 2, 0, 0, 0)) return;
+        showPopup(actions.action1, -1, -2, 0, 0, 10);
     } else if (player.area === "Padang") {
-        player.money = Math.max(0, player.money - 5);
-        player.energy = Math.min(5, player.energy + 2);
-    } else if (player.area === "Ponegoro") {
-        player.hp = Math.max(0, player.hp - 4);
-        player.mana = Math.max(0, player.mana - 4);
-        player.hunger = Math.max(0, player.hunger - 3);
-        player.energy = Math.max(0, player.energy - 4);
-        player.money += 25;
+        if (!hasEnoughResources(0, 0, 0, 0, 5)) return;
+        showPopup(actions.action1, 0, 0, 0, 2, -5);
     }
 });
 
 document.getElementById("action2").addEventListener("click", () => {
-    if (player.area === "Pontianak") {
-        player.energy = Math.max(0, player.energy - 2);
-        player.money += 5;
+    const actions = areaActions[player.area];
+    if (player.area === "Home") {
+        if (!hasEnoughResources(0, 0, 1, 0, 0)) return;
+        showPopup(actions.action2, 0, 0, 1, 0, 0);
+    } else if (player.area === "Pontianak") {
+        if (!hasEnoughResources(0, 0, 0, 2, 0)) return;
+        showPopup(actions.action2, 0, 0, 0, -2, 5);
     } else if (player.area === "Padang") {
-        player.money = Math.max(0, player.money - 5);
-        player.hunger = Math.min(5, player.hunger + 2);
+        if (!hasEnoughResources(0, 0, 0, 0, 5)) return;
+        showPopup(actions.action2, 0, 0, 2, 0, -5);
     }
 });
 
 document.getElementById("action3").addEventListener("click", () => {
+    const actions = areaActions[player.area];
     if (player.area === "Home") {
-        player.hp = Math.min(5, player.hp + 1);
-        player.energy = Math.min(5, player.energy + 1);
-        player.hunger = Math.min(5, player.hunger + 1);
+        showPopup(actions.action3, 1, 0, 0, 0, 0);
     } else if (player.area === "Padang") {
-        player.money = Math.max(0, player.money - 5);
-        player.mana = Math.min(5, player.mana + 2);
+        if (!hasEnoughResources(0, 2, 0, 0, 0)) return;
+        showPopup(actions.action3, 0, 2, 0, 0, 0);
+    } else if (player.area === "Ponegoro") {
+        if (!hasEnoughResources(4, 4, 3, 4, 0)) return;
+        showPopup(actions.action3, -4, -4, -3, -4, 25);
     }
 });
 
 // Update the location of the player
 function update() {
     if (destination) {
-        // TODO: CHANGE MOVEMENT CODE SO IT DOESNT NEED TO DO THIS EVERY FRAME FOR OPTIMIZATION, IT WORKS RN THO SIS 
+        // Move the player towards the destination , euclidian distance
         let dx = destination.x - player.x;
         let dy = destination.y - player.y;
         let dist = Math.sqrt(dx * dx + dy * dy);
@@ -144,7 +179,7 @@ function update() {
             player.x = destination.x;
             player.y = destination.y;
             player.area = destination.area;
-
+            
             // Check for hunger, if too hungry just die
             if (player.hunger < 1) {
                 player.hp = Math.max(0, player.hp - 5); // DEATH
@@ -176,12 +211,17 @@ function update() {
 // Update the area interaction buttons depending on the area
 function updateButtonActions(area) {
     const actions = areaActions[area];
-    document.getElementById("action1").innerText = actions.action1;
-    document.getElementById("action2").innerText = actions.action2;
-    document.getElementById("action3").innerText = actions.action3;
-    document.getElementById("action1").classList.remove("hidden");
-    document.getElementById("action2").classList.remove("hidden");
-    document.getElementById("action3").classList.remove("hidden");
+    const action1 = document.getElementById("action1");
+    const action2 = document.getElementById("action2");
+    const action3 = document.getElementById("action3");
+
+    action1.innerText = actions.action1;
+    action2.innerText = actions.action2;
+    action3.innerText = actions.action3;
+
+    action1.classList.toggle("hidden", !actions.action1);
+    action2.classList.toggle("hidden", !actions.action2);
+    action3.classList.toggle("hidden", !actions.action3);
 }
 
 // Draw the player and areas
@@ -209,6 +249,9 @@ function updateStats() {
             container.appendChild(block);
         }
     });
+
+    // Update money display
+    document.getElementById("money").innerText = `Money: ${player.money}`;
 }
 
 // Gameloop, run the function on every frame
