@@ -112,7 +112,7 @@ function hasEnoughResources(hp, mana, hunger, energy, money) {
     return true;
 }
 
-// TODO: Make an ingame popup for this rather than calling js confirm shi
+// TODO: Make an ingame popup for this rather than calling js confirm shi, TODO: MAKE IT MAX AT 5
 function showPopup(action, hp, mana, hunger, energy, earnings) {
     if (confirm(`Are you sure you want to ${action}? This will cost/earn you ${hp} HP, ${mana} mana, ${hunger} Hunger, ${energy} energy, and ${earnings} money`)) {
         player.hp = Math.max(0, player.hp + hp);
@@ -125,43 +125,47 @@ function showPopup(action, hp, mana, hunger, energy, earnings) {
 
 // Button actions using showPopup, TODO: Balancing. I'm sorry for the shit code below
 document.getElementById("action1").addEventListener("click", () => {
-    const actions = areaActions[player.area];
+    const actions = (areaActions[player.area]).action1;
     if (player.area === "Home") {
-        showPopup(actions.action1, 0, 0, 0, 1, 0); 
+        showPopup(actions, 0, 0, 0, 1, 0); 
     } else if (player.area === "Pontianak") {
         if (!hasEnoughResources(1, 2, 0, 0, 0)) return;
-        showPopup(actions.action1, -1, -2, 0, 0, 10);
+        showPopup(actions, -1, -2, 0, 0, 10);
     } else if (player.area === "Padang") {
         if (!hasEnoughResources(0, 0, 0, 0, 5)) return;
-        showPopup(actions.action1, 0, 0, 0, 2, -5);
+        showPopup(actions, 0, 0, 0, 2, -5);
+    } else if (player.area === "Papua"){
+        if (!hasEnoughResources(2, 3, 0, 0, 0)) return;
+        showPopup(actions, -2, -3, 0, 0, 15)
     }
 });
 
 document.getElementById("action2").addEventListener("click", () => {
-    const actions = areaActions[player.area];
+    const actions = (areaActions[player.area]).action2;
     if (player.area === "Home") {
-        if (!hasEnoughResources(0, 0, 1, 0, 0)) return;
-        showPopup(actions.action2, 0, 0, 1, 0, 0);
+        showPopup(actions, 0, 0, 1, 0, 0);
     } else if (player.area === "Pontianak") {
         if (!hasEnoughResources(0, 0, 0, 2, 0)) return;
-        showPopup(actions.action2, 0, 0, 0, -2, 5);
+        showPopup(actions, 0, 0, 0, -2, 5);
     } else if (player.area === "Padang") {
         if (!hasEnoughResources(0, 0, 0, 0, 5)) return;
-        showPopup(actions.action2, 0, 0, 2, 0, -5);
+        showPopup(actions, 0, 0, 2, 0, -5);
+    } else if (player.area === "Papua"){
+        if (!hasEnoughResources(0, 0, 0, 3, 0)) return;
+        showPopup(actions, 0, 0, 0, -3, 10)
     }
 });
 
 document.getElementById("action3").addEventListener("click", () => {
-    const actions = areaActions[player.area];
+    const actions = (areaActions[player.area]).action3;
     if (player.area === "Home") {
-        showPopup(actions.action3, 1, 0, 0, 0, 0);
+        showPopup(actions, 1, 0, 0, 0, 0);
     } else if (player.area === "Padang") {
-        if (!hasEnoughResources(0, 2, 0, 0, 0)) return;
-        showPopup(actions.action3, 0, 2, 0, 0, 0);
+        showPopup(actions, 0, 2, 0, 0, 0);
     } else if (player.area === "Ponegoro") {
         if (!hasEnoughResources(4, 4, 3, 4, 0)) return;
-        showPopup(actions.action3, -4, -4, -3, -4, 25);
-    }
+        showPopup(actions, -4, -4, -3, -4, 25);
+    } 
 });
 
 // Update the location of the player

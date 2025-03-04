@@ -4,9 +4,12 @@ canvas {
     margin-top: 20px;
 }
 .bar-container {
+    width: 160px;
+    height: 30px;
+    background-color: #222;
+    border: 1px solid white;
     display: flex;
-    gap: 2px;
-    margin: 10px;
+    align-items: center;
 }
 .bar-block {
     width: 50px;
@@ -18,3 +21,4 @@ canvas {
 .energy { background-color: orange; }
 .mana { background-color: blue; }
 .hunger { background-color: green; }
+
