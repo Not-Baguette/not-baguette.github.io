@@ -25,7 +25,7 @@ let visitedAreas = new Set(["Home"]);
 const areas = {
     "Home": { x: 50, y: 50, width: 50, height: 50, cost: 2 },
     "Pontianak": { x: 200, y: 300, width: 50, height: 50, cost: 1 },
-    "Padang": { x: 500, y: 100, width: 50, height: 50, cost: 1 },
+    "Padang": { x: 500, y: 100, width: 50, height: 50, cost: 1, requires: ["Pontianak", "Papua"] },
     "Papua": { x: 100, y: 500, width: 50, height: 50, cost: 1 },
     "Ponegoro": { x: 600, y: 450, width: 50, height: 50, cost: 2, requires: ["Pontianak", "Padang", "Papua"] }
 };
@@ -63,6 +63,10 @@ const areaActions = {
 canvas.addEventListener("click", (e) => {
     if (isMoving) return; // stop the user if they are already moving
 
+    const action1 = document.getElementById("action1");
+    const action2 = document.getElementById("action2");
+    const action3 = document.getElementById("action3");
+    
     const rect = canvas.getBoundingClientRect(); // get the canvas rect for calculation
     const clickX = e.clientX - rect.left;
     const clickY = e.clientY - rect.top;
@@ -82,10 +86,17 @@ canvas.addEventListener("click", (e) => {
             destination = { x: loc.x + loc.width / 2, y: loc.y + loc.height / 2, 
                             area: area, cost: loc.cost };
             isMoving = true;
+            
+            // hide the buttons
+            action1.classList.add("hidden");
+            action2.classList.add("hidden");
+            action3.classList.add("hidden");
             return;
         }
     }
 });
+
+// TODO: Enter to auto confirm
 
 // Helper function to check if the player has enough resources
 function hasEnoughResources(hp, mana, hunger, energy, money) {
@@ -112,18 +123,79 @@ function hasEnoughResources(hp, mana, hunger, energy, money) {
     return true;
 }
 
-// TODO: Make an ingame popup for this rather than calling js confirm shi, TODO: MAKE IT MAX AT 5
+// Create an in-game popup for actions
 function showPopup(action, hp, mana, hunger, energy, earnings) {
-    if (confirm(`Are you sure you want to ${action}? This will cost/earn you ${hp} HP, ${mana} mana, ${hunger} Hunger, ${energy} energy, and ${earnings} money`)) {
-        player.hp = Math.max(0, player.hp + hp);
-        player.mana = Math.max(0, player.mana + mana);
-        player.hunger = Math.max(0, player.hunger + hunger);
-        player.energy = Math.max(0, player.energy + energy);
+    const popupContainer = document.getElementById("popupContainer");
+    const popupMessage = document.getElementById("popupMessage");
+    const confirmButton = document.getElementById("confirmButton");
+    const cancelButton = document.getElementById("cancelButton");
+
+    popupMessage.innerText = `Are you sure you want to ${action}? This will cost/earn you ${hp} HP, ${mana} mana, ${hunger} Hunger, ${energy} energy, and ${earnings} money`;
+    popupContainer.classList.remove("hidden");
+
+    confirmButton.onclick = () => {
+        player.hp = Math.min(5, Math.max(0, player.hp + hp));
+        player.mana = Math.min(5, Math.max(0, player.mana + mana));
+        player.hunger = Math.min(5, Math.max(0, player.hunger + hunger));
+        player.energy = Math.min(5, Math.max(0, player.energy + energy));
         player.money += earnings;
-    }
+        popupContainer.classList.add("hidden");
+    };
+
+    cancelButton.onclick = () => {
+        popupContainer.classList.add("hidden");
+    };
+
 }
 
-// Button actions using showPopup, TODO: Balancing. I'm sorry for the shit code below
+// Kill the player when they die
+function killPlayer() {
+    player.hp = 5;
+    player.hunger = 5;
+    player.energy = 5;
+    player.mana = 5;
+    player.money = 0;
+    player.area = "Home";
+    visitedAreas.clear();
+    visitedAreas.add("Home");
+    let cancelcounter = 0;
+
+    const popupContainer = document.getElementById("popupContainer");
+    const popupMessage = document.getElementById("popupMessage");
+    const confirmButton = document.getElementById("confirmButton");
+    const cancelButton = document.getElementById("cancelButton");
+
+    popupMessage.innerText = `You died!`;
+    popupContainer.classList.remove("hidden");
+
+    confirmButton.onclick = () => {
+        popupContainer.classList.add("hidden");
+        jumpscare.classList.add("hidden");
+    };
+
+    // cancel easter egg
+    cancelButton.onclick = () => {
+        cancelcounter++;
+        if (cancelcounter === 1) {
+            popupMessage.innerText = `You can't cancel death silly :b`;
+        } else if (cancelcounter === 2) {
+            popupMessage.innerText = `You really can't cancel death, you know?`;
+        } else if (cancelcounter === 3) {
+            popupMessage.innerText = `I'm sorry, but you can't cancel death. You're dead....`;
+        } else if (cancelcounter === 4) {
+            popupMessage.innerText = `cancel and you're gay`;
+        } else if (cancelcounter > 4) {
+            popupMessage.innerText = `You just got jumpscared!`;
+            const jumpscare = document.getElementById("jumpscare");
+            jumpscare.src = "assets/reaper.gif"; // Add the path to your image
+            jumpscare.classList.remove("hidden");
+            cancelButton.classList.add("hidden"); // Hide the cancel button
+        }
+    };
+    
+}
+
+// Button actions using showPopup, I'm sorry for the shit code below
 document.getElementById("action1").addEventListener("click", () => {
     const actions = (areaActions[player.area]).action1;
     if (player.area === "Home") {
@@ -163,8 +235,8 @@ document.getElementById("action3").addEventListener("click", () => {
     } else if (player.area === "Padang") {
         showPopup(actions, 0, 2, 0, 0, 0);
     } else if (player.area === "Ponegoro") {
-        if (!hasEnoughResources(4, 4, 3, 4, 0)) return;
-        showPopup(actions, -4, -4, -3, -4, 25);
+        if (!hasEnoughResources(1, 1, 1, 1, 1)) return;
+        showPopup(actions, -4, -4, -2, -4, 25);
     } 
 });
 
@@ -184,9 +256,11 @@ function update() {
             player.y = destination.y;
             player.area = destination.area;
             
-            // Check for hunger, if too hungry just die
+            // Check for hunger, if too hungry just die. TODO: also check if the user is dead after interactions
             if (player.hunger < 1) {
-                player.hp = Math.max(0, player.hp - 5); // DEATH
+                killPlayer();
+            } else if (player.hp < 1) {
+                killPlayer();
             } else {
                 player.hunger = Math.max(0, player.hunger - destination.cost);
             }
@@ -195,17 +269,9 @@ function update() {
             visitedAreas.add(destination.area);
             console.log(`Entered ${destination.area}`); // DEBUG: REMOVE THIS
             
-            // Check for HP related death
-            if (player.hp < 1) {
-                console.log("You died!");
-                player.hp = 5;
-                player.hunger = 5;
-                player.area = "Home";
-                visitedAreas.clear();
-                visitedAreas.add("Home");
-            }
             destination = null;
             isMoving = false;
+            
             document.getElementById("interactionText").innerText = `You arrived at ${player.area}`;
             updateButtonActions(player.area);
         }
@@ -255,7 +321,7 @@ function updateStats() {
     });
 
     // Update money display
-    document.getElementById("money").innerText = `Money: ${player.money}`;
+    document.getElementById("money").innerText = `$${player.money}`;
 }
 
 // Gameloop, run the function on every frame

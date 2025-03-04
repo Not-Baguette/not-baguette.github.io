@@ -4,7 +4,7 @@ canvas {
     margin-top: 20px;
 }
 .bar-container {
-    width: 160px;
+    width: 250px;
     height: 30px;
     background-color: #222;
     border: 1px solid white;
@@ -12,11 +12,23 @@ canvas {
     align-items: center;
 }
 .bar-block {
-    width: 50px;
+    flex: 0 0 50px; /* Set a fixed size for the bar block */
     height: 30px;
     border: 2px solid white;
 }
 
+.username {
+    font-family:monospace;
+    font-weight: bold;
+    font-size: xx-large;
+}
+
+#money {
+    font-family: 'Franklin Gothic Medium';
+    font-size: large;
+}
+
+.rounded-border{ border-radius: 10px; }
 .hp { background-color: red; }
 .energy { background-color: orange; }
 .mana { background-color: blue; }
