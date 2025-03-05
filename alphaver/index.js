@@ -59,6 +59,28 @@ const areaActions = {
     }
 };
 
+// Load images
+const areaImages = {
+    "Home": new Image(),
+    "Pontianak": new Image(),
+    "Padang": new Image(),
+    "Papua": new Image(),
+    "Ponegoro": new Image()
+};
+
+const playerImg = new Image();
+const bgImage = new Image();
+
+areaImages["Home"].src = "assets/logo.jpeg"; // Add the path to your area images
+areaImages["Pontianak"].src = "assets/logo.jpeg";
+areaImages["Padang"].src = "assets/logo.jpeg";
+areaImages["Papua"].src = "assets/logo.jpeg";
+areaImages["Ponegoro"].src = "assets/logo.jpeg";
+
+playerImg.src = "assets/logo.jpeg";
+bgImage.src = "assets/logo.jpeg";
+
+
 // Event listeners
 canvas.addEventListener("click", (e) => {
     if (isMoving) return; // stop the user if they are already moving
@@ -98,6 +120,30 @@ canvas.addEventListener("click", (e) => {
 
 // TODO: Enter to auto confirm
 
+// get avatar & username from URL
+function getUrlParam(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    const results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+}
+
+// Get avatar index and username from URL parameters
+const avatarIndex = getUrlParam('avatar');
+const usernameParam = getUrlParam('username');
+
+if (!avatarIndex || !usernameParam) {
+    window.location.href = 'avatar.html';
+} else {
+    if (avatarIndex) {
+        player.avatar = playerImg; // Assuming avatars array is available
+    }
+    if (usernameParam) {
+        const usernameElement = document.getElementById("username");
+        usernameElement.innerText = usernameParam;
+    }
+}
+
 // Helper function to check if the player has enough resources
 function hasEnoughResources(hp, mana, hunger, energy, money) {
     if (player.hp < hp) {
@@ -131,21 +177,39 @@ function showPopup(action, hp, mana, hunger, energy, earnings) {
     const cancelButton = document.getElementById("cancelButton");
 
     popupMessage.innerText = `Are you sure you want to ${action}? This will cost/earn you ${hp} HP, ${mana} mana, ${hunger} Hunger, ${energy} energy, and ${earnings} money`;
+    cancelButton.classList.remove("hidden");
     popupContainer.classList.remove("hidden");
 
-    confirmButton.onclick = () => {
+    // Function to handle the confirm action
+    const confirmAction = () => {
         player.hp = Math.min(5, Math.max(0, player.hp + hp));
         player.mana = Math.min(5, Math.max(0, player.mana + mana));
         player.hunger = Math.min(5, Math.max(0, player.hunger + hunger));
         player.energy = Math.min(5, Math.max(0, player.energy + energy));
         player.money += earnings;
         popupContainer.classList.add("hidden");
+        document.removeEventListener("keydown", handleKeyDown); // Remove the event listener
     };
 
-    cancelButton.onclick = () => {
+    // Function to handle the cancel action
+    const cancelAction = () => {
         popupContainer.classList.add("hidden");
+        document.removeEventListener("keydown", handleKeyDown); // Remove the event listener
     };
 
+    // Function to handle keydown events
+    const handleKeyDown = (event) => {
+        if (event.key === "Enter") {
+            confirmAction();
+        } else if (event.key === "Escape") {
+            cancelAction();
+        }
+    };
+
+    // Add event listeners
+    confirmButton.onclick = confirmAction;
+    cancelButton.onclick = cancelAction;
+    document.addEventListener("keydown", handleKeyDown); // Add the event listener for keydown
 }
 
 // Kill the player when they die
@@ -160,19 +224,33 @@ function killPlayer() {
     visitedAreas.add("Home");
     let cancelcounter = 0;
 
+    // move the player back to spawn
+    player.x = 50;
+    player.y = 50;
+
     const popupContainer = document.getElementById("popupContainer");
     const popupMessage = document.getElementById("popupMessage");
     const confirmButton = document.getElementById("confirmButton");
     const cancelButton = document.getElementById("cancelButton");
+    const inter_text = document.getElementById("interactionText")
+    const action1 = document.getElementById("action1");
+    const action2 = document.getElementById("action2");
+    const action3 = document.getElementById("action3"); 
 
     popupMessage.innerText = `You died!`;
     popupContainer.classList.remove("hidden");
+    cancelButton.classList.remove("hidden");
 
     confirmButton.onclick = () => {
         popupContainer.classList.add("hidden");
         jumpscare.classList.add("hidden");
     };
-
+    
+    inter_text.innerHTML = '';
+    action1.classList.add("hidden");
+    action2.classList.add("hidden");
+    action3.classList.add("hidden");
+    
     // cancel easter egg
     cancelButton.onclick = () => {
         cancelcounter++;
@@ -235,7 +313,7 @@ document.getElementById("action3").addEventListener("click", () => {
     } else if (player.area === "Padang") {
         showPopup(actions, 0, 2, 0, 0, 0);
     } else if (player.area === "Ponegoro") {
-        if (!hasEnoughResources(1, 1, 1, 1, 1)) return;
+        if (!hasEnoughResources(1, 1, 1, 1, 0)) return;
         showPopup(actions, -4, -4, -2, -4, 25);
     } 
 });
@@ -256,15 +334,9 @@ function update() {
             player.y = destination.y;
             player.area = destination.area;
             
-            // Check for hunger, if too hungry just die. TODO: also check if the user is dead after interactions
-            if (player.hunger < 1) {
-                killPlayer();
-            } else if (player.hp < 1) {
-                killPlayer();
-            } else {
-                player.hunger = Math.max(0, player.hunger - destination.cost);
-            }
-            
+            // reduce the player's hunger after moving
+            player.hunger = Math.max(0, player.hunger - destination.cost);
+                    
             // add the area to visited areas
             visitedAreas.add(destination.area);
             console.log(`Entered ${destination.area}`); // DEBUG: REMOVE THIS
@@ -297,13 +369,11 @@ function updateButtonActions(area) {
 // Draw the player and areas
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = player.color;
-    ctx.fillRect(player.x, player.y, player.size, player.size);
+    ctx.drawImage(playerImg, player.x, player.y, player.size, player.size);
 
-    ctx.fillStyle = "yellow";
     for (const area in areas) {
         const loc = areas[area];
-        ctx.fillRect(loc.x, loc.y, loc.width, loc.height);
+        ctx.drawImage(areaImages[area], loc.x, loc.y, loc.width, loc.height);
     }
 }
 
@@ -318,6 +388,7 @@ function updateStats() {
             block.classList.add('bar-block', stat);
             container.appendChild(block);
         }
+        
     });
 
     // Update money display
@@ -326,10 +397,18 @@ function updateStats() {
 
 // Gameloop, run the function on every frame
 function gameLoop() {
-    update();
-    draw();
-    updateStats();
+    // Check for hunger, if too hungry just die
+    if (player.hunger === 0) {
+        killPlayer();
+    } else if (player.hp === 0) {
+        killPlayer();
+    } else {
+        update();
+        draw();
+        updateStats();
+    }
     requestAnimationFrame(gameLoop);
+    
 }
 
 // Run the gameloop

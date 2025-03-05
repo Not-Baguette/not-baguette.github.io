@@ -33,4 +33,23 @@ canvas {
 .energy { background-color: orange; }
 .mana { background-color: blue; }
 .hunger { background-color: green; }
+.logo{ width: 210px; }
 
+.button {
+    padding: 5px 25px;
+    border: 5px solid grey;
+    background-color: white;
+    border-radius: 5px;
+    color: #0f3582;
+    font-weight: bold;
+}
+
+.name-box {
+    font-family: monospace;
+    padding: 5px 25px;
+    background-color: white;
+    color:black;
+    opacity: 60%;
+    border: 5px solid grey;
+    border-radius: 5px;
+}

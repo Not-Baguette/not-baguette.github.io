@@ -6,6 +6,7 @@
     <title>The Timeless Adventure</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="assets/Timeless_Adventure_logo.png" />
 </head>
 <body class="flex flex-col items-center bg-gray-900 text-white min-h-screen">
 
@@ -17,7 +18,7 @@
                 <img src="assets/logo.jpeg" alt="Profile pic" class="rounded-full mb-3 w-20">
             </div>
             <div>
-                <p class="username">username</p>
+                <p class="username" id="username">username</p>
                 <p id="money" class="mt-3"></p>
             </div>
             <div class="flex flex-col items-start gap-4">
@@ -48,6 +49,9 @@
                     </div>
                 </div>
             </div>
+            <div> <!-- to fit it beside the stats bar -->
+                <img class="w-40" src="assets/Timeless_Adventure_logo.png" alt="Logo">
+            </div>
         </div>
     </div>
 
@@ -63,8 +67,8 @@
             <button id="action2" class="hidden bg-green-500 px-4 py-2 rounded mb-2"></button>
             <button id="action3" class="hidden bg-red-500 px-4 py-2 rounded"></button>
             <div id="popupContainer" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center">
-                <div class="bg-gray-900 text-white p-4 rounded-border border-2"> <!-- Placeholder for popup -->
-                    <p id="popupMessage" class="mb-4"></p> 
+                <div class="bg-gray-900 text-white p-4 rounded-border border-2 text-center"> <!-- Placeholder for popup -->
+                    <p id="popupMessage" class="mb-2"></p> 
                     <img id="jumpscare" class="mb-3"></img>
                     <button id="confirmButton" class="bg-green-500 px-4 py-2 rounded mr-2">Confirm</button>
                     <button id="cancelButton" class="bg-red-500 px-4 py-2 rounded">Cancel</button>

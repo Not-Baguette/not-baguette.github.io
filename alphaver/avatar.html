@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>avatar</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" type="image/x-icon" href="assets/Timeless_Adventure_logo.png">
+    </head>
+    <body class="flex flex-col items-center bg-gray-900 text-white min-h-screen">
+        <!-- avatar selection -->
+        <div class="my-auto">
+            <div class="row flex my-auto gap-10">
+                <div id="prevAvatar" class="col flex-col cursor-pointer mt-6">
+                    <p>Previous</p>
+                </div>
+                <div id="avatar" class="col flex-col">
+                    <img id="avatarImage" src="assets/logo.jpeg" alt="Avatar" class="w-20 h-20">
+                </div>
+                <div id="nextAvatar" class="col flex-col cursor-pointer mt-6">
+                    <p>Next</p>
+                </div>
+            </div>
+            <div class="text-center mt-6">
+                <input id="username" class="name-box text-center" type="text" placeholder="Enter your name here...">
+            </div>
+            <div class="text-center mt-4">
+                <button id="submitBtn" class="button" type="button">Enter the game</button>
+            </div>
+        </div>
+        <script src="avatar.js"></script>
+    </body>
+</html>
