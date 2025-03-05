@@ -26,7 +26,8 @@ nextAvatar.addEventListener("click", () => {
 submitBtn.addEventListener("click", () => {
     const username = usernameInput.value;
     if (username) {
-        window.location.href = `index.html?avatar=${currentAvatarIndex}&username=${username}`;
+        //+1 so range is 1-4
+        window.location.href = `index.html?avatar=${currentAvatarIndex+1}&username=${username}`;
     } else {
         alert("Please enter a username.");
     }

@@ -2,6 +2,12 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 let isMoving = false;
+let destination = null;
+let visitedAreas = new Set(["Home"]);
+
+const avatarIndex = getUrlParam('avatar');
+const usernameParam = getUrlParam('username');
+
 
 // Player stats
 let player = {
@@ -17,9 +23,6 @@ let player = {
     money: 0,
     area: "Home"
 };
-
-let destination = null;
-let visitedAreas = new Set(["Home"]);
 
 // Area props
 const areas = {
@@ -68,16 +71,27 @@ const areaImages = {
     "Ponegoro": new Image()
 };
 
-const playerImg = new Image();
+const playerImg = {
+    0: new Image(),
+    1: new Image(),
+    2: new Image(),
+    3: new Image(),
+    4: new Image(),
+};
 const bgImage = new Image();
 
-areaImages["Home"].src = "assets/logo.jpeg"; // Add the path to your area images
+//load the assets, TODO: Consider not loading every character for optimization
+areaImages["Home"].src = "assets/logo.jpeg";
 areaImages["Pontianak"].src = "assets/logo.jpeg";
 areaImages["Padang"].src = "assets/logo.jpeg";
 areaImages["Papua"].src = "assets/logo.jpeg";
 areaImages["Ponegoro"].src = "assets/logo.jpeg";
 
-playerImg.src = "assets/logo.jpeg";
+playerImg[0].src = "assets/logo.jpeg"; //player null easter egg
+playerImg[1].src = "assets/logo.jpeg";
+playerImg[2].src = "assets/reaper.gif";
+playerImg[3].src = "assets/logo.jpeg";
+playerImg[4].src = "assets/logo.jpeg";
 bgImage.src = "assets/logo.jpeg";
 
 
@@ -109,7 +123,7 @@ canvas.addEventListener("click", (e) => {
                             area: area, cost: loc.cost };
             isMoving = true;
             
-            // hide the buttons
+            // hide the buttons while moving
             action1.classList.add("hidden");
             action2.classList.add("hidden");
             action3.classList.add("hidden");
@@ -118,65 +132,71 @@ canvas.addEventListener("click", (e) => {
     }
 });
 
-// TODO: Enter to auto confirm
-
 // get avatar & username from URL
 function getUrlParam(name) {
-    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-    const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]'); // add escape characters to brackets if exists
+    const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');  // [\\?&] ? (query start) or & (separator), =([^&#]*) 0<= any character except & or # after =
     const results = regex.exec(location.search);
-    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-}
-
-// Get avatar index and username from URL parameters
-const avatarIndex = getUrlParam('avatar');
-const usernameParam = getUrlParam('username');
-
-if (!avatarIndex || !usernameParam) {
-    window.location.href = 'avatar.html';
-} else {
-    if (avatarIndex) {
-        player.avatar = playerImg; // Assuming avatars array is available
-    }
-    if (usernameParam) {
-        const usernameElement = document.getElementById("username");
-        usernameElement.innerText = usernameParam;
-    }
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));  // result[0] is full match, result[1] is the value
 }
 
 // Helper function to check if the player has enough resources
 function hasEnoughResources(hp, mana, hunger, energy, money) {
     if (player.hp < hp) {
-        alert("Not enough HP.");
+        showPopup("", 0, 0, 0, 0, 0, "Not enough HP.");
         return false;
     }
     if (player.mana < mana) {
-        alert("Not enough mana.");
+        showPopup("", 0, 0, 0, 0, 0, "Not enough mana.");
         return false;
     }
     if (player.hunger < hunger) {
-        alert("Not enough hunger.");
+        showPopup("", 0, 0, 0, 0, 0, "Not enough hunger.");
         return false;
     }
     if (player.energy < energy) {
-        alert("Not enough energy.");
+        showPopup("", 0, 0, 0, 0, 0, "Not enough energy.");
         return false;
     }
     if (player.money < money) {
-        alert("Not enough money.");
+        showPopup("", 0, 0, 0, 0, 0, "Not enough money.");
         return false;
     }
     return true;
 }
 
 // Create an in-game popup for actions
-function showPopup(action, hp, mana, hunger, energy, earnings) {
+function showPopup(action="", hp=0, mana=0, hunger=0, energy=0, earnings=0, customMessage = null) {
     const popupContainer = document.getElementById("popupContainer");
     const popupMessage = document.getElementById("popupMessage");
     const confirmButton = document.getElementById("confirmButton");
     const cancelButton = document.getElementById("cancelButton");
 
-    popupMessage.innerText = `Are you sure you want to ${action}? This will cost/earn you ${hp} HP, ${mana} mana, ${hunger} Hunger, ${energy} energy, and ${earnings} money`;
+    if (!customMessage) { // Sophisticate the message for default message
+        let costs = [];
+        let gains = [];
+        // check, if negative then it's a cost, if positive then it's a gain, if 0 then ignore
+        if (hp < 0) costs.push(`${-hp} HP`);
+        if (mana < 0) costs.push(`${-mana} mana`);
+        if (hunger < 0) costs.push(`${-hunger} hunger`);
+        if (energy < 0) costs.push(`${-energy} energy`);
+        if (earnings < 0) costs.push(`${-earnings} money`);
+        if (hp > 0) gains.push(`${hp} HP`);
+        if (mana > 0) gains.push(`${mana} mana`);
+        if (hunger > 0) gains.push(`${hunger} hunger`);
+        if (energy > 0) gains.push(`${energy} energy`);
+        if (earnings > 0) gains.push(`${earnings} money`);
+
+        customMessage = `Are you sure you want to ${action}?\n`;
+        if (costs.length > 0) {
+            customMessage += `This will cost you:\n${costs.join(", ")}\n`;
+        }
+        if (gains.length > 0) {
+            customMessage += `And earn you:\n${gains.join(", ")}`;
+        }
+    }
+
+    popupMessage.innerText = customMessage;
     cancelButton.classList.remove("hidden");
     popupContainer.classList.remove("hidden");
 
@@ -187,23 +207,32 @@ function showPopup(action, hp, mana, hunger, energy, earnings) {
         player.hunger = Math.min(5, Math.max(0, player.hunger + hunger));
         player.energy = Math.min(5, Math.max(0, player.energy + energy));
         player.money += earnings;
-        popupContainer.classList.add("hidden");
-        document.removeEventListener("keydown", handleKeyDown); // Remove the event listener
+        closePopup();
     };
 
     // Function to handle the cancel action
     const cancelAction = () => {
-        popupContainer.classList.add("hidden");
-        document.removeEventListener("keydown", handleKeyDown); // Remove the event listener
+        closePopup();
     };
 
     // Function to handle keydown events
     const handleKeyDown = (event) => {
         if (event.key === "Enter") {
+            event.preventDefault(); // browsers would see this as them clicking the fight/explore button ffs
             confirmAction();
         } else if (event.key === "Escape") {
             cancelAction();
         }
+    };
+
+    // Function to close the popup with animation
+    const closePopup = () => {
+        popupContainer.classList.add("closing");
+        setTimeout(() => {
+            popupContainer.classList.remove("closing");
+            popupContainer.classList.add("hidden");
+            document.removeEventListener("keydown", handleKeyDown);
+        }, 300); // Match the duration of the closing animation
     };
 
     // Add event listeners
@@ -369,7 +398,7 @@ function updateButtonActions(area) {
 // Draw the player and areas
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(playerImg, player.x, player.y, player.size, player.size);
+    ctx.drawImage(player.avatar, player.x, player.y, player.size, player.size);
 
     for (const area in areas) {
         const loc = areas[area];
@@ -395,7 +424,21 @@ function updateStats() {
     document.getElementById("money").innerText = `$${player.money}`;
 }
 
-// Gameloop, run the function on every frame
+function firstrun() {
+    if (!avatarIndex || !usernameParam) { // if param is missing, redirect to avatar selection
+        window.location.href = 'avatar.html';
+    } else {
+        if (avatarIndex) {
+            player.avatar = playerImg[avatarIndex]; 
+        }
+        if (usernameParam) {
+            const usernameElement = document.getElementById("username");
+            usernameElement.innerText = usernameParam;
+        }
+    }
+}
+
+// Gameloop, run the function recursively
 function gameLoop() {
     // Check for hunger, if too hungry just die
     if (player.hunger === 0) {
@@ -411,5 +454,6 @@ function gameLoop() {
     
 }
 
-// Run the gameloop
+// Run the game
+firstrun();
 gameLoop();

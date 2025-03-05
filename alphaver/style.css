@@ -1,8 +1,64 @@
+
+/* Add animation for popup */
+@keyframes popupAnimationOpen {
+    0% {
+        transform: scale(0.75);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes popupAnimationClose {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.75);
+        opacity: 0;
+    }
+}
+
+@keyframes shadowFadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 0.75;
+    }
+}
+
+@keyframes shadowFadeOut {
+    0% {
+        opacity: 0.75;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+#popupContainer {
+    animation: shadowFadeIn 0.3s ease-out;
+}
+#popupContainer.closing {
+    animation: shadowFadeOut 0.3s ease-out;
+}
+#popupContainer > div {
+    animation: popupAnimationOpen 0.3s ease-out;
+}
+#popupContainer.closing > div {
+    animation: popupAnimationClose 0.3s ease-out;
+}
+
 canvas {
     background-color: #1e293b;
     border: 2px solid white;
     margin-top: 20px;
 }
+
 .bar-container {
     width: 250px;
     height: 30px;
@@ -28,13 +84,6 @@ canvas {
     font-size: large;
 }
 
-.rounded-border{ border-radius: 10px; }
-.hp { background-color: red; }
-.energy { background-color: orange; }
-.mana { background-color: blue; }
-.hunger { background-color: green; }
-.logo{ width: 210px; }
-
 .button {
     padding: 5px 25px;
     border: 5px solid grey;
@@ -53,3 +102,10 @@ canvas {
     border: 5px solid grey;
     border-radius: 5px;
 }
+
+.rounded-border{ border-radius: 10px; }
+.hp { background-color: red; }
+.energy { background-color: orange; }
+.mana { background-color: blue; }
+.hunger { background-color: green; }
+.logo{ width: 210px; }
