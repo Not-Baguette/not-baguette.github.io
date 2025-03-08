@@ -8,14 +8,12 @@ let visitedAreas = new Set(["Home"]);
 const avatarIndex = getUrlParam('avatar');
 const usernameParam = getUrlParam('username');
 
-
 // Player stats
 let player = {
     x: 75,
     y: 75,
     size: 20,
     speed: 3,
-    color: "white",
     hp: 5,
     energy: 5,
     mana: 5,
@@ -80,7 +78,7 @@ const playerImg = {
 };
 const bgImage = new Image();
 
-//load the assets, TODO: Consider not loading every character for optimization
+//load the assets,  TODO: Consider not loading every character for optimization
 areaImages["Home"].src = "assets/logo.jpeg";
 areaImages["Pontianak"].src = "assets/logo.jpeg";
 areaImages["Padang"].src = "assets/logo.jpeg";
@@ -110,9 +108,9 @@ canvas.addEventListener("click", (e) => {
     // map the area clicked to the area object and see if it's valid
     for (const area in areas) {
         const loc = areas[area];
+        // check if the click is within the area (will be looped through all areas)
         if (clickX >= loc.x && clickX <= loc.x + loc.width && 
-            clickY >= loc.y && clickY <= loc.y + loc.height
-        ) {
+            clickY >= loc.y && clickY <= loc.y + loc.height) {
             if (player.area === area) return; // if same area, dont do anything
             if (loc.requires && !loc.requires.every(r => visitedAreas.has(r))) { // locked areas logic
                 console.log(`You must visit ${loc.requires.join(" and ")} first!`);
@@ -132,12 +130,56 @@ canvas.addEventListener("click", (e) => {
     }
 });
 
+// Button actions using showPopup, I'm sorry for the shit code below
+document.getElementById("action1").addEventListener("click", () => {
+    const actions = (areaActions[player.area]).action1;
+    if (player.area === "Home") {
+        showPopup(actions, 0, 0, 0, 1, 0); 
+    } else if (player.area === "Pontianak") {
+        if (!hasEnoughResources(1, 2, 0, 0, 0)) return;
+        showPopup(actions, -1, -2, 0, 0, 10);
+    } else if (player.area === "Padang") {
+        if (!hasEnoughResources(0, 0, 0, 0, 5)) return;
+        showPopup(actions, 0, 0, 0, 2, -5);
+    } else if (player.area === "Papua"){
+        if (!hasEnoughResources(2, 3, 0, 0, 0)) return;
+        showPopup(actions, -2, -3, 0, 0, 15)
+    }
+});
+
+document.getElementById("action2").addEventListener("click", () => {
+    const actions = (areaActions[player.area]).action2;
+    if (player.area === "Home") {
+        showPopup(actions, 0, 0, 1, 0, 0);
+    } else if (player.area === "Pontianak") {
+        if (!hasEnoughResources(0, 0, 0, 2, 0)) return;
+        showPopup(actions, 0, 0, 0, -2, 5);
+    } else if (player.area === "Padang") {
+        if (!hasEnoughResources(0, 0, 0, 0, 5)) return;
+        showPopup(actions, 0, 0, 2, 0, -5);
+    } else if (player.area === "Papua"){
+        if (!hasEnoughResources(0, 0, 0, 3, 0)) return;
+        showPopup(actions, 0, 0, 0, -3, 10)
+    }
+});
+
+document.getElementById("action3").addEventListener("click", () => {
+    const actions = (areaActions[player.area]).action3;
+    if (player.area === "Home") {
+        showPopup(actions, 1, 0, 0, 0, 0);
+    } else if (player.area === "Padang") {
+        showPopup(actions, 0, 2, 0, 0, 0);
+    } else if (player.area === "Ponegoro") {
+        if (!hasEnoughResources(1, 1, 1, 1, 0)) return;
+        showPopup(actions, -4, -4, -2, -4, 25);
+    } 
+});
+
+
 // get avatar & username from URL
 function getUrlParam(name) {
-    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]'); // add escape characters to brackets if exists
-    const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');  // [\\?&] ? (query start) or & (separator), =([^&#]*) 0<= any character except & or # after =
-    const results = regex.exec(location.search);
-    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));  // result[0] is full match, result[1] is the value
+    const params = new URLSearchParams(window.location.search);
+    return params.get(name) || '';
 }
 
 // Helper function to check if the player has enough resources
@@ -302,63 +344,19 @@ function killPlayer() {
     
 }
 
-// Button actions using showPopup, I'm sorry for the shit code below
-document.getElementById("action1").addEventListener("click", () => {
-    const actions = (areaActions[player.area]).action1;
-    if (player.area === "Home") {
-        showPopup(actions, 0, 0, 0, 1, 0); 
-    } else if (player.area === "Pontianak") {
-        if (!hasEnoughResources(1, 2, 0, 0, 0)) return;
-        showPopup(actions, -1, -2, 0, 0, 10);
-    } else if (player.area === "Padang") {
-        if (!hasEnoughResources(0, 0, 0, 0, 5)) return;
-        showPopup(actions, 0, 0, 0, 2, -5);
-    } else if (player.area === "Papua"){
-        if (!hasEnoughResources(2, 3, 0, 0, 0)) return;
-        showPopup(actions, -2, -3, 0, 0, 15)
-    }
-});
-
-document.getElementById("action2").addEventListener("click", () => {
-    const actions = (areaActions[player.area]).action2;
-    if (player.area === "Home") {
-        showPopup(actions, 0, 0, 1, 0, 0);
-    } else if (player.area === "Pontianak") {
-        if (!hasEnoughResources(0, 0, 0, 2, 0)) return;
-        showPopup(actions, 0, 0, 0, -2, 5);
-    } else if (player.area === "Padang") {
-        if (!hasEnoughResources(0, 0, 0, 0, 5)) return;
-        showPopup(actions, 0, 0, 2, 0, -5);
-    } else if (player.area === "Papua"){
-        if (!hasEnoughResources(0, 0, 0, 3, 0)) return;
-        showPopup(actions, 0, 0, 0, -3, 10)
-    }
-});
-
-document.getElementById("action3").addEventListener("click", () => {
-    const actions = (areaActions[player.area]).action3;
-    if (player.area === "Home") {
-        showPopup(actions, 1, 0, 0, 0, 0);
-    } else if (player.area === "Padang") {
-        showPopup(actions, 0, 2, 0, 0, 0);
-    } else if (player.area === "Ponegoro") {
-        if (!hasEnoughResources(1, 1, 1, 1, 0)) return;
-        showPopup(actions, -4, -4, -2, -4, 25);
-    } 
-});
-
 // Update the location of the player
 function update() {
     if (destination) {
-        // Move the player towards the destination , euclidian distance
         let dx = destination.x - player.x;
         let dy = destination.y - player.y;
-        let dist = Math.sqrt(dx * dx + dy * dy);
+        let dist = Math.sqrt(dx * dx + dy * dy); // pythagorean theorem to find shortest path
 
+        // Move the player towards the destination by speed incrementally
+        // speed is a legacy var but decided to keep it because it's fun
         if (dist > player.speed) {
             player.x += (dx / dist) * player.speed;
             player.y += (dy / dist) * player.speed;
-        } else {
+        } else { // arrived
             player.x = destination.x;
             player.y = destination.y;
             player.area = destination.area;
@@ -425,6 +423,7 @@ function updateStats() {
 }
 
 function firstrun() {
+    // Grab the url param for avatar and username, only run this once
     if (!avatarIndex || !usernameParam) { // if param is missing, redirect to avatar selection
         window.location.href = 'avatar.html';
     } else {

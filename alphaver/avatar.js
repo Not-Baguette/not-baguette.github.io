@@ -1,3 +1,4 @@
+// avatar 1-4 (index 0-3) TODO: change this to actual avatars
 const avatars = [
     "assets/logo.jpeg",
     "assets/reaper.gif",
@@ -5,14 +6,16 @@ const avatars = [
     "assets/avatar4.png",
 ];
 
-let currentAvatarIndex = 0;
+let currentAvatarIndex = 0; // current avatar
 
+// Get elements
 const avatarImage = document.getElementById("avatarImage");
 const prevAvatar = document.getElementById("prevAvatar");
 const nextAvatar = document.getElementById("nextAvatar");
 const submitBtn = document.getElementById("submitBtn");
 const usernameInput = document.getElementById("username");
 
+// event listeners for prev and next buttons
 prevAvatar.addEventListener("click", () => {
     currentAvatarIndex = (currentAvatarIndex - 1 + avatars.length) % avatars.length;
     avatarImage.src = avatars[currentAvatarIndex];
@@ -23,6 +26,7 @@ nextAvatar.addEventListener("click", () => {
     avatarImage.src = avatars[currentAvatarIndex];
 });
 
+// event listener for submit button
 submitBtn.addEventListener("click", () => {
     const username = usernameInput.value;
     if (username) {
