@@ -10,10 +10,10 @@ const usernameParam = getUrlParam('username');
 
 // Player stats
 let player = {
-    x: 75,
-    y: 75,
-    size: 20,
-    speed: 3,
+    x: 180,
+    y: 220,
+    size: 80,
+    speed: 2,
     hp: 5,
     energy: 5,
     mana: 5,
@@ -24,11 +24,11 @@ let player = {
 
 // Area props
 const areas = {
-    "Home": { x: 50, y: 50, width: 50, height: 50, cost: 2 },
-    "Pontianak": { x: 200, y: 300, width: 50, height: 50, cost: 1 },
-    "Padang": { x: 500, y: 100, width: 50, height: 50, cost: 1, requires: ["Pontianak", "Papua"] },
-    "Papua": { x: 100, y: 500, width: 50, height: 50, cost: 1 },
-    "Ponegoro": { x: 600, y: 450, width: 50, height: 50, cost: 2, requires: ["Pontianak", "Padang", "Papua"] }
+    "Home": { x: 180, y: 230, width: 50, height: 50, cost: 2 },
+    "Pontianak": { x: 50, y: 500, width: 50, height: 50, cost: 1 },
+    "Papua": { x: 320, y: 370, width: 50, height: 50, cost: 1, requires: ["Pontianak"] },
+    "Padang": { x: 650, y: 80, width: 50, height: 50, cost: 1, requires: ["Pontianak", "Papua"] },
+    "Ponegoro": { x: 650, y: 450, width: 50, height: 50, cost: 2, requires: ["Pontianak", "Padang", "Papua"] }
 };
 
 // Button texts
@@ -43,15 +43,15 @@ const areaActions = {
         action2: "Explore",
         action3: ""
     },
-    "Padang": {
-        action1: "Stay on an Inn",
-        action2: "Go to a Restaurant",
-        action3: "Go to a Library"
-    },
     "Papua": {
         action1: "Fight",
         action2: "Explore",
         action3: ""
+    },
+    "Padang": {
+        action1: "Stay on an Inn",
+        action2: "Go to a Restaurant",
+        action3: "Go to a Library"
     },
     "Ponegoro": {
         action1: "",
@@ -64,8 +64,8 @@ const areaActions = {
 const areaImages = {
     "Home": new Image(),
     "Pontianak": new Image(),
-    "Padang": new Image(),
     "Papua": new Image(),
+    "Padang": new Image(),
     "Ponegoro": new Image()
 };
 
@@ -77,20 +77,22 @@ const playerImg = {
     4: new Image(),
 };
 const bgImage = new Image();
+const lockedOverlayImage = new Image();
+lockedOverlayImage.src = "assets/locked.png";
 
 //load the assets,  TODO: Consider not loading every character for optimization
 areaImages["Home"].src = "assets/logo.jpeg";
 areaImages["Pontianak"].src = "assets/logo.jpeg";
-areaImages["Padang"].src = "assets/logo.jpeg";
 areaImages["Papua"].src = "assets/logo.jpeg";
+areaImages["Padang"].src = "assets/logo.jpeg";
 areaImages["Ponegoro"].src = "assets/logo.jpeg";
 
 playerImg[0].src = "assets/logo.jpeg"; //player null easter egg
-playerImg[1].src = "assets/logo.jpeg";
-playerImg[2].src = "assets/reaper.gif";
-playerImg[3].src = "assets/logo.jpeg";
-playerImg[4].src = "assets/logo.jpeg";
-bgImage.src = "assets/logo.jpeg";
+playerImg[1].src = "assets/GreenKnight.png";
+playerImg[2].src = "assets/PinkMage.png";
+playerImg[3].src = "assets/RedKnight.png";
+playerImg[4].src = "assets/PinkMage.png";
+bgImage.src = "assets/BackgroundMap.png";
 
 
 // Event listeners
@@ -138,13 +140,13 @@ document.getElementById("action1").addEventListener("click", () => {
     } else if (player.area === "Pontianak") {
         if (!hasEnoughResources(1, 2, 0, 0, 0)) return;
         showPopup(actions, -1, -2, 0, 0, 10);
-    } else if (player.area === "Padang") {
-        if (!hasEnoughResources(0, 0, 0, 0, 5)) return;
-        showPopup(actions, 0, 0, 0, 2, -5);
     } else if (player.area === "Papua"){
         if (!hasEnoughResources(2, 3, 0, 0, 0)) return;
         showPopup(actions, -2, -3, 0, 0, 15)
-    }
+    } else if (player.area === "Padang") {
+        if (!hasEnoughResources(0, 0, 0, 0, 5)) return;
+        showPopup(actions, 0, 0, 0, 2, -5);
+    } 
 });
 
 document.getElementById("action2").addEventListener("click", () => {
@@ -154,13 +156,13 @@ document.getElementById("action2").addEventListener("click", () => {
     } else if (player.area === "Pontianak") {
         if (!hasEnoughResources(0, 0, 0, 2, 0)) return;
         showPopup(actions, 0, 0, 0, -2, 5);
-    } else if (player.area === "Padang") {
-        if (!hasEnoughResources(0, 0, 0, 0, 5)) return;
-        showPopup(actions, 0, 0, 2, 0, -5);
     } else if (player.area === "Papua"){
         if (!hasEnoughResources(0, 0, 0, 3, 0)) return;
         showPopup(actions, 0, 0, 0, -3, 10)
-    }
+    } else if (player.area === "Padang") {
+        if (!hasEnoughResources(0, 0, 0, 0, 5)) return;
+        showPopup(actions, 0, 0, 2, 0, -5);
+    } 
 });
 
 document.getElementById("action3").addEventListener("click", () => {
@@ -296,8 +298,8 @@ function killPlayer() {
     let cancelcounter = 0;
 
     // move the player back to spawn
-    player.x = 50;
-    player.y = 50;
+    player.x = 180;
+    player.y = 220;
 
     const popupContainer = document.getElementById("popupContainer");
     const popupMessage = document.getElementById("popupMessage");
@@ -351,11 +353,13 @@ function update() {
         let dy = destination.y - player.y;
         let dist = Math.sqrt(dx * dx + dy * dy); // pythagorean theorem to find shortest path
 
-        // Move the player towards the destination by speed incrementally
-        // speed is a legacy var but decided to keep it because it's fun
+        // Move the player towards the destination
         if (dist > player.speed) {
+            // Add sine wave effect to simulate walking
+            let sineWave = Math.sin(Date.now() / 100) * 0.8; // Adjust the divisor and multiplier for movement hop
+
             player.x += (dx / dist) * player.speed;
-            player.y += (dy / dist) * player.speed;
+            player.y += (dy / dist) * player.speed + sineWave;
         } else { // arrived
             player.x = destination.x;
             player.y = destination.y;
@@ -396,12 +400,22 @@ function updateButtonActions(area) {
 // Draw the player and areas
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height); // Draw the background image
+
     ctx.drawImage(player.avatar, player.x, player.y, player.size, player.size);
 
     for (const area in areas) {
         const loc = areas[area];
         ctx.drawImage(areaImages[area], loc.x, loc.y, loc.width, loc.height);
+    
+        // Locked area overlay
+        if (loc.requires && !loc.requires.every(r => visitedAreas.has(r))) {
+            ctx.globalAlpha = 0.7; // Set transparency level (0.0 to 1.0)
+            ctx.drawImage(lockedOverlayImage, loc.x, loc.y, loc.width, loc.height);
+            ctx.globalAlpha = 1.0; // Reset transparency
+        }
     }
+
 }
 
 // Update the stats bars

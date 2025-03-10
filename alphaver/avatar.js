@@ -1,9 +1,9 @@
 // avatar 1-4 (index 0-3) TODO: change this to actual avatars
 const avatars = [
-    "assets/logo.jpeg",
-    "assets/reaper.gif",
-    "assets/avatar3.png",
-    "assets/avatar4.png",
+    "assets/GreenKnight.png",
+    "assets/PinkMage.png",
+    "assets/RedKnight.png",
+    "assets/PinkMage.png",
 ];
 
 let currentAvatarIndex = 0; // current avatar
