@@ -11,9 +11,9 @@
 <body class="flex flex-col items-center bg-gray-900 text-white min-h-screen">
 
     <!-- Top Row for Usernames n logo, good luck sis :sparkles: -->
-    <div class="w-full bg-gray-800 p-4 text-center mb-4">
+    <div class="w-full bg-gray-800 p-4 m-auto text-center mb-4">
         <h1 class="text-3xl font-bold my-4">The Timeless Adventure</h1>
-        <div class="flex gap-10 mt-4 justify-center">
+        <div class="flex flex-col sm:flex-row gap-10 mt-4 justify-center">
             <div>
                 <img src="assets/logo.jpeg" alt="Profile pic" class="rounded-full mb-3 w-20">
             </div>
@@ -58,7 +58,7 @@
     <!-- The main game and the interaction menu -->
     <div class="flex flex-col sm:flex-row">
         <!-- Canvas -->
-        <canvas id="gameCanvas" width="800" height="600" class="m-4"></canvas>
+        <canvas id="gameCanvas" width="800" height="600" class="m-4 w-full sm:w-auto"></canvas>
         <!-- Area interaction menu -->
         <div class="w-full sm:w-64 bg-gray-700 p-4 m-4 rounded">
             <h2 class="text-xl mb-2">Area Interactions</h2>

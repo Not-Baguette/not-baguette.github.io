@@ -9,9 +9,9 @@ const avatarIndex = getUrlParam('avatar');
 const usernameParam = getUrlParam('username');
 
 // Player stats
-let player = {
-    x: 180,
-    y: 220,
+const player_default = {
+    x: 200,
+    y: 240,
     size: 80,
     speed: 2,
     hp: 5,
@@ -22,13 +22,15 @@ let player = {
     area: "Home"
 };
 
+let player = { ...player_default }; // copy the player object to prevent mutation
+
 // Area props
 const areas = {
-    "Home": { x: 180, y: 230, width: 50, height: 50, cost: 2 },
-    "Pontianak": { x: 50, y: 500, width: 50, height: 50, cost: 1 },
-    "Papua": { x: 320, y: 370, width: 50, height: 50, cost: 1, requires: ["Pontianak"] },
-    "Padang": { x: 650, y: 80, width: 50, height: 50, cost: 1, requires: ["Pontianak", "Papua"] },
-    "Ponegoro": { x: 650, y: 450, width: 50, height: 50, cost: 2, requires: ["Pontianak", "Padang", "Papua"] }
+    "Home": { x: 180, y: 230, width: 70, height: 80, cost: 2, type: "safe", jumping: false },
+    "Pontianak": { x: 50, y: 470, width: 130, height: 100, cost: 1, type: "enemy", jumping: false },
+    "Papua": { x: 320, y: 370, width: 130, height: 100, cost: 1, type: "enemy", requires: ["Pontianak"], jumping: false },
+    "Padang": { x: 650, y: 80, width: 70, height: 80, cost: 1, type: "safe", requires: ["Pontianak", "Papua"], jumping: false },
+    "Ponorogo": { x: 650, y: 450, width: 130, height: 100, cost: 2, type: "enemy", requires: ["Pontianak", "Padang", "Papua"], jumping: false }
 };
 
 // Button texts
@@ -53,7 +55,7 @@ const areaActions = {
         action2: "Go to a Restaurant",
         action3: "Go to a Library"
     },
-    "Ponegoro": {
+    "Ponorogo": {
         action1: "",
         action2: "",
         action3: "Fight the Boss"
@@ -66,7 +68,7 @@ const areaImages = {
     "Pontianak": new Image(),
     "Papua": new Image(),
     "Padang": new Image(),
-    "Ponegoro": new Image()
+    "Ponorogo": new Image()
 };
 
 const playerImg = {
@@ -81,11 +83,11 @@ const lockedOverlayImage = new Image();
 lockedOverlayImage.src = "assets/locked.png";
 
 //load the assets,  TODO: Consider not loading every character for optimization
-areaImages["Home"].src = "assets/logo.jpeg";
-areaImages["Pontianak"].src = "assets/logo.jpeg";
-areaImages["Papua"].src = "assets/logo.jpeg";
-areaImages["Padang"].src = "assets/logo.jpeg";
-areaImages["Ponegoro"].src = "assets/logo.jpeg";
+areaImages["Home"].src = "assets/Jakarta.png";
+areaImages["Pontianak"].src = "assets/Pontianak.png";
+areaImages["Papua"].src = "assets/Jayapura.png";
+areaImages["Padang"].src = "assets/Padang.png";
+areaImages["Ponorogo"].src = "assets/Ponorogo.png";
 
 playerImg[0].src = "assets/logo.jpeg"; //player null easter egg
 playerImg[1].src = "assets/GreenKnight.png";
@@ -95,8 +97,31 @@ playerImg[4].src = "assets/PinkMage.png";
 bgImage.src = "assets/BackgroundMap.png";
 
 
-// Event listeners
-canvas.addEventListener("click", (e) => {
+// Event listeners for mouse and touch events
+canvas.addEventListener("click", handleClick);
+canvas.addEventListener("touchstart", handleTouchStart);
+canvas.addEventListener("touchend", handleTouchEnd);
+
+function handleClick(e) {
+    handleInteraction(e.clientX, e.clientY);
+}
+
+function handleTouchStart(e) {
+    if (e.touches.length === 1) {
+        const touch = e.touches[0];
+        handleInteraction(touch.clientX, touch.clientY);
+    }
+}
+
+function handleTouchEnd(e) {
+    if (e.changedTouches.length === 1) {
+        const touch = e.changedTouches[0];
+        handleInteraction(touch.clientX, touch.clientY);
+    }
+}
+
+function handleInteraction(clientX, clientY) {
+    console.log(`Interacted at ${clientX}, ${clientY}`); // DEBUG: REMOVE THIS
     if (isMoving) return; // stop the user if they are already moving
 
     const action1 = document.getElementById("action1");
@@ -104,8 +129,10 @@ canvas.addEventListener("click", (e) => {
     const action3 = document.getElementById("action3");
     
     const rect = canvas.getBoundingClientRect(); // get the canvas rect for calculation
-    const clickX = e.clientX - rect.left;
-    const clickY = e.clientY - rect.top;
+    const scaleX = canvas.width / rect.width;    // scale factor for x
+    const scaleY = canvas.height / rect.height;  // scale factor for y
+    const clickX = (clientX - rect.left) * scaleX;
+    const clickY = (clientY - rect.top) * scaleY;
 
     // map the area clicked to the area object and see if it's valid
     for (const area in areas) {
@@ -130,7 +157,9 @@ canvas.addEventListener("click", (e) => {
             return;
         }
     }
-});
+}
+
+// ...existing code...
 
 // Button actions using showPopup, I'm sorry for the shit code below
 document.getElementById("action1").addEventListener("click", () => {
@@ -171,9 +200,9 @@ document.getElementById("action3").addEventListener("click", () => {
         showPopup(actions, 1, 0, 0, 0, 0);
     } else if (player.area === "Padang") {
         showPopup(actions, 0, 2, 0, 0, 0);
-    } else if (player.area === "Ponegoro") {
+    } else if (player.area === "Ponorogo") {
         if (!hasEnoughResources(1, 1, 1, 1, 0)) return;
-        showPopup(actions, -4, -4, -2, -4, 25);
+        showPopup(actions, -4, -4, -1, -4, 25);
     } 
 });
 
@@ -287,19 +316,8 @@ function showPopup(action="", hp=0, mana=0, hunger=0, energy=0, earnings=0, cust
 
 // Kill the player when they die
 function killPlayer() {
-    player.hp = 5;
-    player.hunger = 5;
-    player.energy = 5;
-    player.mana = 5;
-    player.money = 0;
-    player.area = "Home";
-    visitedAreas.clear();
-    visitedAreas.add("Home");
+    player = { ...player_default }; // reset the player stats
     let cancelcounter = 0;
-
-    // move the player back to spawn
-    player.x = 180;
-    player.y = 220;
 
     const popupContainer = document.getElementById("popupContainer");
     const popupMessage = document.getElementById("popupMessage");
@@ -372,6 +390,14 @@ function update() {
             visitedAreas.add(destination.area);
             console.log(`Entered ${destination.area}`); // DEBUG: REMOVE THIS
             
+            // Check if the area is an enemy area and set the jumping property
+            if (areas[player.area].type === "enemy") {
+                areas[player.area].jumping = true;
+                setTimeout(() => {
+                    areas[player.area].jumping = false;
+                }, 500); // Match the duration of the jump animation
+            }
+
             destination = null;
             isMoving = false;
             
@@ -402,20 +428,25 @@ function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height); // Draw the background image
 
-    ctx.drawImage(player.avatar, player.x, player.y, player.size, player.size);
-
     for (const area in areas) {
         const loc = areas[area];
-        ctx.drawImage(areaImages[area], loc.x, loc.y, loc.width, loc.height);
+        let yOffset = 0;
+        
+        // Apply jump effect if the area is jumping
+        if (loc.jumping) {
+            yOffset = Math.sin(Date.now() / 100) * 20; // Adjust the divisor and multiplier for jump effect
+        }
+
+        ctx.drawImage(areaImages[area], loc.x, loc.y + yOffset, loc.width, loc.height);  // Draw the area image
     
         // Locked area overlay
         if (loc.requires && !loc.requires.every(r => visitedAreas.has(r))) {
-            ctx.globalAlpha = 0.7; // Set transparency level (0.0 to 1.0)
+            ctx.globalAlpha = 0.4; // Set transparency level (0.0 to 1.0)
             ctx.drawImage(lockedOverlayImage, loc.x, loc.y, loc.width, loc.height);
             ctx.globalAlpha = 1.0; // Reset transparency
         }
     }
-
+    ctx.drawImage(player.avatar, player.x, player.y, player.size, player.size); // overlay the area
 }
 
 // Update the stats bars

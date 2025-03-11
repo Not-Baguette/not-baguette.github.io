@@ -1,3 +1,35 @@
+/* Mobile Support */
+@media (max-width: 670px) {
+    .bar-container {
+        height: 20px;
+        width: 100%;
+    }
+    .bar-block {
+        border-width: 1px;
+    }
+    canvas {
+        width: 50%;
+        height: auto;
+    }
+    .flex-col {
+        flex-direction: column;
+    }
+    .gap-10 {
+        gap: 5px;
+    }
+    .w-20 {
+        width: 50px;
+    }
+    .w-40 {
+        width: 100px;
+    }
+    .sm\\:w-64 {
+        width: 100%;
+    }
+    .arrow {
+        width: 50px; /* Adjust width for smaller screens */
+    }
+}
 
 /* Add animation for popup */
 @keyframes popupAnimationOpen {
@@ -40,6 +72,10 @@
     }
 }
 
+.jump {
+    animation: jump 0.5s ease;
+}
+
 #popupContainer {
     animation: shadowFadeIn 0.3s ease-out;
 }
@@ -60,16 +96,19 @@ canvas {
 }
 
 .bar-container {
-    width: 250px;
+    min-width: 200px;
+    width: 100%;
+    max-width: 250px;
     height: 30px;
     background-color: #222;
     border: 1px solid white;
     display: flex;
     align-items: center;
+    overflow: hidden;
 }
 .bar-block {
-    flex: 0 0 50px; /* Set a fixed size for the bar block */
-    height: 30px;
+    flex: 1;
+    height: 100%;
     border: 2px solid white;
 }
 
@@ -101,6 +140,11 @@ canvas {
     opacity: 60%;
     border: 5px solid grey;
     border-radius: 5px;
+}
+
+.arrow {
+    width: 20%;
+    margin: auto;
 }
 
 .rounded-border{ border-radius: 10px; }
