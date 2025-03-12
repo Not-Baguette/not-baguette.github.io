@@ -302,7 +302,6 @@ document.getElementById("action3").addEventListener("click", () => {
     } 
 });
 
-
 /*  ----------------- */
 /*  HELPER FUNCTIONS  */
 /*  ----------------- */
