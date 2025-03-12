@@ -1,9 +1,9 @@
-// avatar 1-4 (index 0-3) TODO: change this to actual avatars
+// avatar 1-4 (index 0-3)
 const avatars = [
-    "assets/GreenKnight.png",
-    "assets/PinkMage.png",
-    "assets/RedKnight.png",
-    "assets/PinkMage.png",
+    "assets/characters/KEVIN.png",
+    "assets/characters/REGINA.png",
+    "assets/characters/LINA.png",
+    "assets/characters/BASTIAN.png",
 ];
 
 let currentAvatarIndex = 0; // current avatar
@@ -14,6 +14,23 @@ const prevAvatar = document.getElementById("prevAvatar");
 const nextAvatar = document.getElementById("nextAvatar");
 const submitBtn = document.getElementById("submitBtn");
 const usernameInput = document.getElementById("username");
+
+// Function to get the greeting based on the current time
+function getGreeting() {
+    const now = new Date();
+    const hours = now.getHours();
+    if (hours < 4) {
+        return "You're up late";
+    } else if (hours < 12) {
+        return "Good morning";
+    } else if (hours < 18) {
+        return "Good afternoon";
+    } else if (hours < 22) {
+        return "Good evening";
+    } else {
+        return "Don't forget to take a rest";
+    }
+}
 
 // event listeners for prev and next buttons
 prevAvatar.addEventListener("click", () => {
@@ -36,3 +53,7 @@ submitBtn.addEventListener("click", () => {
         alert("Please enter a username.");
     }
 });
+
+// Set the greeting message
+const greetingMessage = `${getGreeting()}! Welcome to Timeless Adventure!`;
+document.getElementById("greeting").innerText = greetingMessage;

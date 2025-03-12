@@ -1,5 +1,5 @@
 /* Mobile Support */
-@media (max-width: 670px) {
+@media (max-width: 677px) {
     .bar-container {
         height: 20px;
         width: 100%;
@@ -7,9 +7,12 @@
     .bar-block {
         border-width: 1px;
     }
+    .username{
+        margin-top: -30px;
+        font-size: 40px !important;
+    }
     canvas {
-        width: 50%;
-        height: auto;
+        width: 90% !important;
     }
     .flex-col {
         flex-direction: column;
@@ -26,12 +29,9 @@
     .sm\\:w-64 {
         width: 100%;
     }
-    .arrow {
-        width: 50px; /* Adjust width for smaller screens */
-    }
 }
 
-/* Add animation for popup */
+/* Popup animation stuff */
 @keyframes popupAnimationOpen {
     0% {
         transform: scale(0.75);
@@ -89,33 +89,112 @@
     animation: popupAnimationClose 0.3s ease-out;
 }
 
+/* General stuff */
+body {
+    overflow-x: hidden;
+}
+
 canvas {
     background-color: #1e293b;
     border: 2px solid white;
     margin-top: 20px;
 }
 
-.bar-container {
-    min-width: 200px;
-    width: 100%;
-    max-width: 250px;
-    height: 30px;
-    background-color: #222;
-    border: 1px solid white;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
+.background-transition {
+    transition: background-image 1s ease-in-out; /* Ensure transition is applied */
 }
-.bar-block {
-    flex: 1;
-    height: 100%;
-    border: 2px solid white;
+.avatar-pg {
+    overflow-x: hidden;
+    background-image: url('assets/backgrounds/Avatar.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.index-pg {
+    background-image: url('assets/backgrounds/Main.png');
+    background-size: cover;
+    background-position: center;
+}
+
+/* Avatar selections */
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.logo {
+    animation: float 2s ease-in-out infinite;
 }
 
 .username {
     font-family:monospace;
     font-weight: bold;
     font-size: xx-large;
+}
+
+.arrow {
+    width: 100%;
+    margin: auto;
+    transition: transform 0.3s ease; /* Smooth transition hehe */
+}
+
+.arrow:hover {
+    transform: scale(1.2);
+}
+
+.avatar-selection {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 600px;
+    min-width: 200px;
+    min-height: 200px;
+    object-fit: contain; /* hold the aspect ratio */
+}
+
+#greeting {
+    font-family:monospace;
+    font-weight: bold;
+    font-size: xx-large;
+    text-shadow: /* Outline col */
+        -1px -1px 0 #000,  
+         1px -1px 0 #000,
+        -1px  1px 0 #000,
+         1px  1px 0 #000;
+}
+
+/* index.html UI */
+.pfp-zoom {
+    /* increase the size of the pfp */
+    transform: scale(1.5); 
+    transform-origin: center;
+}
+
+.bar-container {
+    /* container for bar-block */
+    width: 250px;
+    height: 30px;
+    background-color: #222;
+    border: 1px solid white;
+    display: flex;
+    align-items: center;
+}
+.bar-block {
+    /* bar blocks for the stats */
+    flex: 0 0 50px;
+    height: 30px;
+    border: 2px solid white;
+}
+
+.bar-block:last-child {
+    margin-right: 0;
 }
 
 #money {
@@ -130,6 +209,14 @@ canvas {
     border-radius: 5px;
     color: #0f3582;
     font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Add transition for background-color and color */
+}
+
+.button:hover {
+    background-color: #0f3582;
+    color: white;
+    cursor: pointer;
+    animation: float 2s ease-in-out infinite;
 }
 
 .name-box {
@@ -142,11 +229,7 @@ canvas {
     border-radius: 5px;
 }
 
-.arrow {
-    width: 20%;
-    margin: auto;
-}
-
+/* One-liners */
 .rounded-border{ border-radius: 10px; }
 .hp { background-color: red; }
 .energy { background-color: orange; }

@@ -3,30 +3,40 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>avatar</title>
+        <title>Avatar Selection | The Timeless Adventure</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="style.css">
         <link rel="icon" type="image/x-icon" href="assets/Timeless_Adventure_logo.png">
     </head>
-    <body class="flex flex-col items-center bg-gray-900 text-white min-h-screen">
+    <body class="overflow-hidden h-screen min-h-screen w-screen flex flex-col items-center 
+                avatar-pg text-white backdrop-saturate-100"> 
+        <!-- logo -->
+        <div class="flex flex-col items-center text-center p-6 w-full max-w-lg">
+            <img src="assets/Timeless_Adventure_logo.png" alt="Timeless Adventure Logo" class="logo">
+        </div>
+        
         <!-- avatar selection -->
-        <div class="my-auto w-full px-4">
-            <div class="flex flex-col sm:flex-row items-center justify-center">
-                <div id="prevAvatar" class="cursor-pointer mt-12 sm:mt-0 sm:mr-4">
-                    <img src="assets/prev.png" alt="Previous" class="arrow">
+        <div class="flex flex-col items-center text-center p-6 w-full max-w-lg">
+            <div class="flex justify-center items-center gap-6">
+                <div id="prevAvatar" class="cursor-pointer">
+                    <img src="assets/util/prev.png" alt="Previous" class="arrow">
                 </div>
-                <div id="avatar" class="flex flex-col w-full sm:w-96">
-                    <img id="avatarImage" src="assets/GreenKnight.png" alt="Avatar" class="sm:h-96">
+                <div id="avatar" class="flex flex-col">
+                    <img id="avatarImage" src="assets/characters/KEVIN.png" alt="Avatar" class="avatar-selection">
                 </div>
-                <div id="nextAvatar" class="cursor-pointer mt-12 sm:mt-0 sm:ml-4">
-                    <img src="assets/Next.png" alt="Next" class="arrow">
+                <div id="nextAvatar" class="cursor-pointer">
+                    <img src="assets/util/Next.png" alt="Next" class="arrow">
                 </div>
             </div>
+        </div>
+        <div class="my-auto w-full px-4 text-center">
+            <div id="greeting"></div>
             <div class="text-center mt-6">
-                <input id="username" class="name-box text-center w-full sm:w-auto" type="text" placeholder="Enter your name here...">
+                <input id="username" class="name-box text-center w-60" type="text" 
+                    autocomplete="off" placeholder="Enter your name here...">
             </div>
             <div class="text-center mt-4">
-                <button id="submitBtn" class="button w-full sm:w-auto" type="button">Enter the game</button>
+                <button id="submitBtn" class="button w-auto" type="button">Enter the game</button>
             </div>
         </div>
         <script src="avatar.js"></script>

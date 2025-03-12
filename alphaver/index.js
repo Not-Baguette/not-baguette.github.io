@@ -1,10 +1,8 @@
-// Init variables
+/*  ----------------- */
+/*       INIT VAR     */
+/*  ----------------- */
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
-let isMoving = false;
-let destination = null;
-let visitedAreas = new Set(["Home"]);
-
 const avatarIndex = getUrlParam('avatar');
 const usernameParam = getUrlParam('username');
 
@@ -24,16 +22,77 @@ const player_default = {
 
 let player = { ...player_default }; // copy the player object to prevent mutation
 
+let isMoving = false;
+let destination = null;
+let visitedAreas = new Set(["Home"]);
+
 // Area props
 const areas = {
-    "Home": { x: 180, y: 230, width: 70, height: 80, cost: 2, type: "safe", jumping: false },
-    "Pontianak": { x: 50, y: 470, width: 130, height: 100, cost: 1, type: "enemy", jumping: false },
-    "Papua": { x: 320, y: 370, width: 130, height: 100, cost: 1, type: "enemy", requires: ["Pontianak"], jumping: false },
-    "Padang": { x: 650, y: 80, width: 70, height: 80, cost: 1, type: "safe", requires: ["Pontianak", "Papua"], jumping: false },
-    "Ponorogo": { x: 650, y: 450, width: 130, height: 100, cost: 2, type: "enemy", requires: ["Pontianak", "Padang", "Papua"], jumping: false }
+    "Home": {
+        x: 180,
+        y: 230,
+        width: 80,
+        height: 90,
+        cost: 2,
+        type: "safe",
+        jumping: false,
+        region: "normal"
+    },
+    "Pontianak": {
+        x: 50,
+        y: 470,
+        width: 90,
+        height: 90,
+        cost: 1,
+        type: "enemy",
+        jumping: false,
+        region: "normal"
+    },
+    "Papua": {
+        x: 320,
+        y: 370,
+        width: 90,
+        height: 90,
+        cost: 1,
+        type: "enemy",
+        requires: ["Pontianak"],
+        jumping: false,
+        region: "winter"
+    },
+    "Padang": {
+        x: 650,
+        y: 80,
+        width: 80,
+        height: 90,
+        cost: 1,
+        type: "safe",
+        requires: ["Pontianak", "Papua"],
+        jumping: false,
+        region: "winter"
+    },
+    "Ponorogo": {
+        x: 650,
+        y: 450,
+        width: 100,
+        height: 90,
+        cost: 2,
+        type: "enemy",
+        requires: ["Pontianak", "Padang", "Papua"],
+        jumping: false,
+        region: "hell"
+    },
+    "Secret": {
+        x: 50,
+        y: 50,
+        width: 150,
+        height: 150,
+        cost: 0,
+        type: "safe",
+        jumping: false,
+        region: "normal"
+    }
 };
 
-// Button texts
 const areaActions = {
     "Home": {
         action1: "Rest",
@@ -59,16 +118,22 @@ const areaActions = {
         action1: "",
         action2: "",
         action3: "Fight the Boss"
+    },
+    "Secret": {
+        action1: "",
+        action2: "",
+        action3: ""
     }
 };
 
-// Load images
+// Images
 const areaImages = {
     "Home": new Image(),
     "Pontianak": new Image(),
     "Papua": new Image(),
     "Padang": new Image(),
-    "Ponorogo": new Image()
+    "Ponorogo": new Image(),
+    "Secret": new Image()
 };
 
 const playerImg = {
@@ -78,26 +143,31 @@ const playerImg = {
     3: new Image(),
     4: new Image(),
 };
+
 const bgImage = new Image();
 const lockedOverlayImage = new Image();
-lockedOverlayImage.src = "assets/locked.png";
+const profilePic = document.getElementById("profilePic");
 
-//load the assets,  TODO: Consider not loading every character for optimization
-areaImages["Home"].src = "assets/Jakarta.png";
-areaImages["Pontianak"].src = "assets/Pontianak.png";
-areaImages["Papua"].src = "assets/Jayapura.png";
-areaImages["Padang"].src = "assets/Padang.png";
-areaImages["Ponorogo"].src = "assets/Ponorogo.png";
+// load the assets, TODO: Consider not loading every character for optimization
+lockedOverlayImage.src = "assets/cities/locked.png";
+areaImages["Home"].src = "assets/cities/Jakarta.png";
+areaImages["Pontianak"].src = "assets/cities/Pontianak.png";
+areaImages["Papua"].src = "assets/cities/Jayapura.png";
+areaImages["Padang"].src = "assets/cities/Padang.png";
+areaImages["Ponorogo"].src = "assets/cities/Ponorogo.png";
+areaImages["Secret"].src = "assets/cities/Secret.png";
 
 playerImg[0].src = "assets/logo.jpeg"; //player null easter egg
-playerImg[1].src = "assets/GreenKnight.png";
-playerImg[2].src = "assets/PinkMage.png";
-playerImg[3].src = "assets/RedKnight.png";
-playerImg[4].src = "assets/PinkMage.png";
-bgImage.src = "assets/BackgroundMap.png";
+playerImg[1].src = "assets/characters/GreenKnight.png";
+playerImg[2].src = "assets/characters/PinkMage.png";
+playerImg[3].src = "assets/characters/RedKnight.png";
+playerImg[4].src = "assets/characters/BlueMage.png";
+bgImage.src = "assets/backgrounds/BackgroundMap.png";
 
 
-// Event listeners for mouse and touch events
+/*  ----------------- */
+/*   EVENT LISTENERS  */
+/*  ----------------- */
 canvas.addEventListener("click", handleClick);
 canvas.addEventListener("touchstart", handleTouchStart);
 canvas.addEventListener("touchend", handleTouchEnd);
@@ -121,7 +191,6 @@ function handleTouchEnd(e) {
 }
 
 function handleInteraction(clientX, clientY) {
-    console.log(`Interacted at ${clientX}, ${clientY}`); // DEBUG: REMOVE THIS
     if (isMoving) return; // stop the user if they are already moving
 
     const action1 = document.getElementById("action1");
@@ -159,7 +228,34 @@ function handleInteraction(clientX, clientY) {
     }
 }
 
-// ...existing code...
+// Check if the mouse is over an area
+function isMouseOverArea(clientX, clientY) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const mouseX = (clientX - rect.left) * scaleX;
+    const mouseY = (clientY - rect.top) * scaleY;
+
+    for (const area in areas) {
+        const loc = areas[area];
+        if (mouseX >= loc.x && mouseX <= loc.x + loc.width &&
+            mouseY >= loc.y && mouseY <= loc.y + loc.height) {
+            if (loc.requires && !loc.requires.every(r => visitedAreas.has(r))) {
+                continue; // Skip locked areas
+            }
+            return true;
+        }
+    }
+    return false;
+}
+
+canvas.addEventListener("mousemove", (e) => {
+    if (isMouseOverArea(e.clientX, e.clientY)) {
+        canvas.style.cursor = "grab";
+    } else {
+        canvas.style.cursor = "default";
+    }
+});
 
 // Button actions using showPopup, I'm sorry for the shit code below
 document.getElementById("action1").addEventListener("click", () => {
@@ -175,7 +271,7 @@ document.getElementById("action1").addEventListener("click", () => {
     } else if (player.area === "Padang") {
         if (!hasEnoughResources(0, 0, 0, 0, 5)) return;
         showPopup(actions, 0, 0, 0, 2, -5);
-    } 
+    }
 });
 
 document.getElementById("action2").addEventListener("click", () => {
@@ -206,6 +302,35 @@ document.getElementById("action3").addEventListener("click", () => {
     } 
 });
 
+
+/*  ----------------- */
+/*  HELPER FUNCTIONS  */
+/*  ----------------- */
+// get pfp from avatar selection
+function updateProfilePic(avatarIndex) {
+    if (!profilePic) {
+        console.error("profilePic element not found");
+        return;
+    }
+    switch (avatarIndex) {
+        case '1':
+            profilePic.src = "assets/characters/KEVIN.png";
+            break;
+        case '2':
+            profilePic.src = "assets/characters/REGINA.png";
+            break;
+        case '3':
+            profilePic.src = "assets/characters/LINA.png";
+            break;
+        case '4':
+            profilePic.src = "assets/characters/BASTIAN.png";
+            break;
+        default:
+            profilePic.src = "assets/logo.jpeg"; // player null easter egg
+            break;
+    }
+    profilePic.classList.add('pfp-zoom'); // Add the zoom class
+}
 
 // get avatar & username from URL
 function getUrlParam(name) {
@@ -314,19 +439,56 @@ function showPopup(action="", hp=0, mana=0, hunger=0, energy=0, earnings=0, cust
     document.addEventListener("keydown", handleKeyDown); // Add the event listener for keydown
 }
 
+// Update the clock every second
+function updateClock() {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+}
+
+// change bg based on region
+function updateBackground(region) {
+    const body = document.body;
+    body.classList.add('background-transition'); // Add transition class
+
+    switch(region) {
+        case "normal":
+            body.style.backgroundImage = "url('assets/backgrounds/Main.png')";
+            break;
+        case "winter":
+            body.style.backgroundImage = "url('assets/backgrounds/Winter.png')";
+            break;
+        case "hell":
+            body.style.backgroundImage = "url('assets/backgrounds/Boss.png')";
+            break;
+        default:
+            body.style.backgroundImage = "url('assets/backgrounds/Main.png')";
+            break;
+    }
+
+    // Remove the transition class after the transition duration
+    setTimeout(() => {
+        body.classList.remove('background-transition');
+    }, 1000); // Match the duration of the CSS transition
+}
+
+/*  ----------------- */
+/*    GAME FUNCTIONS  */
+/*  ----------------- */
 // Kill the player when they die
 function killPlayer() {
-    player = { ...player_default }; // reset the player stats
     let cancelcounter = 0;
 
     const popupContainer = document.getElementById("popupContainer");
     const popupMessage = document.getElementById("popupMessage");
     const confirmButton = document.getElementById("confirmButton");
     const cancelButton = document.getElementById("cancelButton");
-    const inter_text = document.getElementById("interactionText")
+    const inter_text = document.getElementById("interactionText");
     const action1 = document.getElementById("action1");
     const action2 = document.getElementById("action2");
-    const action3 = document.getElementById("action3"); 
+    const action3 = document.getElementById("action3");
 
     popupMessage.innerText = `You died!`;
     popupContainer.classList.remove("hidden");
@@ -336,12 +498,21 @@ function killPlayer() {
         popupContainer.classList.add("hidden");
         jumpscare.classList.add("hidden");
     };
-    
+
     inter_text.innerHTML = '';
     action1.classList.add("hidden");
     action2.classList.add("hidden");
     action3.classList.add("hidden");
+
+    // Reset visited areas
+    areas[player.area].jumping = false;
+    player = { ...player_default }; // reset the player stats
+    visitedAreas.clear();
+    visitedAreas.add("Home");
     
+    updateBackground("normal");
+    firstrun(); // reinit avatar and everything
+
     // cancel easter egg
     cancelButton.onclick = () => {
         cancelcounter++;
@@ -356,14 +527,12 @@ function killPlayer() {
         } else if (cancelcounter > 4) {
             popupMessage.innerText = `You just got jumpscared!`;
             const jumpscare = document.getElementById("jumpscare");
-            jumpscare.src = "assets/reaper.gif"; // Add the path to your image
+            jumpscare.src = "assets/easter-egg/reaper.gif"; // Add the path to your image
             jumpscare.classList.remove("hidden");
             cancelButton.classList.add("hidden"); // Hide the cancel button
         }
     };
-    
 }
-
 // Update the location of the player
 function update() {
     if (destination) {
@@ -382,6 +551,10 @@ function update() {
             player.x = destination.x;
             player.y = destination.y;
             player.area = destination.area;
+
+            if (player.area === "Secret") {
+                showPopup("", 0, 0, 0, 0, 200, "Congratulations, You found a secret area! GET OUT");
+            }
             
             // reduce the player's hunger after moving
             player.hunger = Math.max(0, player.hunger - destination.cost);
@@ -400,7 +573,7 @@ function update() {
 
             destination = null;
             isMoving = false;
-            
+            updateBackground(areas[player.area].region);
             document.getElementById("interactionText").innerText = `You arrived at ${player.area}`;
             updateButtonActions(player.area);
         }
@@ -442,11 +615,13 @@ function draw() {
         // Locked area overlay
         if (loc.requires && !loc.requires.every(r => visitedAreas.has(r))) {
             ctx.globalAlpha = 0.4; // Set transparency level (0.0 to 1.0)
-            ctx.drawImage(lockedOverlayImage, loc.x, loc.y, loc.width, loc.height);
+            ctx.drawImage(lockedOverlayImage, loc.x, loc.y, loc.width, loc.height); // Draw the locked overlay
             ctx.globalAlpha = 1.0; // Reset transparency
         }
     }
-    ctx.drawImage(player.avatar, player.x, player.y, player.size, player.size); // overlay the area
+
+    // Check if the player's avatar is defined and is an instance of HTMLImageElement
+    ctx.drawImage(player.avatar, player.x, player.y, player.size, player.size); // Draw the player's avatar
 }
 
 // Update the stats bars
@@ -460,26 +635,28 @@ function updateStats() {
             block.classList.add('bar-block', stat);
             container.appendChild(block);
         }
-        
     });
-
     // Update money display
     document.getElementById("money").innerText = `$${player.money}`;
 }
 
+// run once to init everything
 function firstrun() {
     // Grab the url param for avatar and username, only run this once
     if (!avatarIndex || !usernameParam) { // if param is missing, redirect to avatar selection
         window.location.href = 'avatar.html';
     } else {
         if (avatarIndex) {
-            player.avatar = playerImg[avatarIndex]; 
+            player.avatar = playerImg[avatarIndex];
+            updateProfilePic(avatarIndex); // Update the profile picture
         }
         if (usernameParam) {
             const usernameElement = document.getElementById("username");
             usernameElement.innerText = usernameParam;
         }
     }
+    setInterval(updateClock, 1000);
+    updateClock(); // Initial call to display the clock immediately
 }
 
 // Gameloop, run the function recursively
@@ -495,9 +672,7 @@ function gameLoop() {
         updateStats();
     }
     requestAnimationFrame(gameLoop);
-    
 }
 
-// Run the game
 firstrun();
 gameLoop();
