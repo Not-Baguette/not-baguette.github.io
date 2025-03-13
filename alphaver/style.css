@@ -17,18 +17,6 @@
     .flex-col {
         flex-direction: column;
     }
-    .gap-10 {
-        gap: 5px;
-    }
-    .w-20 {
-        width: 50px;
-    }
-    .w-40 {
-        width: 100px;
-    }
-    .sm\\:w-64 {
-        width: 100%;
-    }
 }
 
 /* Popup animation stuff */

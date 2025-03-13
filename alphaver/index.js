@@ -3,8 +3,8 @@
 /*  ----------------- */
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
-const avatarIndex = getUrlParam('avatar');
-const usernameParam = getUrlParam('username');
+const avatarIndex = getUrlParam("avatar");
+const usernameParam = getUrlParam("username");
 
 // Player stats
 const player_default = {
@@ -48,7 +48,7 @@ const areas = {
         jumping: false,
         region: "normal"
     },
-    "Papua": {
+    "Jayapura": {
         x: 320,
         y: 370,
         width: 90,
@@ -66,7 +66,7 @@ const areas = {
         height: 90,
         cost: 1,
         type: "safe",
-        requires: ["Pontianak", "Papua"],
+        requires: ["Pontianak", "Jayapura"],
         jumping: false,
         region: "winter"
     },
@@ -77,7 +77,7 @@ const areas = {
         height: 90,
         cost: 2,
         type: "enemy",
-        requires: ["Pontianak", "Padang", "Papua"],
+        requires: ["Pontianak", "Padang", "Jayapura"],
         jumping: false,
         region: "hell"
     },
@@ -104,7 +104,7 @@ const areaActions = {
         action2: "Explore",
         action3: ""
     },
-    "Papua": {
+    "Jayapura": {
         action1: "Fight",
         action2: "Explore",
         action3: ""
@@ -130,7 +130,7 @@ const areaActions = {
 const areaImages = {
     "Home": new Image(),
     "Pontianak": new Image(),
-    "Papua": new Image(),
+    "Jayapura": new Image(),
     "Padang": new Image(),
     "Ponorogo": new Image(),
     "Secret": new Image()
@@ -152,7 +152,7 @@ const profilePic = document.getElementById("profilePic");
 lockedOverlayImage.src = "assets/cities/locked.png";
 areaImages["Home"].src = "assets/cities/Jakarta.png";
 areaImages["Pontianak"].src = "assets/cities/Pontianak.png";
-areaImages["Papua"].src = "assets/cities/Jayapura.png";
+areaImages["Jayapura"].src = "assets/cities/Jayapura.png";
 areaImages["Padang"].src = "assets/cities/Padang.png";
 areaImages["Ponorogo"].src = "assets/cities/Ponorogo.png";
 areaImages["Secret"].src = "assets/cities/Secret.png";
@@ -190,6 +190,7 @@ function handleTouchEnd(e) {
     }
 }
 
+
 function handleInteraction(clientX, clientY) {
     if (isMoving) return; // stop the user if they are already moving
 
@@ -211,7 +212,10 @@ function handleInteraction(clientX, clientY) {
             clickY >= loc.y && clickY <= loc.y + loc.height) {
             if (player.area === area) return; // if same area, dont do anything
             if (loc.requires && !loc.requires.every(r => visitedAreas.has(r))) { // locked areas logic
-                console.log(`You must visit ${loc.requires.join(" and ")} first!`);
+                showPopup("", 0, 0, 0, 0, 0, `You must visit ${loc.requires.join(" and ")} first!`);
+                const cancelButton = document.getElementById("cancelButton");
+                const confirmButton = document.getElementById("confirmButton");
+                cancelEasterEgg(cancelButton, confirmButton);
                 return;
             }
             // set the destination to the center of the area clicked
@@ -265,7 +269,7 @@ document.getElementById("action1").addEventListener("click", () => {
     } else if (player.area === "Pontianak") {
         if (!hasEnoughResources(1, 2, 0, 0, 0)) return;
         showPopup(actions, -1, -2, 0, 0, 10);
-    } else if (player.area === "Papua"){
+    } else if (player.area === "Jayapura"){
         if (!hasEnoughResources(2, 3, 0, 0, 0)) return;
         showPopup(actions, -2, -3, 0, 0, 15)
     } else if (player.area === "Padang") {
@@ -281,7 +285,7 @@ document.getElementById("action2").addEventListener("click", () => {
     } else if (player.area === "Pontianak") {
         if (!hasEnoughResources(0, 0, 0, 2, 0)) return;
         showPopup(actions, 0, 0, 0, -2, 5);
-    } else if (player.area === "Papua"){
+    } else if (player.area === "Jayapura"){
         if (!hasEnoughResources(0, 0, 0, 3, 0)) return;
         showPopup(actions, 0, 0, 0, -3, 10)
     } else if (player.area === "Padang") {
@@ -312,29 +316,29 @@ function updateProfilePic(avatarIndex) {
         return;
     }
     switch (avatarIndex) {
-        case '1':
+        case "1":
             profilePic.src = "assets/characters/KEVIN.png";
             break;
-        case '2':
+        case "2":
             profilePic.src = "assets/characters/REGINA.png";
             break;
-        case '3':
+        case "3":
             profilePic.src = "assets/characters/LINA.png";
             break;
-        case '4':
+        case "4":
             profilePic.src = "assets/characters/BASTIAN.png";
             break;
         default:
             profilePic.src = "assets/logo.jpeg"; // player null easter egg
             break;
     }
-    profilePic.classList.add('pfp-zoom'); // Add the zoom class
+    profilePic.classList.add("pfp-zoom"); // Add the zoom class
 }
 
 // get avatar & username from URL
 function getUrlParam(name) {
     const params = new URLSearchParams(window.location.search);
-    return params.get(name) || '';
+    return params.get(name) || "";
 }
 
 // Helper function to check if the player has enough resources
@@ -438,19 +442,49 @@ function showPopup(action="", hp=0, mana=0, hunger=0, energy=0, earnings=0, cust
     document.addEventListener("keydown", handleKeyDown); // Add the event listener for keydown
 }
 
+function cancelEasterEgg(cancelButton, confirmButton,) {
+    let cancelcounter = 0;
+    const jumpscare = document.getElementById("jumpscare"); // Define jumpscare element here
+    const popupContainer = document.getElementById("popupContainer");
+
+    cancelButton.onclick = () => {
+        cancelcounter++;
+        if (cancelcounter === 1) {
+            popupMessage.innerText = `Like I said before, no skipping levels ;>`;
+        } else if (cancelcounter === 2) {
+            popupMessage.innerText = `You're a persistent one aren"t you?`;
+        } else if (cancelcounter === 3) {
+            popupMessage.innerText = `Don"t cheat peeps.`;
+        } else if (cancelcounter === 4) {
+            popupMessage.innerText = `Now you're just testing my patience.`;
+        } else if (cancelcounter > 4) {
+            popupMessage.innerText = `That's it, I'm putting you on debt.`;
+            player.money -= 100;
+            jumpscare.src = "assets/easter-egg/broke.gif"; // Add the path to your image
+            jumpscare.classList.remove("hidden");
+            cancelButton.classList.add("hidden"); // Hide the cancel button
+        }
+    };
+
+    confirmButton.onclick = () => {
+        jumpscare.classList.add("hidden"); // Hide the jumpscare image
+        popupContainer.classList.add("hidden");
+    };
+}
+
 // Update the clock every second
 function updateClock() {
     const now = new Date();
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const seconds = String(now.getSeconds()).padStart(2, '0');
-    document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    const seconds = String(now.getSeconds()).padStart(2, "0");
+    document.getElementById("clock").textContent = `${hours}:${minutes}:${seconds}`;
 }
 
 // change bg based on region
 function updateBackground(region) {
     const body = document.body;
-    body.classList.add('background-transition'); // Add transition class
+    body.classList.add("background-transition"); // Add transition class
 
     switch(region) {
         case "normal":
@@ -469,7 +503,7 @@ function updateBackground(region) {
 
     // Remove the transition class after the transition duration
     setTimeout(() => {
-        body.classList.remove('background-transition');
+        body.classList.remove("background-transition");
     }, 1000); // Match the duration of the CSS transition
 }
 
@@ -498,7 +532,7 @@ function killPlayer() {
         jumpscare.classList.add("hidden");
     };
 
-    inter_text.innerHTML = '';
+    inter_text.innerHTML = "";
     action1.classList.add("hidden");
     action2.classList.add("hidden");
     action3.classList.add("hidden");
@@ -520,7 +554,7 @@ function killPlayer() {
         } else if (cancelcounter === 2) {
             popupMessage.innerText = `You really can't cancel death, you know?`;
         } else if (cancelcounter === 3) {
-            popupMessage.innerText = `I'm sorry, but you can't cancel death. You're dead....`;
+            popupMessage.innerText = `I'm sorry, but you can't cancel death. you're dead....`;
         } else if (cancelcounter === 4) {
             popupMessage.innerText = `cancel and you're gay`;
         } else if (cancelcounter > 4) {
@@ -618,20 +652,19 @@ function draw() {
             ctx.globalAlpha = 1.0; // Reset transparency
         }
     }
-
-    // Check if the player's avatar is defined and is an instance of HTMLImageElement
+    // Check if the playe's avatar is defined and is an instance of HTMLImageElement
     ctx.drawImage(player.avatar, player.x, player.y, player.size, player.size); // Draw the player's avatar
 }
 
 // Update the stats bars
 function updateStats() {
-    const stats = ['hp', 'energy', 'mana', 'hunger'];
+    const stats = ["hp", "energy", "mana", "hunger"];
     stats.forEach(stat => {
         const container = document.getElementById(`${stat}Container`);
-        container.innerHTML = '';
+        container.innerHTML = "";
         for (let i = 0; i < player[stat]; i++) {
-            let block = document.createElement('div');
-            block.classList.add('bar-block', stat);
+            let block = document.createElement("div");
+            block.classList.add("bar-block", stat);
             container.appendChild(block);
         }
     });
@@ -643,7 +676,7 @@ function updateStats() {
 function firstrun() {
     // Grab the url param for avatar and username, only run this once
     if (!avatarIndex || !usernameParam) { // if param is missing, redirect to avatar selection
-        window.location.href = 'avatar.html';
+        window.location.href = "avatar.html";
     } else {
         if (avatarIndex) {
             player.avatar = playerImg[avatarIndex];

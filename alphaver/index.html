@@ -1,103 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The Timeless Adventure</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/x-icon" href="assets/Timeless_Adventure_logo.png" />
-</head>
-<body class="flex flex-col bg-blue-200 items-center text-white min-h-screen bg-cover bg-center index-pg">
-    <!-- Top Row for Usernames n logo, good luck sis :sparkles: -->
-    <div class="w-full bg-gray-800 p-4 m-auto text-center mb-4">
-        <h1 class="text-3xl font-bold my-4">The Timeless Adventure</h1>
-        <div class="flex flex-col sm:flex-row gap-10 mt-4 justify-center">
-            <!-- pfp -->
-            <div class="my-auto">
-                <img src="assets/logo.jpeg" id="profilePic" alt="Profile pic" class="m-auto rounded-full mb-3 w-20">
-            </div>
-            <!-- Username and money -->
-            <div>
-                <p class="username" id="username">username</p>
-                <p id="money" class="mt-3"></p>
-            </div>
-            <!-- Stats bar -->
-            <div class="flex flex-col items-start gap-4">
-                <div class="flex items-center gap-2">
-                    <img src="assets/Stats/health.png" alt="health" class="w-8 h-8">
-                    <div id="hpContainer" class="bar-container">
-                        <div class="bar bg-red-500" style="width: 100%;"></div>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0,  user-scalable=no" />
+        <meta name="description" content="The Timeless Adventure is a web-type adventure game 
+                where you can explore the world and interact with the environment!" />
+        <meta property="og:image" content="assets/Timeless_Adventure_logo.png" />
+        <title>The Timeless Adventure</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" type="image/x-icon" href="assets/Timeless_Adventure_logo.png" />
+    </head>
+    <body class="flex flex-col bg-blue-200 items-center text-white min-h-screen bg-cover bg-center index-pg">
+        <!-- Top Row for Usernames n logo, good luck sis :sparkles: -->
+        <div class="w-full bg-gray-800 p-4 m-auto text-center mb-4">
+            <h1 class="text-3xl font-bold my-4">The Timeless Adventure</h1>
+            <div class="flex flex-col sm:flex-row gap-10 mt-4 justify-center">
+                <!-- pfp -->
+                <div class="my-auto">
+                    <img src="assets/logo.jpeg" id="profilePic" alt="Profile pic" class="m-auto rounded-full mb-3 w-20">
+                </div>
+                <!-- Username and money -->
+                <div>
+                    <p class="username" id="username">username</p>
+                    <p id="money" class="mt-3"></p>
+                </div>
+                <!-- Stats bar -->
+                <div class="flex flex-col items-start gap-4">
+                    <div class="flex items-center gap-2">
+                        <img src="assets/Stats/health.png" alt="health" class="w-8 h-8">
+                        <div id="hpContainer" class="bar-container">
+                            <div class="bar bg-red-500" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <img src="assets/Stats/energy.png" alt="Energy" class="w-8 h-8">
+                        <div id="energyContainer" class="bar-container">
+                            <div class="bar bg-orange-500" style="width: 100%;"></div>
+                        </div>
                     </div>
                 </div>
-                <div class="flex items-center gap-2">
-                    <img src="assets/Stats/energy.png" alt="Energy" class="w-8 h-8">
-                    <div id="energyContainer" class="bar-container">
-                        <div class="bar bg-orange-500" style="width: 100%;"></div>
+                <div class="flex flex-col items-start gap-4">
+                    <div class="flex items-center gap-2">
+                        <img src="assets/Stats/mana.png" alt="Mana" class="w-8 h-8">
+                        <div id="manaContainer" class="bar-container">
+                            <div class="bar bg-blue-500" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <img src="assets/Stats/hunger.png" alt="Hunger" class="w-8 h-8">
+                        <div id="hungerContainer" class="bar-container">
+                            <div class="bar bg-green-500" style="width: 100%;"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="flex flex-col items-start gap-4">
-                <div class="flex items-center gap-2">
-                    <img src="assets/Stats/mana.png" alt="Mana" class="w-8 h-8">
-                    <div id="manaContainer" class="bar-container">
-                        <div class="bar bg-blue-500" style="width: 100%;"></div>
-                    </div>
-                </div>
-                <div class="flex items-center gap-2">
-                    <img src="assets/Stats/hunger.png" alt="Hunger" class="w-8 h-8">
-                    <div id="hungerContainer" class="bar-container">
-                        <div class="bar bg-green-500" style="width: 100%;"></div>
-                    </div>
-                </div>
-            </div>
-            <div> <!-- to fit it beside the stats bar -->
-                <img class="w-40 mx-auto" src="assets/Timeless_Adventure_logo.png" alt="Logo">
-            </div>
-        </div>
-    </div>
-
-    <!-- In-game clock -->
-    <div id="clock" class="text-xl font-bold mb-4"></div>
-
-    <!-- The main game and the interaction menu -->
-    <div class="flex flex-col sm:flex-row">
-        <!-- Canvas -->
-        <canvas id="gameCanvas" width="800" height="600" class="m-4 w-auto"></canvas>
-        <!-- Area interaction menu -->
-        <div class="m-4 bg-gray-700 rounded lg:w-60">
-            <div class="sm:w-40 p-4 lg:w-60">
-                <h2 class="text-xl mb-2">Area Interactions</h2>
-                <p id="interactionText" class="mb-2"></p>
-                <button id="action1" class="hidden bg-blue-500 px-4 py-2 rounded mb-2"></button>
-                <button id="action2" class="hidden bg-green-500 px-4 py-2 rounded mb-2"></button>
-                <button id="action3" class="hidden bg-red-500 px-4 py-2 rounded"></button>
-                <div id="popupContainer" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center">
-                    <div class="bg-gray-900 text-white p-4 rounded-border border-2 text-center"> <!-- Placeholder for popup -->
-                        <p id="popupMessage" class="mb-2"></p> 
-                        <img id="jumpscare" class="mb-3"></img>
-                        <button id="confirmButton" class="bg-green-500 px-4 py-2 rounded mr-2">Confirm</button>
-                        <button id="cancelButton" class="bg-red-500 px-4 py-2 rounded">Cancel</button>
-                    </div>
+                <div> <!-- to fit it beside the stats bar -->
+                    <img class="w-40 mx-auto" src="assets/Timeless_Adventure_logo.png" alt="Logo">
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- bottom text -->
-    <p class="mb-4">Click to move</p>
-    
-    <script src="index.js"></script>
-    <script>
-        function updateClock() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
-        }
-        setInterval(updateClock, 1000);
-        updateClock(); // Initial call to display the clock immediately
-    </script>
-</body>
+        <!-- In-game clock -->
+        <div id="clock" class="text-xl font-bold mb-4"></div>
+
+        <!-- The main game and the interaction menu -->
+        <div class="flex flex-col sm:flex-row">
+            <!-- Canvas -->
+            <canvas id="gameCanvas" width="800" height="600" class="m-4 w-auto"></canvas>
+            <!-- Area interaction menu -->
+            <div class="m-4 bg-gray-700 rounded lg:w-60">
+                <div class="sm:w-40 p-4 lg:w-60">
+                    <h2 class="text-xl mb-2">Area Interactions</h2>
+                    <p id="interactionText" class="mb-2"></p>
+                    <button id="action1" class="hidden bg-blue-500 px-4 py-2 rounded mb-2"></button>
+                    <button id="action2" class="hidden bg-green-500 px-4 py-2 rounded mb-2"></button>
+                    <button id="action3" class="hidden bg-red-500 px-4 py-2 rounded"></button>
+                    <div id="popupContainer" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center">
+                        <div class="bg-gray-900 text-white p-4 rounded-border border-2 text-center items-center"> <!-- Placeholder for popup -->
+                            <p id="popupMessage" class="mb-2"></p> 
+                            <img id="jumpscare" class="mb-3"></img>
+                            <button id="confirmButton" class="bg-green-500 px-4 py-2 rounded mr-2">Confirm</button>
+                            <button id="cancelButton" class="bg-red-500 px-4 py-2 rounded">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- bottom text -->
+        <p class="mb-4">Click to move</p>
+        
+        <script src="index.js"></script>
+        <script>
+            function updateClock() {
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+                document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+            }
+            setInterval(updateClock, 1000);
+            updateClock(); // Initial call to display the clock immediately
+        </script>
+    </body>
 </html>
