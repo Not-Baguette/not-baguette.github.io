@@ -17,6 +17,9 @@
     .flex-col {
         flex-direction: column;
     }
+    .gap-10, .gap-4{
+        gap: 20px !important;
+    }
 }
 
 /* Popup animation stuff */
