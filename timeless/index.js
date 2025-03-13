@@ -2,14 +2,14 @@
 /*       INIT VAR     */
 /*  ----------------- */
 const canvas = document.getElementById("gameCanvas");
-const ctx = canvas.getContext("2d");
+const ctx = canvas.getContext("2d"); // 2D rendering context
 const avatarIndex = getUrlParam("avatar");
 const usernameParam = getUrlParam("username");
 
 // Player stats
 const player_default = {
-    x: 200,
-    y: 240,
+    x: 210,
+    y: 250,
     size: 80,
     speed: 2,
     hp: 5,
@@ -21,7 +21,11 @@ const player_default = {
 };
 
 let player = { ...player_default }; // copy the player object to prevent mutation
+let lastValidPosition = { x: player.x, y: player.y, area: player.area }; // for drag-and-drop
 
+let isDragging = false;
+let dragOffsetX = 0;
+let dragOffsetY = 0;
 let isMoving = false;
 let destination = null;
 let visitedAreas = new Set(["Home"]);
@@ -31,7 +35,7 @@ const areas = {
     "Home": {
         x: 180,
         y: 230,
-        width: 80,
+        width: 90,
         height: 90,
         cost: 2,
         type: "safe",
@@ -62,7 +66,7 @@ const areas = {
     "Padang": {
         x: 650,
         y: 80,
-        width: 80,
+        width: 90,
         height: 90,
         cost: 1,
         type: "safe",
@@ -73,7 +77,7 @@ const areas = {
     "Ponorogo": {
         x: 650,
         y: 450,
-        width: 100,
+        width: 90,
         height: 90,
         cost: 2,
         type: "enemy",
@@ -168,6 +172,7 @@ bgImage.src = "assets/backgrounds/BackgroundMap.png";
 /*  ----------------- */
 /*   EVENT LISTENERS  */
 /*  ----------------- */
+/* make the canvas clickable properly even on mobile */
 canvas.addEventListener("click", handleClick);
 canvas.addEventListener("touchstart", handleTouchStart);
 canvas.addEventListener("touchend", handleTouchEnd);
@@ -187,48 +192,6 @@ function handleTouchEnd(e) {
     if (e.changedTouches.length === 1) {
         const touch = e.changedTouches[0];
         handleInteraction(touch.clientX, touch.clientY);
-    }
-}
-
-
-function handleInteraction(clientX, clientY) {
-    if (isMoving) return; // stop the user if they are already moving
-
-    const action1 = document.getElementById("action1");
-    const action2 = document.getElementById("action2");
-    const action3 = document.getElementById("action3");
-    
-    const rect = canvas.getBoundingClientRect(); // get the canvas rect for calculation
-    const scaleX = canvas.width / rect.width;    // scale factor for x
-    const scaleY = canvas.height / rect.height;  // scale factor for y
-    const clickX = (clientX - rect.left) * scaleX;
-    const clickY = (clientY - rect.top) * scaleY;
-
-    // map the area clicked to the area object and see if it's valid
-    for (const area in areas) {
-        const loc = areas[area];
-        // check if the click is within the area (will be looped through all areas)
-        if (clickX >= loc.x && clickX <= loc.x + loc.width && 
-            clickY >= loc.y && clickY <= loc.y + loc.height) {
-            if (player.area === area) return; // if same area, dont do anything
-            if (loc.requires && !loc.requires.every(r => visitedAreas.has(r))) { // locked areas logic
-                showPopup("", 0, 0, 0, 0, 0, `You must visit ${loc.requires.join(" and ")} first!`);
-                const cancelButton = document.getElementById("cancelButton");
-                const confirmButton = document.getElementById("confirmButton");
-                cancelEasterEgg(cancelButton, confirmButton);
-                return;
-            }
-            // set the destination to the center of the area clicked
-            destination = { x: loc.x + loc.width / 2, y: loc.y + loc.height / 2, 
-                            area: area, cost: loc.cost };
-            isMoving = true;
-            
-            // hide the buttons while moving
-            action1.classList.add("hidden");
-            action2.classList.add("hidden");
-            action3.classList.add("hidden");
-            return;
-        }
     }
 }
 
@@ -253,14 +216,113 @@ function isMouseOverArea(clientX, clientY) {
     return false;
 }
 
+/* Mouse drag-drop support */
+// Drag the player around the canvas
+canvas.addEventListener("mousedown", (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const mouseX = (e.clientX - rect.left) * scaleX;
+    const mouseY = (e.clientY - rect.top) * scaleY;
+
+    // if mouse x y is on the player, set isdragging to true and drag the user to the mouse
+    if (mouseX >= player.x && mouseX <= player.x + player.size &&
+        mouseY >= player.y && mouseY <= player.y + player.size) {
+        isDragging = true;
+        dragOffsetX = mouseX - player.x;
+        dragOffsetY = mouseY - player.y;
+    }
+});
+
+// if mouse is moving
 canvas.addEventListener("mousemove", (e) => {
     if (isMouseOverArea(e.clientX, e.clientY)) {
         canvas.style.cursor = "grab";
     } else {
         canvas.style.cursor = "default";
     }
+    // if isdragging is true, set the player x and y to be the mouse x and y (update function and )
+    if (isDragging) {
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        const mouseX = (e.clientX - rect.left) * scaleX;
+        const mouseY = (e.clientY - rect.top) * scaleY;
+
+        player.x = mouseX - dragOffsetX;
+        player.y = mouseY - dragOffsetY;
+    }
 });
 
+// Mouse released
+canvas.addEventListener("mouseup", () => {
+    isDragging = false;
+
+    // Check if the player is in a valid area
+    let inValidArea = false;
+    for (const area in areas) {
+        const loc = areas[area];
+        if (player.x >= loc.x && player.x <= loc.x + loc.width &&
+            player.y >= loc.y && player.y <= loc.y + loc.height) {
+            if (loc.requires && !loc.requires.every(r => visitedAreas.has(r))) {
+                continue; // Skip locked areas
+            }
+            inValidArea = true;
+            break;
+        }
+    }
+
+    // If not in a valid area, reset to last valid position
+    if (!inValidArea) {
+        player.x = lastValidPosition.x;
+        player.y = lastValidPosition.y;
+        player.area = lastValidPosition.area;
+    }
+});
+
+// Drag the player around the canvas
+canvas.addEventListener("mousedown", (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const mouseX = (e.clientX - rect.left) * scaleX;
+    const mouseY = (e.clientY - rect.top) * scaleY;
+
+    // if mouse x y is on the player, set isdragging to true and drag the user to the area
+    if (mouseX >= player.x && mouseX <= player.x + player.size &&
+        mouseY >= player.y && mouseY <= player.y + player.size) {
+        isDragging = true;
+        dragOffsetX = mouseX - player.x;
+        dragOffsetY = mouseY - player.y;
+    }
+});
+
+// if mouse is moving
+canvas.addEventListener("mousemove", (e) => {
+    if (isMouseOverArea(e.clientX, e.clientY)) {
+        canvas.style.cursor = "grab";
+    } else {
+        canvas.style.cursor = "default";
+    }
+    // if isdragging is true, set the player x and y to be the mouse x and y (update function and )
+    if (isDragging) {
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        const mouseX = (e.clientX - rect.left) * scaleX;
+        const mouseY = (e.clientY - rect.top) * scaleY;
+
+        player.x = mouseX - dragOffsetX;
+        player.y = mouseY - dragOffsetY;
+    }
+});
+
+// Mouse released
+canvas.addEventListener("mouseup", () => {
+    isDragging = false;
+});
+
+/* Button functions */
 // Button actions using showPopup, I'm sorry for the shit code below
 document.getElementById("action1").addEventListener("click", () => {
     const actions = (areaActions[player.area]).action1;
@@ -442,7 +504,8 @@ function showPopup(action="", hp=0, mana=0, hunger=0, energy=0, earnings=0, cust
     document.addEventListener("keydown", handleKeyDown); // Add the event listener for keydown
 }
 
-function cancelEasterEgg(cancelButton, confirmButton,) {
+// easter egg for locked area hehe
+function cancelEasterEgg(cancelButton, confirmButton) {
     let cancelcounter = 0;
     const jumpscare = document.getElementById("jumpscare"); // Define jumpscare element here
     const popupContainer = document.getElementById("popupContainer");
@@ -452,9 +515,9 @@ function cancelEasterEgg(cancelButton, confirmButton,) {
         if (cancelcounter === 1) {
             popupMessage.innerText = `Like I said before, no skipping levels ;>`;
         } else if (cancelcounter === 2) {
-            popupMessage.innerText = `You're a persistent one aren"t you?`;
+            popupMessage.innerText = `You're a persistent one aren't you?`;
         } else if (cancelcounter === 3) {
-            popupMessage.innerText = `Don"t cheat peeps.`;
+            popupMessage.innerText = `Don't cheat peeps.`;
         } else if (cancelcounter === 4) {
             popupMessage.innerText = `Now you're just testing my patience.`;
         } else if (cancelcounter > 4) {
@@ -510,10 +573,50 @@ function updateBackground(region) {
 /*  ----------------- */
 /*    GAME FUNCTIONS  */
 /*  ----------------- */
+// Handle the player interaction with the areas
+function handleInteraction(clientX, clientY) {
+    if (isMoving) return; // stop the user if they are already moving
+
+    const action1 = document.getElementById("action1");
+    const action2 = document.getElementById("action2");
+    const action3 = document.getElementById("action3");
+    
+    const rect = canvas.getBoundingClientRect(); // get the canvas rect for calculation
+    const scaleX = canvas.width / rect.width;    // scale factor for x
+    const scaleY = canvas.height / rect.height;  // scale factor for y
+    const clickX = (clientX - rect.left) * scaleX;
+    const clickY = (clientY - rect.top) * scaleY;
+
+    // map the area clicked to the area object and see if it's valid
+    for (const area in areas) {
+        const loc = areas[area];
+        // check if the click is within the area (will be looped through all areas)
+        if (clickX >= loc.x && clickX <= loc.x + loc.width && 
+            clickY >= loc.y && clickY <= loc.y + loc.height) {
+            if (player.area === area) return; // if same area, dont do anything
+            if (loc.requires && !loc.requires.every(r => visitedAreas.has(r))) { // locked areas logic
+                showPopup("", 0, 0, 0, 0, 0, `You must visit ${loc.requires.join(" and ")} first!`);
+                const cancelButton = document.getElementById("cancelButton");
+                const confirmButton = document.getElementById("confirmButton");
+                cancelEasterEgg(cancelButton, confirmButton);
+                return;
+            }
+            // set the destination to the center of the area clicked
+            destination = { x: loc.x + loc.width / 2, y: loc.y + loc.height / 2, 
+                            area: area, cost: loc.cost };
+            isMoving = true;
+            
+            // hide the buttons while moving
+            action1.classList.add("hidden");
+            action2.classList.add("hidden");
+            action3.classList.add("hidden");
+            return;
+        }
+    }
+}
+
 // Kill the player when they die
 function killPlayer() {
-    let cancelcounter = 0;
-
     const popupContainer = document.getElementById("popupContainer");
     const popupMessage = document.getElementById("popupMessage");
     const confirmButton = document.getElementById("confirmButton");
@@ -522,6 +625,8 @@ function killPlayer() {
     const action1 = document.getElementById("action1");
     const action2 = document.getElementById("action2");
     const action3 = document.getElementById("action3");
+    
+    let cancelcounter = 0;
 
     popupMessage.innerText = `You died!`;
     popupContainer.classList.remove("hidden");
@@ -566,6 +671,7 @@ function killPlayer() {
         }
     };
 }
+
 // Update the location of the player
 function update() {
     if (destination) {
@@ -594,7 +700,6 @@ function update() {
                     
             // add the area to visited areas
             visitedAreas.add(destination.area);
-            console.log(`Entered ${destination.area}`); // DEBUG: REMOVE THIS
             
             // Check if the area is an enemy area and set the jumping property
             if (areas[player.area].type === "enemy") {
@@ -603,6 +708,9 @@ function update() {
                     areas[player.area].jumping = false;
                 }, 500); // Match the duration of the jump animation
             }
+
+            // Update last valid position
+            lastValidPosition = { x: player.x, y: player.y, area: player.area };
 
             destination = null;
             isMoving = false;
