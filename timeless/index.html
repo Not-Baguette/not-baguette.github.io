@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="style.css">
         <link rel="icon" type="image/x-icon" href="assets/Timeless_Adventure_logo.png" />
     </head>
-    <body class="flex flex-col bg-blue-200 items-center text-white min-h-screen bg-cover bg-center index-pg">
+    <body class="flex flex-col items-center text-white min-h-screen bg-cover bg-center index-pg">
         <!-- Top Row for Usernames n logo, good luck sis :sparkles: -->
         <div class="w-full bg-gray-800 p-4 m-auto text-center mb-4">
             <h1 class="text-3xl font-bold my-4">The Timeless Adventure</h1>
@@ -67,40 +67,38 @@
         <div class="flex flex-col sm:flex-row">
             <!-- Canvas -->
             <canvas id="gameCanvas" width="800" height="600" class="m-4 w-auto"></canvas>
-            <!-- Area interaction menu -->
-            <div class="m-4 bg-gray-700 rounded lg:w-60">
+            <!-- Area interaction menu, do not recombine this with inside div for mobile support -->
+            <div class="m-4 bg-gray-700 rounded lg:w-60 interaction-box">
                 <div class="sm:w-40 p-4 lg:w-60">
                     <h2 class="text-xl mb-2">Area Interactions</h2>
                     <p id="interactionText" class="mb-2"></p>
                     <button id="action1" class="hidden bg-blue-500 px-4 py-2 rounded mb-2"></button>
                     <button id="action2" class="hidden bg-green-500 px-4 py-2 rounded mb-2"></button>
                     <button id="action3" class="hidden bg-red-500 px-4 py-2 rounded"></button>
-                    <div id="popupContainer" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center">
-                        <div class="bg-gray-900 text-white p-4 rounded-border border-2 text-center"> <!-- Placeholder for popup -->
-                            <p id="popupMessage" class="mb-2"></p> 
-                            <div class="mb-3"><img id="jumpscare" class="mx-auto"></img></div>
-                            <button id="confirmButton" class="bg-green-500 px-4 py-2 rounded mr-2">Confirm</button>
-                            <button id="cancelButton" class="bg-red-500 px-4 py-2 rounded">Cancel</button>
+
+                    <div id="controls" class="text-center controls">
+                        <button id="moveUp" class="px-4 py-2 mb-2 ctrl-btn">Move Up</button>
+                        <div class="flex justify-between">
+                            <button id="moveLeft" class="px-4 py-2 mr-2 ctrl-btn">Move Left</button>
+                            <button id="moveRight" class="px-4 py-2 ctrl-btn">Move Right</button>
                         </div>
+                        <button id="moveDown" class="px-4 py-2 mt-2 ctrl-btn">Move Down</button>
                     </div>
                 </div>
             </div>
         </div>
-
+        <!-- Popup container -->
+        <div id="popupContainer" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center">
+            <div class="bg-gray-900 text-white p-4 rounded-border border-2 text-center"> <!-- Placeholder for popup -->
+                <p id="popupMessage" class="mb-2"></p> 
+                <div class="mb-3"><img id="jumpscare" class="mx-auto"></img></div>
+                <button id="confirmButton" class="bg-green-500 px-4 py-2 rounded mr-2">Confirm</button>
+                <button id="cancelButton" class="bg-red-500 px-4 py-2 rounded">Cancel</button>
+            </div>
+        </div>
         <!-- bottom text -->
         <p class="mb-4">Click to move</p>
         
         <script src="index.js"></script>
-        <script>
-            function updateClock() {
-                const now = new Date();
-                const hours = String(now.getHours()).padStart(2, '0');
-                const minutes = String(now.getMinutes()).padStart(2, '0');
-                const seconds = String(now.getSeconds()).padStart(2, '0');
-                document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
-            }
-            setInterval(updateClock, 1000);
-            updateClock(); // Initial call to display the clock immediately
-        </script>
     </body>
 </html>

@@ -19,15 +19,15 @@ const usernameInput = document.getElementById("username");
 function getGreeting() {
     const now = new Date();
     const hours = now.getHours();
-    if (hours < 4) {
+    if(hours < 4) {
         return "You're up late";
-    } else if (hours < 12) {
+    } else if(hours < 12) {
         return "Good morning";
-    } else if (hours < 18) {
+    } else if(hours < 18) {
         return "Good afternoon";
-    } else if (hours < 22) {
+    } else if(hours < 22) {
         return "Good evening";
-    } else {
+    } else{
         return "Don't forget to take a rest";
     }
 }
@@ -46,10 +46,10 @@ nextAvatar.addEventListener("click", () => {
 // event listener for submit button
 submitBtn.addEventListener("click", () => {
     const username = usernameInput.value;
-    if (username) {
+    if(username) {
         //+1 so range is 1-4
         window.location.href = `index.html?avatar=${currentAvatarIndex+1}&username=${username}`;
-    } else {
+    } else{
         alert("Please enter a username.");
     }
 });
