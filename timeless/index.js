@@ -8,6 +8,7 @@ const usernameParam = getUrlParam("username");
 let keysPressed = {}; // store the keys pressed by the user for keyboard support
 let inGameTime = new Date(); // ingame time
 let moveInterval; // button movement interval
+let lastHour = inGameTime.getHours(); // store the last hour for energy decay
 
 // Constants
 const PLAYER_DEFAULT = {
@@ -569,6 +570,13 @@ function updateClock() {
     } else{
         body.classList.add(backgroundColors.night);
     }
+
+    // Decrement energy every hour (status decay)
+    if (hours !== lastHour) {
+        player.energy = Math.max(0, player.energy - 1); // Ensure energy doesn't go below 0
+        lastHour = hours;
+        updateStats(); // Update the stats display
+    }
 }
 
 // change bg based on region
@@ -858,7 +866,7 @@ function draw() {
 // run to init everything
 function firstrun() {
     // reset clock
-    inGameTime.setHours(17, 0, 0, 0); // Start at 08:00 AM
+    inGameTime.setHours(8, 0, 0, 0); // Start at 08:00 AM
 
     // Grab the url param for avatar and username, only run this once
     if(!avatarIndex || !usernameParam) { // if param is missing, redirect to avatar selection
@@ -879,10 +887,9 @@ function firstrun() {
 
 // Gameloop, run the function recursively
 function gameLoop() {
-    // Check for hunger, if too hungry just die
-    if(player.hunger === 0) {
-        killPlayer();
-    } else if(player.hp === 0) {
+    // Check for hunger, if any drops to 0 just die
+    if(player.hunger === 0 || player.energy === 0 || 
+        player.mana === 0 || player.hp === 0) {
         killPlayer();
     } else{
         updatePlayerPosition();
