@@ -8,7 +8,7 @@ const usernameParam = getUrlParam("username");
 let keysPressed = {}; // store the keys pressed by the user for keyboard support
 let inGameTime = new Date(); // ingame time
 let moveInterval; // button movement interval
-let lastHour = inGameTime.getHours(); // store the last hour for energy decay
+let lastHour; // store the last hour for day-night cycle & status decay
 
 // Constants
 const PLAYER_DEFAULT = {
@@ -578,7 +578,7 @@ function PlayerInLockedArea(loc) {
 }
 
 // Update the clock every second
-function updateClock() {
+function updateClock(overrule) {
     inGameTime.setMinutes(inGameTime.getMinutes() + 1); // Increment in-game time by 1 minute
 
     const hours = String(inGameTime.getHours()).padStart(2, "0");
@@ -587,7 +587,7 @@ function updateClock() {
 
     // change time display
     document.getElementById("clock").textContent = `${hours}:${minutes}`;
-    if(hours == lastHour) return; // same hour = no need to update
+    if(hours == lastHour && !overrule) return; // same hour and no overrule = no need to update, for efficiency
 
     // Remove all possible background colors
     body.classList.remove(...Object.values(backgroundColors)); 
@@ -602,6 +602,8 @@ function updateClock() {
     } else{
         body.classList.add(backgroundColors.night);
     }
+
+    if(overrule) return; // prevent overrule from updating the stats, just day-night cycle
 
     // Decrement energy every hour (status decay)
     player.energy = Math.max(0, player.energy - 10); // Ensure energy doesn't go below 0
@@ -808,6 +810,7 @@ function preloadImages(sources, callback) {
 // run to init everything
 function firstrun() {
     inGameTime.setHours(8, 0, 0, 0); // Start at 08:00 AM
+    lastHour = inGameTime.getHours(); // set the last hour to the current hour
 
     // Grab the url param for avatar and username, only run this once
     if(!avatarIndex || !usernameParam) { // if param is missing, redirect to avatar selection
@@ -822,8 +825,7 @@ function firstrun() {
             usernameElement.innerText = usernameParam;
         }
     }
-    setInterval(updateClock, 1000);
-    updateClock(); // Initial call to display the clock immediately
+    updateClock(true); // Initial call to display the clock immediately
 }
 
 /*  ----------------- */
@@ -971,6 +973,7 @@ function gameLoop() {
 preloadImages(allImageSources, () => {
     hideLoadingScreen();
     addEventListeners();
+    setInterval(updateClock, 1000, false); // set the clock to update every second
     firstrun();
     gameLoop();
 });
