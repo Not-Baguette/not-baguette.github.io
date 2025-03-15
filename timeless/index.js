@@ -54,6 +54,7 @@ let dragOffsetY = 0;
 let isMoving = false;
 let destination = null;
 let visitedAreas = new Set(["Home"]);
+let maxDebt = -100; // minimum money to do basic stuff, for easter egg
 
 // day-night cycle
 const backgroundColors = {
@@ -174,6 +175,14 @@ const profilePic = document.getElementById("profilePic");
 lockedOverlayImage.src = LOCKED_OVERLAY_SRC;
 bgImage.src = BG_IMAGE_SRC;
 
+// Collect all image sources
+const allImageSources = [
+    BG_IMAGE_SRC,
+    LOCKED_OVERLAY_SRC,
+    ...Object.values(AREA_IMAGES),
+    ...Object.values(PLAYER_IMAGES)
+];
+
 Object.keys(AREA_IMAGES).forEach(area => {
     areaImages[area] = new Image();
     areaImages[area].src = AREA_IMAGES[area];
@@ -230,10 +239,10 @@ function addEventListeners() {
         if(player.area === "Home") {
             showPopup(actions, 0, 0, 0, 1, 0); 
         } else if(player.area === "Pontianak") {
-            if(!hasEnoughResources(1, 2, 0, 0, 0)) return;
+            if(!hasEnoughResources(1, 2, 0, 0, maxDebt)) return;
             showPopup(actions, -1, -2, 0, 0, 10);
         } else if(player.area === "Jayapura"){
-            if(!hasEnoughResources(2, 3, 0, 0, 0)) return;
+            if(!hasEnoughResources(2, 3, 0, 0, maxDebt)) return;
             showPopup(actions, -2, -3, 0, 0, 15)
         } else if(player.area === "Padang") {
             if(!hasEnoughResources(0, 0, 0, 0, 5)) return;
@@ -246,10 +255,10 @@ function addEventListeners() {
         if(player.area === "Home") {
             showPopup(actions, 0, 0, 1, 0, 0);
         } else if(player.area === "Pontianak") {
-            if(!hasEnoughResources(0, 0, 0, 2, 0)) return;
+            if(!hasEnoughResources(0, 0, 0, 2, maxDebt)) return;
             showPopup(actions, 0, 0, 0, -2, 5);
         } else if(player.area === "Jayapura"){
-            if(!hasEnoughResources(0, 0, 0, 3, 0)) return;
+            if(!hasEnoughResources(0, 0, 0, 3, maxDebt)) return;
             showPopup(actions, 0, 0, 0, -3, 10)
         } else if(player.area === "Padang") {
             if(!hasEnoughResources(0, 0, 0, 0, 5)) return;
@@ -262,9 +271,9 @@ function addEventListeners() {
         if(player.area === "Home") {
             showPopup(actions, 1, 0, 0, 0, 0);
         } else if(player.area === "Padang") {
-            showPopup(actions, 0, 2, 0, 0, 0);
+            showPopup(actions, 0, 2, 0, 0, -200);
         } else if(player.area === "Ponorogo") {
-            if(!hasEnoughResources(1, 1, 1, 1, 0)) return;
+            if(!hasEnoughResources(1, 1, 1, 1, -200)) return;
             showPopup(actions, -4, -4, -1, -4, 25);
         } 
     });
@@ -762,6 +771,53 @@ function update() {
 }
 
 /*  ----------------- */
+/*  LOADING FUNCTIONS */
+/*  ----------------- */
+// hide the loading screen
+function hideLoadingScreen() {
+    const loadingScreen = document.getElementById("loadingScreen");
+    loadingScreen.classList.add("hidden");
+}
+
+// preload the images, hopefully will fix perf. issue
+function preloadImages(sources, callback) {
+    let loadedImages = 0;
+    const totalImages = sources.length;
+
+    sources.forEach(src => {
+        const img = new Image();
+        img.src = src;
+        img.onload = () => {
+            loadedImages++;
+            if (loadedImages === totalImages) {
+                callback();
+            }
+        };
+    });
+}
+
+// run to init everything
+function firstrun() {
+    inGameTime.setHours(8, 0, 0, 0); // Start at 08:00 AM
+
+    // Grab the url param for avatar and username, only run this once
+    if(!avatarIndex || !usernameParam) { // if param is missing, redirect to avatar selection
+        window.location.href = "avatar.html";
+    } else{
+        if(avatarIndex) {
+            player.avatar = playerImg[avatarIndex];
+            updateProfilePic(avatarIndex); // Update the profile picture
+        }
+        if(usernameParam) {
+            const usernameElement = document.getElementById("username");
+            usernameElement.innerText = usernameParam;
+        }
+    }
+    setInterval(updateClock, 1000);
+    updateClock(); // Initial call to display the clock immediately
+}
+
+/*  ----------------- */
 /*    GAME FUNCTIONS  */
 /*  ----------------- */
 // Handle the player interaction with the areas
@@ -802,7 +858,6 @@ function handleInteraction(clientX, clientY) {
         return;
     }
 }
-
 
 // Kill the player when they die
 function killPlayer() {
@@ -888,27 +943,6 @@ function draw() {
     ctx.drawImage(player.avatar, player.x, player.y, player.size, player.size); // Draw the player's avatar
 }
 
-// run to init everything
-function firstrun() {
-    inGameTime.setHours(8, 0, 0, 0); // Start at 08:00 AM
-
-    // Grab the url param for avatar and username, only run this once
-    if(!avatarIndex || !usernameParam) { // if param is missing, redirect to avatar selection
-        window.location.href = "avatar.html";
-    } else{
-        if(avatarIndex) {
-            player.avatar = playerImg[avatarIndex];
-            updateProfilePic(avatarIndex); // Update the profile picture
-        }
-        if(usernameParam) {
-            const usernameElement = document.getElementById("username");
-            usernameElement.innerText = usernameParam;
-        }
-    }
-    setInterval(updateClock, 1000);
-    updateClock(); // Initial call to display the clock immediately
-}
-
 // Gameloop, run the function recursively
 function gameLoop() {
     // Check for hunger, if any drops to 0 just die
@@ -924,6 +958,10 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
-addEventListeners();
-firstrun();
-gameLoop();
+// Preload images and hide loading screen when done
+preloadImages(allImageSources, () => {
+    hideLoadingScreen();
+    addEventListeners();
+    firstrun();
+    gameLoop();
+});

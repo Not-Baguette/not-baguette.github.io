@@ -8,6 +8,12 @@ const avatars = [
 
 let currentAvatarIndex = 0; // current avatar
 
+// Try preloading the image to improve server runtime performance
+avatars.forEach(src => {
+    const img = new Image();
+    img.src = src;
+});
+
 // Get elements
 const avatarImage = document.getElementById("avatarImage");
 const prevAvatar = document.getElementById("prevAvatar");
