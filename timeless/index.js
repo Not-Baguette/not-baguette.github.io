@@ -326,20 +326,19 @@ function isMouseOverPlayer(mouseX, mouseY) {
            mouseY >= player.y && mouseY <= player.y + player.size;
 }
 
+// check if the player is in a valid area
 function isPlayerInValidArea() {
-    for (const area in areas) {
-        const loc = areas[area];
-        if(player.x >= loc.x && player.x <= loc.x + loc.width &&
-            player.y >= loc.y && player.y <= loc.y + loc.height) {
-            if(loc.requires && !loc.requires.every(r => visitedAreas.has(r))) {
-                continue; // Skip locked areas
-            }
-            return true;
-        }
-    }
-    return false;
+    const areasContainingPlayer = getAreasContainingPoint(player.x, player.y);
+    return areasContainingPlayer.some(({ loc }) => isAreaUnlocked(loc)); // true if areas containing player is unlocked
 }
 
+// Check if the mouse is over an area
+function isMouseOverArea(clientX, clientY) {
+    const areasContainingMouse = getAreasContainingPoint(clientX, clientY);
+    return areasContainingMouse.some(({ loc }) => isAreaUnlocked(loc));
+}
+
+// return user to last valid position
 function resetPlayerPosition() {
     player.x = lastValidPosition.x;
     player.y = lastValidPosition.y;
@@ -363,18 +362,32 @@ function handleTouchEnd(e) {
     }
 }
 
-// Check if the mouse is over an area
-function isMouseOverArea(clientX, clientY) {
-    return Object.values(areas).some(loc => 
-        clientX >= loc.x && clientX <= loc.x + loc.width &&
-        clientY >= loc.y && clientY <= loc.y + loc.height &&
-        (!loc.requires || loc.requires.every(r => visitedAreas.has(r)))
-    );
-}
-
 /*  ----------------- */
 /*  HELPER FUNCTIONS  */
 /*  ----------------- */
+// check if a point is in an location
+function isPointInLocation(x, y, loc) {
+    return x >= loc.x && x <= loc.x + loc.width &&
+           y >= loc.y && y <= loc.y + loc.height;
+}
+
+// check if a point is in an area
+function getAreasContainingPoint(x, y) {
+    const containingAreas = [];
+    for (const areaName in areas) {
+        const loc = areas[areaName];
+        if (isPointInLocation(x, y, loc)) {
+            containingAreas.push({ name: areaName, loc });
+        }
+    }
+    return containingAreas;
+}
+
+// check if an area is unlocked
+function isAreaUnlocked(loc) {
+    return !loc.requires || loc.requires.every(r => visitedAreas.has(r));
+}
+
 // get pfp from avatar selection
 function updateProfilePic(avatarIndex) {
     if(!profilePic) {
@@ -521,12 +534,15 @@ function showPopup(action="", hp=0, mana=0, hunger=0, energy=0, earnings=0, cust
 /*  ----------------- */
 /*  UPDATE FUNCTIONS  */
 /*  ----------------- */
-// easter egg for locked area hehe
-function cancelEasterEgg(cancelButton, confirmButton) {
+// When user is on a locked area
+function PlayerInLockedArea(loc) {
     let cancelcounter = 0;
+    const cancelButton = document.getElementById("cancelButton");
+    const confirmButton = document.getElementById("confirmButton");
     const jumpscare = document.getElementById("jumpscare"); // Define jumpscare element here
     const popupContainer = document.getElementById("popupContainer");
 
+    showPopup("", 0, 0, 0, 0, 0, `You must visit ${loc.requires.join(" and ")} first!`);
     cancelButton.onclick = () => {
         cancelcounter++;
         if(cancelcounter === 1) {
@@ -683,21 +699,27 @@ function movePlayer(dx, dy) {
     player.x += dx;
     player.y += dy;
     
-    for (const area in areas) {
-        const loc = areas[area];
-        if(player.x >= loc.x && player.x <= loc.x + loc.width &&
-            player.y >= loc.y && player.y <= loc.y + loc.height) {
-            if(loc.requires && !loc.requires.every(r => visitedAreas.has(r))) {
-                continue; // Skip locked areas
-            } else if(player.area !== area && !isMoving) {
-                destination = { x: loc.x + loc.width / 2, y: loc.y + loc.height / 2, area: area, cost: loc.cost };
-                handleArrival();
-                break;
-            }
+    const areasContainingPlayer = getAreasContainingPoint(player.x, player.y);
+    for (const { name: areaName, loc } of areasContainingPlayer) {
+        if (!isAreaUnlocked(loc)) {
+            PlayerInLockedArea(loc);
+            resetPlayerPosition();
+            return;
+        }
+
+        if (player.area !== areaName && !isMoving) {
+            destination = { 
+                x: loc.x + loc.width / 2,
+                y: loc.y + loc.height / 2,
+                area: areaName,
+                cost: loc.cost
+            };
+            handleArrival();
+            break;
         }
     }
 
-    if(areas[player.area]) {
+    if (areas[player.area]) {
         updateButtonActions(player.area);
         updateBackground(areas[player.area].region);
     }
@@ -744,45 +766,43 @@ function update() {
 /*  ----------------- */
 // Handle the player interaction with the areas
 function handleInteraction(clientX, clientY) {
-    if(isMoving) return; // stop the user if they are already moving
+    if (isMoving) return;
 
-    const action1 = document.getElementById("action1");
-    const action2 = document.getElementById("action2");
-    const action3 = document.getElementById("action3");
-    
-    const rect = canvas.getBoundingClientRect(); // get the canvas rect for calculation
-    const scaleX = canvas.width / rect.width;    // scale factor for x
-    const scaleY = canvas.height / rect.height;  // scale factor for y
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
     const clickX = (clientX - rect.left) * scaleX;
     const clickY = (clientY - rect.top) * scaleY;
 
-    // map the area clicked to the area object and see if it's valid
-    for (const area in areas) {
-        const loc = areas[area];
-        // check if the click is within the area (will be looped through all areas)
-        if(clickX >= loc.x && clickX <= loc.x + loc.width && 
-            clickY >= loc.y && clickY <= loc.y + loc.height) {
-            if(player.area === area) return; // if same area, dont do anything
-            if(loc.requires && !loc.requires.every(r => visitedAreas.has(r))) { // locked areas logic
-                showPopup("", 0, 0, 0, 0, 0, `You must visit ${loc.requires.join(" and ")} first!`);
-                const cancelButton = document.getElementById("cancelButton");
-                const confirmButton = document.getElementById("confirmButton");
-                cancelEasterEgg(cancelButton, confirmButton);
-                return;
-            }
-            // set the destination to the center of the area clicked
-            destination = { x: loc.x + loc.width / 2, y: loc.y + loc.height / 2, 
-                            area: area, cost: loc.cost };
-            isMoving = true;
-            
-            // hide the buttons while moving
-            action1.classList.add("hidden");
-            action2.classList.add("hidden");
-            action3.classList.add("hidden");
+    const areasContainingClick = getAreasContainingPoint(clickX, clickY);
+    for (const { name: areaName, loc } of areasContainingClick) {
+        if (player.area === areaName) return;
+
+        // if player is in a locked area, show popup
+        if (!isAreaUnlocked(loc)) {
+            PlayerInLockedArea(loc);
+            resetPlayerPosition();
             return;
         }
+
+        destination = {
+            x: loc.x + loc.width / 2,
+            y: loc.y + loc.height / 2,
+            area: areaName,
+            cost: loc.cost
+        };
+        isMoving = true;
+        
+        const action1 = document.getElementById("action1");
+        const action2 = document.getElementById("action2");
+        const action3 = document.getElementById("action3");
+        action1.classList.add("hidden");
+        action2.classList.add("hidden");
+        action3.classList.add("hidden");
+        return;
     }
 }
+
 
 // Kill the player when they die
 function killPlayer() {
@@ -859,7 +879,7 @@ function draw() {
     
         // Locked area overlay
         if(loc.requires && !loc.requires.every(r => visitedAreas.has(r))) {
-            ctx.globalAlpha = 0.4; // Set transparency level (0.0 to 1.0)
+            ctx.globalAlpha = 0.4; // lock alpha val
             ctx.drawImage(lockedOverlayImage, loc.x, loc.y, loc.width, loc.height); // Draw the locked overlay
             ctx.globalAlpha = 1.0; // Reset transparency
         }
@@ -870,8 +890,7 @@ function draw() {
 
 // run to init everything
 function firstrun() {
-    // reset clock
-    inGameTime.setHours(12, 0, 0, 0); // Start at 08:00 AM
+    inGameTime.setHours(8, 0, 0, 0); // Start at 08:00 AM
 
     // Grab the url param for avatar and username, only run this once
     if(!avatarIndex || !usernameParam) { // if param is missing, redirect to avatar selection
