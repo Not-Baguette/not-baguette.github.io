@@ -271,9 +271,9 @@ function addEventListeners() {
         if(player.area === "Home") {
             showPopup(actions, 1, 0, 0, 0, 0);
         } else if(player.area === "Padang") {
-            showPopup(actions, 0, 2, 0, 0, -200);
+            showPopup(actions, 0, 2, 0, 0, 0);
         } else if(player.area === "Ponorogo") {
-            if(!hasEnoughResources(1, 1, 1, 1, -200)) return;
+            if(!hasEnoughResources(1, 1, 1, 1, maxDebt)) return;
             showPopup(actions, -4, -4, -1, -4, 25);
         } 
     });
@@ -705,8 +705,17 @@ function updateStats() {
 /*  ----------------- */
 // move the player based on dx and dy depending on the key pressed
 function movePlayer(dx, dy) {
-    player.x += dx;
-    player.y += dy;
+    // Calculate the new position
+    const newX = player.x + dx;
+    const newY = player.y + dy;
+
+    // Check if the new position is within the canvas boundaries, if no then return
+    if (newX < 0 || newX + player.size > canvas.width || newY < 0 || 
+        newY + player.size > canvas.height) return;
+
+    // Update the player's position
+    player.x = newX;
+    player.y = newY;
     
     const areasContainingPlayer = getAreasContainingPoint(player.x, player.y);
     for (const { name: areaName, loc } of areasContainingPlayer) {
