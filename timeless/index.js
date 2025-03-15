@@ -16,10 +16,10 @@ const PLAYER_DEFAULT = {
     y: 250,
     size: 80,
     speed: 2,
-    hp: 3,
-    energy: 3,
-    mana: 3,
-    hunger: 3,
+    hp: 50,
+    energy: 50,
+    mana: 50,
+    hunger: 50,
     money: 0,
     area: "Home"
 };
@@ -58,11 +58,10 @@ let visitedAreas = new Set(["Home"]);
 // day-night cycle
 const backgroundColors = {
     morning: "bg-blue-200",
-    afternoon: "bg-blue-400",
+    afternoon: "bg-[#FFFFDC]",
     evening: "bg-orange-200",
-    night: "bg-blue-900"
+    night: "bg-blue-400"
 };
-
 
 // Area props
 const areas = {
@@ -291,8 +290,15 @@ function handleMouseDown(e) {
 }
 function handleMouseMove(e) {
     const { mouseX, mouseY } = getMousePosition(e);
-    canvas.style.cursor = isMouseOverArea(mouseX, mouseY) ? "grab" : "default";
-    if(isDragging) {
+    // if the user is hovering over an area or player
+    if (isMouseOverArea(mouseX, mouseY) || 
+        isMouseOverPlayer(mouseX, mouseY)) {
+        canvas.style.cursor = "grab";
+    } else {
+        canvas.style.cursor = "default";
+    }
+    // drag the player if isDragging is true
+    if (isDragging) {
         player.x = mouseX - dragOffsetX;
         player.y = mouseY - dragOffsetY;
     }
@@ -359,23 +365,11 @@ function handleTouchEnd(e) {
 
 // Check if the mouse is over an area
 function isMouseOverArea(clientX, clientY) {
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
-    const mouseX = (clientX - rect.left) * scaleX;
-    const mouseY = (clientY - rect.top) * scaleY;
-
-    for (const area in areas) {
-        const loc = areas[area];
-        if(mouseX >= loc.x && mouseX <= loc.x + loc.width &&
-            mouseY >= loc.y && mouseY <= loc.y + loc.height) {
-            if(loc.requires && !loc.requires.every(r => visitedAreas.has(r))) {
-                continue; // Skip locked areas
-            }
-            return true;
-        }
-    }
-    return false;
+    return Object.values(areas).some(loc => 
+        clientX >= loc.x && clientX <= loc.x + loc.width &&
+        clientY >= loc.y && clientY <= loc.y + loc.height &&
+        (!loc.requires || loc.requires.every(r => visitedAreas.has(r)))
+    );
 }
 
 /*  ----------------- */
@@ -438,6 +432,16 @@ function hasEnoughResources(hp, mana, hunger, energy, money) {
     return true;
 }
 
+// give player effect for x seconds
+function playerEffect(stat, seconds, value){
+    stat = Math.max(0, player.stat + value); // add the stat (use neg. value to decrement)
+
+    // do it every x seconds
+    setTimeout(() => {
+        player.stat = Math.min(100, stat + value);
+    }, seconds * 1000);
+}
+
 // Create an in-game popup for actions
 function showPopup(action="", hp=0, mana=0, hunger=0, energy=0, earnings=0, customMessage = null) {
     const popupContainer = document.getElementById("popupContainer");
@@ -475,10 +479,10 @@ function showPopup(action="", hp=0, mana=0, hunger=0, energy=0, earnings=0, cust
 
     // Function to handle the confirm action
     const confirmAction = () => {
-        player.hp = Math.min(6, Math.max(0, player.hp + hp));
-        player.mana = Math.min(6, Math.max(0, player.mana + mana));
-        player.hunger = Math.min(6, Math.max(0, player.hunger + hunger));
-        player.energy = Math.min(6, Math.max(0, player.energy + energy));
+        player.hp = Math.min(100, Math.max(0, player.hp + hp));
+        player.mana = Math.min(100, Math.max(0, player.mana + mana));
+        player.hunger = Math.min(100, Math.max(0, player.hunger + hunger));
+        player.energy = Math.min(100, Math.max(0, player.energy + energy));
         player.money += earnings;
         closePopup();
     };
@@ -555,9 +559,12 @@ function updateClock() {
     const hours = String(inGameTime.getHours()).padStart(2, "0");
     const minutes = String(inGameTime.getMinutes()).padStart(2, "0");
     const body = document.body;
-    
-    // change time display and remove bg color
+
+    // change time display
     document.getElementById("clock").textContent = `${hours}:${minutes}`;
+    if(hours == lastHour) return; // same hour = no need to update
+
+    // Remove all possible background colors
     body.classList.remove(...Object.values(backgroundColors)); 
 
     // day-night cycle
@@ -572,11 +579,9 @@ function updateClock() {
     }
 
     // Decrement energy every hour (status decay)
-    if (hours !== lastHour) {
-        player.energy = Math.max(0, player.energy - 1); // Ensure energy doesn't go below 0
-        lastHour = hours;
-        updateStats(); // Update the stats display
-    }
+    player.energy = Math.max(0, player.energy - 10); // Ensure energy doesn't go below 0
+    lastHour = hours;
+    updateStats(); // Update the stats display
 }
 
 // change bg based on region
@@ -660,11 +665,11 @@ function updateStats() {
     stats.forEach(stat => {
         const container = document.getElementById(`${stat}Container`);
         container.innerHTML = "";
-        for (let i = 0; i < player[stat]; i++) {
-            let block = document.createElement("div");
-            block.classList.add("bar-block", stat);
-            container.appendChild(block);
-        }
+        const percentage = player[stat];
+        const block = document.createElement("div");
+        block.classList.add("bar-block", stat);
+        block.style.width = `${percentage}%`;
+        container.appendChild(block);
     });
     // Update money display
     document.getElementById("money").innerText = `$${player.money}`;
@@ -866,7 +871,7 @@ function draw() {
 // run to init everything
 function firstrun() {
     // reset clock
-    inGameTime.setHours(8, 0, 0, 0); // Start at 08:00 AM
+    inGameTime.setHours(12, 0, 0, 0); // Start at 08:00 AM
 
     // Grab the url param for avatar and username, only run this once
     if(!avatarIndex || !usernameParam) { // if param is missing, redirect to avatar selection

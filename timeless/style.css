@@ -189,6 +189,14 @@ canvas {
     min-height: 150px;
 }
 
+.clock {
+    text-shadow: /* Outline col */
+        -1px -1px 0 #000,  
+         1px -1px 0 #000,
+        -1px  1px 0 #000,
+         1px  1px 0 #000;
+}
+
 .controls {
     border-radius: 100%;
     position: absolute;
@@ -204,7 +212,7 @@ canvas {
 
 .bar-container {
     /* container for bar-block */
-    width: 250px;
+    min-width: 250px;
     height: 30px;
     background-color: #222;
     border: 1px solid white;
@@ -213,7 +221,6 @@ canvas {
 }
 .bar-block {
     /* bar blocks for the stats */
-    flex: 0 0 50px;
     height: 30px;
     border: 2px solid white;
 }
