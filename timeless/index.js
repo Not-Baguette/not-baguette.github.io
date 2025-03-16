@@ -41,6 +41,13 @@ const PLAYER_IMAGES = {
     4: "assets/characters/BlueMage.png"
 };
 
+const BG_AREA_IMG = {
+    "normal": "assets/backgrounds/Main.png",
+    "winter": "assets/backgrounds/Winter.png",
+    "hell": "assets/backgrounds/Boss.png",
+    "default": "assets/backgrounds/Main.png"
+};
+
 const BG_IMAGE_SRC = "assets/backgrounds/BackgroundMap.png";
 const LOCKED_OVERLAY_SRC = "assets/cities/locked.png";
 
@@ -181,7 +188,8 @@ const allImageSources = [
     BG_IMAGE_SRC,
     LOCKED_OVERLAY_SRC,
     ...Object.values(AREA_IMAGES),
-    ...Object.values(PLAYER_IMAGES)
+    ...Object.values(PLAYER_IMAGES),
+    ...Object.values(BG_AREA_IMG)
 ];
 
 Object.keys(AREA_IMAGES).forEach(area => {
@@ -630,20 +638,7 @@ function updateBackground(region) {
     const body = document.body;
     body.classList.add("background-transition"); // Add transition class
 
-    switch(region) {
-        case "normal":
-            body.style.backgroundImage = "url('assets/backgrounds/Main.png')";
-            break;
-        case "winter":
-            body.style.backgroundImage = "url('assets/backgrounds/Winter.png')";
-            break;
-        case "hell":
-            body.style.backgroundImage = "url('assets/backgrounds/Boss.png')";
-            break;
-        default:
-            body.style.backgroundImage = "url('assets/backgrounds/Main.png')";
-            break;
-    }
+    body.style.backgroundImage = BG_AREA_IMG[region] || BG_AREA_IMG["default"];
 
     // Remove the transition class after the transition duration
     setTimeout(() => {
