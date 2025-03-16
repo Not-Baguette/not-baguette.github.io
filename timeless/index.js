@@ -55,6 +55,7 @@ let isMoving = false;
 let destination = null;
 let visitedAreas = new Set(["Home"]);
 let maxDebt = -100; // minimum money to do basic stuff, for easter egg
+let effectIntervals = []; // store the effect ids for clearing later
 
 // day-night cycle
 const backgroundColors = {
@@ -455,12 +456,25 @@ function hasEnoughResources(hp, mana, hunger, energy, money) {
 }
 
 // give player effect for x seconds
-function playerEffect(stat, seconds, value){
-    stat = Math.max(0, player.stat + value); // add the stat (use neg. value to decrement)
+function playerEffect(statName, seconds, value){
+    // BUG: Player dying does not reset this interval
+    console.log(`Applying effect to ${statName}: ${value} every second for ${seconds} seconds`);
+    console.log(`Current ${statName}: ${player[statName]}`);
 
-    // do it every x seconds
+    // apply effect every second until timeout
+    const intervalId = setInterval(() => {
+        player[statName] = Math.min(100, Math.max(0, player[statName] + value));
+        console.log(`Updated ${statName}: ${player[statName]}`);
+        updateStats(); // Ensure the stats are updated in the UI
+    }, 1000);
+
+    // Store the interval ID on an array so we can clear it later
+    effectIntervals.push(intervalId);
+
+    // stop after x seconds
     setTimeout(() => {
-        player.stat = Math.min(100, stat + value);
+        clearInterval(intervalId);
+        console.log(`Effect on ${statName} ended`);
     }, seconds * 1000);
 }
 
@@ -882,6 +896,10 @@ function killPlayer() {
     const action3 = document.getElementById("action3");
     
     let cancelcounter = 0;
+
+    // clr the effect intervals
+    effectIntervals.forEach(intervalId => clearInterval(intervalId));
+    effectIntervals = [];
 
     popupMessage.innerText = `You died!`;
     popupContainer.classList.remove("hidden");
