@@ -401,7 +401,7 @@ function isAreaUnlocked(loc) {
 // get pfp from avatar selection
 function updateProfilePic(avatarIndex) {
     if(!profilePic) {
-        console.error("profilePic element not found");
+        console.error("profilePic element not found"); // DEBUG
         return;
     }
     switch (avatarIndex) {
@@ -458,13 +458,13 @@ function hasEnoughResources(hp, mana, hunger, energy, money) {
 // give player effect for x seconds
 function playerEffect(statName, seconds, value){
     // BUG: Player dying does not reset this interval
-    console.log(`Applying effect to ${statName}: ${value} every second for ${seconds} seconds`);
-    console.log(`Current ${statName}: ${player[statName]}`);
+    console.log(`Applying effect to ${statName}: ${value} every second for ${seconds} seconds`); // DEBUG
+    console.log(`Current ${statName}: ${player[statName]}`); // DEBUG
 
     // apply effect every second until timeout
     const intervalId = setInterval(() => {
         player[statName] = Math.min(100, Math.max(0, player[statName] + value));
-        console.log(`Updated ${statName}: ${player[statName]}`);
+        console.log(`Updated ${statName}: ${player[statName]}`); // DEBUG
         updateStats(); // Ensure the stats are updated in the UI
     }, 1000);
 
@@ -474,7 +474,7 @@ function playerEffect(statName, seconds, value){
     // stop after x seconds
     setTimeout(() => {
         clearInterval(intervalId);
-        console.log(`Effect on ${statName} ended`);
+        console.log(`Effect ${statName} end`); // DEBUG
     }, seconds * 1000);
 }
 
