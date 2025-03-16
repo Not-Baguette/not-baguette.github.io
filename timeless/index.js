@@ -638,12 +638,12 @@ function updateBackground(region) {
     const body = document.body;
     body.classList.add("background-transition"); // Add transition class
 
-    body.style.backgroundImage = BG_AREA_IMG[region] || BG_AREA_IMG["default"];
+    body.style.backgroundImage = `url(${BG_AREA_IMG[region] || BG_AREA_IMG["default"]})`;
 
     // Remove the transition class after the transition duration
     setTimeout(() => {
         body.classList.remove("background-transition");
-    }, 1000); // Match the duration of the CSS transition
+    }, 1000);
 }
 
 // Handle arrival when reaching destination
