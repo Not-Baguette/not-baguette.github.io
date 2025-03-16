@@ -41,6 +41,14 @@ const PLAYER_IMAGES = {
     4: "assets/characters/BlueMage.png"
 };
 
+const AVATAR_IMAGES = {
+    "1": "assets/characters/KEVIN.png",
+    "2": "assets/characters/REGINA.png",
+    "3": "assets/characters/LINA.png",
+    "4": "assets/characters/BASTIAN.png",
+    "default": "assets/logo.jpeg" // player null easter egg
+};
+
 const BG_AREA_IMG = {
     "normal": "assets/backgrounds/Main.png",
     "winter": "assets/backgrounds/Winter.png",
@@ -189,7 +197,8 @@ const allImageSources = [
     LOCKED_OVERLAY_SRC,
     ...Object.values(AREA_IMAGES),
     ...Object.values(PLAYER_IMAGES),
-    ...Object.values(BG_AREA_IMG)
+    ...Object.values(BG_AREA_IMG),
+    ...Object.values(AVATAR_IMAGES)
 ];
 
 Object.keys(AREA_IMAGES).forEach(area => {
@@ -408,27 +417,12 @@ function isAreaUnlocked(loc) {
 
 // get pfp from avatar selection
 function updateProfilePic(avatarIndex) {
-    if(!profilePic) {
+    if (!profilePic) {
         console.error("profilePic element not found"); // DEBUG
         return;
     }
-    switch (avatarIndex) {
-        case "1":
-            profilePic.src = "assets/characters/KEVIN.png";
-            break;
-        case "2":
-            profilePic.src = "assets/characters/REGINA.png";
-            break;
-        case "3":
-            profilePic.src = "assets/characters/LINA.png";
-            break;
-        case "4":
-            profilePic.src = "assets/characters/BASTIAN.png";
-            break;
-        default:
-            profilePic.src = "assets/logo.jpeg"; // player null easter egg
-            break;
-    }
+
+    profilePic.src = AVATAR_IMAGES[avatarIndex] || AVATAR_IMAGES["default"];
     profilePic.classList.add("pfp-zoom"); // Add the zoom class
 }
 
