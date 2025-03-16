@@ -37,6 +37,24 @@
     }
 }
 
+@keyframes scroll {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-100%);
+    }
+}
+
+@keyframes moveStars {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 0 -1000px;
+    }
+}
+
 .fade-down{
     opacity: 0; /* Make sure the opacity is 0 before the transition for delays */
     animation: fadeDown 1s ease-in-out forwards; /* forwards so the thing doesnt return back to 0 opacity */
@@ -101,6 +119,11 @@
 }
 
 /* Image related stuff */
+.overlay-image {
+    /* I dont know why it works, this doesnt make sense... but it shows shiggy again */
+    transform: translate(0%, 0%);
+}
+
 .pfp {
     border-radius: 50%;
     width: 100%;
@@ -132,7 +155,7 @@
     transform: scale(1.1);
 }
 
-/* Accordion stuff */
+/* Accordion (Window tab thingy) */
 .accordion-item {
     border: 2px solid #fd1d1d;
     border-radius: 5px;
@@ -217,7 +240,6 @@
 
 /* background */
 body, html {
-    height: 100%;
     background-color: #2b1b37;
 }
 
@@ -240,31 +262,8 @@ body, html {
     background: url('assets/stars.png') repeat-y;
     background-size: cover;
     width: 100%;
-    height: 100%;
-    animation: flicker 5s infinite alternate;
+    height: 200%;
+    animation: moveStars 20s linear infinite, 
+               flicker 2s infinite alternate,
+               scroll 20s linear infinite;
 }
-
-.stars-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    overflow: hidden;
-    pointer-events: none; /* Ensure it doesn't interfere with other elements */
-}
-
-.stars {
-    position: absolute;
-    width: 100%;
-    background-size: cover;
-    animation: flicker 2s infinite alternate;
-}
-
-.content-container {
-    position: relative;
-    z-index: 1;
-    background: rgba(0, 0, 0, 0.5);
-}
-
