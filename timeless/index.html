@@ -20,7 +20,7 @@
             </div>
         </div>
         <!-- Top Row for Usernames n logo, good luck sis :sparkles: -->
-        <div class="w-full bg-gray-800 p-4 m-auto text-center mb-4">
+        <div class="w-full bg-gray-700 p-4 m-auto text-center mb-4">
             <h1 class="text-3xl font-bold my-4">The Timeless Adventure</h1>
             <div class="flex flex-col sm:flex-row gap-10 justify-center">
                 <!-- pfp -->
@@ -36,7 +36,7 @@
                 <div class="flex flex-col items-start gap-4 items-center">
                     <div class="flex items-center gap-2">
                         <img src="assets/Stats/health.png" alt="health" class="w-8 h-8">
-                        <div id="hpContainer" class="bar-container">
+                        <div id="happinessContainer" class="bar-container">
                             <div class="bar bg-red-500" style="width: 100%;"></div>
                         </div>
                     </div>
@@ -49,8 +49,8 @@
                 </div>
                 <div class="flex flex-col items-start gap-4 items-center">
                     <div class="flex items-center gap-2">
-                        <img src="assets/Stats/mana.png" alt="Mana" class="w-8 h-8">
-                        <div id="manaContainer" class="bar-container">
+                        <img src="assets/Stats/hygiene.png" alt="hygiene" class="w-8 h-8">
+                        <div id="hygieneContainer" class="bar-container">
                             <div class="bar bg-blue-500" style="width: 100%;"></div>
                         </div>
                     </div>
@@ -75,7 +75,7 @@
             <!-- Canvas -->
             <canvas id="gameCanvas" width="800" height="600" class="m-4 w-auto"></canvas>
             <!-- Area interaction menu, do not recombine this with inside div for mobile support -->
-            <div class="m-4 bg-gray-700 rounded lg:w-60 interaction-box">
+            <div class="m-4 bg-gray-500 bg-opacity-30 rounded lg:w-60 interaction-box">
                 <div class="sm:w-40 p-4 lg:w-60">
                     <h2 class="text-xl mb-2">Area Interactions</h2>
                     <p id="interactionText" class="mb-2"></p>
@@ -83,13 +83,13 @@
                     <button id="action2" class="hidden bg-green-500 px-4 py-2 rounded mb-2"></button>
                     <button id="action3" class="hidden bg-red-500 px-4 py-2 rounded"></button>
 
-                    <div id="controls" class="text-center controls">
-                        <button id="moveUp" class="px-4 py-2 mb-2 ctrl-btn">Move Up</button>
-                        <div class="flex justify-between">
-                            <button id="moveLeft" class="px-4 py-2 mr-2 ctrl-btn">Move Left</button>
-                            <button id="moveRight" class="px-4 py-2 ctrl-btn">Move Right</button>
+                    <div id="controls" class="text-center controls m-auto mt-10">
+                        <button id="moveUp" class="px-4 py-2 mb-2 ctrl-btn"></button>
+                        <div class="flex justify-between gap-10">
+                            <button id="moveLeft" class="px-4 py-2 mr-2 ctrl-btn"></button>
+                            <button id="moveRight" class="px-4 py-2 ctrl-btn"></button>
                         </div>
-                        <button id="moveDown" class="px-4 py-2 mt-2 ctrl-btn">Move Down</button>
+                        <button id="moveDown" class="px-4 py-2 mt-2 ctrl-btn"></button>
                     </div>
                 </div>
             </div>

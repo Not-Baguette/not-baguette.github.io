@@ -19,6 +19,17 @@
     }
 }
 
+@media (max-width: 1050px) {
+    .controls{
+        position: relative !important;
+        bottom: 0 !important;
+        right: 0 !important;
+        margin: auto !important;
+        margin-top: 10px !important;
+    }
+    
+}
+
 /* Popup animation stuff */
 @keyframes popupAnimationOpen {
     0% {
@@ -150,6 +161,7 @@ canvas {
 }
 
 .arrow {
+    min-width: 50px;
     width: 100%;
     margin: auto;
     transition: transform 0.3s ease; /* Smooth transition hehe */
@@ -182,8 +194,8 @@ canvas {
 
 /* index.html UI */
 .interaction-box {
-	position: relative;
     min-height: 150px;
+    background-color: transparent;
 }
 
 .clock {
@@ -196,9 +208,8 @@ canvas {
 
 .controls {
     border-radius: 100%;
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
+    position: relative;
+    max-width: 150px !important;
 }
 
 .pfp-zoom {
@@ -270,8 +281,8 @@ canvas {
 
 /* One-liners */
 .rounded-border{ border-radius: 10px; }
-.hp { background-color: red; }
+.happiness { background-color: red; }
 .energy { background-color: orange; }
-.mana { background-color: blue; }
+.hygiene { background-color: blue; }
 .hunger { background-color: green; }
 .logo{ width: 210px; }

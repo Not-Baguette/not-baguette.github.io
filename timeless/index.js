@@ -12,13 +12,13 @@ let lastHour; // store the last hour for day-night cycle & status decay
 
 // Constants
 const PLAYER_DEFAULT = {
-    x: 210,
-    y: 250,
+    x: 360,
+    y: 50,
     size: 80,
     speed: 2,
-    hp: 50,
+    happiness: 50,
     energy: 50,
-    mana: 50,
+    hygiene: 50,
     hunger: 50,
     money: 0,
     area: "Home"
@@ -30,7 +30,8 @@ const AREA_IMAGES = {
     "Jayapura": "assets/cities/Jayapura.png",
     "Padang": "assets/cities/Padang.png",
     "Ponorogo": "assets/cities/Ponorogo.png",
-    "Secret": "assets/cities/Secret.png"
+    "Secret": "assets/cities/Secret.png",
+    "Jambi": "assets/cities/Jambi.png"
 };
 
 const PLAYER_IMAGES = {
@@ -60,8 +61,8 @@ const BG_IMAGE_SRC = "assets/backgrounds/BackgroundMap.png";
 const LOCKED_OVERLAY_SRC = "assets/cities/locked.png";
 
 // Player stats
-let player = { ...PLAYER_DEFAULT }; // clone the player object
-let lastValidPosition = { x: player.x, y: player.y, area: player.area }; // for drag-and-drop
+let player = {...PLAYER_DEFAULT}; // clone the player object
+let lastValidPosition = {x: player.x, y: player.y, area: player.area}; // for drag-and-drop
 
 let isDragging = false;
 let dragOffsetX = 0;
@@ -83,42 +84,42 @@ const backgroundColors = {
 // Area props
 const areas = {
     "Home": {
-        x: 180,
-        y: 230,
+        x: 330,
+        y: 50,
         width: 90,
         height: 90,
-        cost: 2,
+        cost: 20,
         type: "safe",
         jumping: false,
         region: "normal"
     },
     "Pontianak": {
-        x: 50,
-        y: 470,
+        x: 140,
+        y: 200,
         width: 90,
         height: 90,
-        cost: 1,
+        cost: 10,
         type: "enemy",
         jumping: false,
         region: "normal"
     },
     "Jayapura": {
-        x: 320,
-        y: 370,
+        x: 40,
+        y: 450,
         width: 90,
         height: 90,
-        cost: 1,
+        cost: 10,
         type: "enemy",
         requires: ["Pontianak"],
         jumping: false,
-        region: "winter"
+        region: "normal"
     },
     "Padang": {
-        x: 650,
-        y: 80,
+        x: 270,
+        y: 390,
         width: 90,
         height: 90,
-        cost: 1,
+        cost: 10,
         type: "safe",
         requires: ["Pontianak", "Jayapura"],
         jumping: false,
@@ -129,21 +130,32 @@ const areas = {
         y: 450,
         width: 90,
         height: 90,
-        cost: 2,
+        cost: 20,
         type: "enemy",
-        requires: ["Pontianak", "Padang", "Jayapura"],
+        requires: ["Pontianak", "Padang", "Jayapura", "Jambi"],
         jumping: false,
         region: "hell"
     },
     "Secret": {
         x: 50,
         y: 50,
-        width: 150,
-        height: 150,
-        cost: 0,
+        width: 90,
+        height: 90,
+        cost: 10,
         type: "safe",
         jumping: false,
         region: "normal"
+    },
+    "Jambi": {
+        x: 500,
+        y: 180,
+        width: 90,
+        height: 90,
+        cost: 10,
+        type: "enemy",
+        requires: ["Pontianak", "Padang", "Jayapura"],
+        jumping: false,
+        region: "winter"
     }
 };
 
@@ -176,6 +188,11 @@ const areaActions = {
     "Secret": {
         action1: "",
         action2: "",
+        action3: ""
+    },
+    "Jambi": {
+        action1: "Fight",
+        action2: "Explore",
         action3: ""
     }
 };
@@ -241,6 +258,7 @@ function addEventListeners() {
 
     // Keyboard support
     document.addEventListener("keydown", (e) => {
+        e.preventDefault();
         keysPressed[e.key] = true;
     });
     document.addEventListener("keyup", (e) => {
@@ -255,44 +273,50 @@ function addEventListeners() {
     document.getElementById("action1").addEventListener("click", () => {
         const actions = (areaActions[player.area]).action1;
         if(player.area === "Home") {
-            showPopup(actions, 0, 0, 0, 1, 0); 
+            showPopup(actions, 0, 0, 0, 10, 0); 
         } else if(player.area === "Pontianak") {
-            if(!hasEnoughResources(1, 2, 0, 0, maxDebt)) return;
-            showPopup(actions, -1, -2, 0, 0, 10);
+            if(!hasEnoughResources(10, 20, 0, 0, maxDebt)) return;
+            showPopup(actions, -10, -20, 0, 0, 10);
         } else if(player.area === "Jayapura"){
-            if(!hasEnoughResources(2, 3, 0, 0, maxDebt)) return;
-            showPopup(actions, -2, -3, 0, 0, 15)
+            if(!hasEnoughResources(20, 30, 0, 0, maxDebt)) return;
+            showPopup(actions, -10, -20, 0, 0, 15)
         } else if(player.area === "Padang") {
             if(!hasEnoughResources(0, 0, 0, 0, 5)) return;
-            showPopup(actions, 0, 0, 0, 2, -5);
+            showPopup(actions, 0, 0, 0, 20, -5);
+        } else if(player.area === "Jambi") {
+            if(!hasEnoughResources(0, 0, 0, 0, 0)) return;
+            showPopup(actions, -10, -20, 0, 0, 20);
         }
     });
 
     document.getElementById("action2").addEventListener("click", () => {
         const actions = (areaActions[player.area]).action2;
         if(player.area === "Home") {
-            showPopup(actions, 0, 0, 1, 0, 0);
+            showPopup(actions, 0, 0, 10, 0, 0);
         } else if(player.area === "Pontianak") {
             if(!hasEnoughResources(0, 0, 0, 2, maxDebt)) return;
-            showPopup(actions, 0, 0, 0, -2, 5);
+            showPopup(actions, 0, 0, 0, -20, 5);
         } else if(player.area === "Jayapura"){
             if(!hasEnoughResources(0, 0, 0, 3, maxDebt)) return;
-            showPopup(actions, 0, 0, 0, -3, 10)
+            showPopup(actions, 0, 0, 0, -30, 10)
         } else if(player.area === "Padang") {
             if(!hasEnoughResources(0, 0, 0, 0, 5)) return;
-            showPopup(actions, 0, 0, 2, 0, -5);
-        } 
+            showPopup(actions, 0, 0, 20, 0, -5);
+        } else if(player.area === "Jambi") {
+            if(!hasEnoughResources(0, 0, 0, 0, 0)) return;
+            showPopup(actions, 0, 0, 0, -10, 15);
+        }
     });
 
     document.getElementById("action3").addEventListener("click", () => {
         const actions = (areaActions[player.area]).action3;
         if(player.area === "Home") {
-            showPopup(actions, 1, 0, 0, 0, 0);
+            showPopup(actions, 10, 0, 0, 0, 0);
         } else if(player.area === "Padang") {
-            showPopup(actions, 0, 2, 0, 0, 0);
+            showPopup(actions, 0, 20, 0, 0, 0);
         } else if(player.area === "Ponorogo") {
             if(!hasEnoughResources(1, 1, 1, 1, maxDebt)) return;
-            showPopup(actions, -4, -4, -1, -4, 25);
+            showPopup(actions, -40, -40, -10, -40, 25);
         } 
     });
 }
@@ -308,7 +332,7 @@ function stopMoving() {
 
 // handle mouse movement
 function handleMouseDown(e) {
-    const { mouseX, mouseY } = getMousePosition(e);
+    const {mouseX, mouseY} = getMousePosition(e);
     if(isMouseOverPlayer(mouseX, mouseY)) {
         isDragging = true;
         dragOffsetX = mouseX - player.x;
@@ -316,7 +340,7 @@ function handleMouseDown(e) {
     }
 }
 function handleMouseMove(e) {
-    const { mouseX, mouseY } = getMousePosition(e);
+    const {mouseX, mouseY} = getMousePosition(e);
     // if the user is hovering over an area or player
     if (isMouseOverArea(mouseX, mouseY) || 
         isMouseOverPlayer(mouseX, mouseY)) {
@@ -345,7 +369,7 @@ function getMousePosition(e) {
     const scaleY = canvas.height / rect.height;
     const mouseX = (e.clientX - rect.left) * scaleX;
     const mouseY = (e.clientY - rect.top) * scaleY;
-    return { mouseX, mouseY };
+    return {mouseX, mouseY};
 }
 
 function isMouseOverPlayer(mouseX, mouseY) {
@@ -356,13 +380,13 @@ function isMouseOverPlayer(mouseX, mouseY) {
 // check if the player is in a valid area
 function isPlayerInValidArea() {
     const areasContainingPlayer = getAreasContainingPoint(player.x, player.y);
-    return areasContainingPlayer.some(({ loc }) => isAreaUnlocked(loc)); // true if areas containing player is unlocked
+    return areasContainingPlayer.some(({loc}) => isAreaUnlocked(loc)); // true if areas containing player is unlocked
 }
 
 // Check if the mouse is over an area
 function isMouseOverArea(clientX, clientY) {
     const areasContainingMouse = getAreasContainingPoint(clientX, clientY);
-    return areasContainingMouse.some(({ loc }) => isAreaUnlocked(loc));
+    return areasContainingMouse.some(({loc}) => isAreaUnlocked(loc));
 }
 
 // return user to last valid position
@@ -404,7 +428,7 @@ function getAreasContainingPoint(x, y) {
     for (const areaName in areas) {
         const loc = areas[areaName];
         if (isPointInLocation(x, y, loc)) {
-            containingAreas.push({ name: areaName, loc });
+            containingAreas.push({name: areaName, loc});
         }
     }
     return containingAreas;
@@ -433,13 +457,13 @@ function getUrlParam(name) {
 }
 
 // Helper function to check if the player has enough resources
-function hasEnoughResources(hp, mana, hunger, energy, money) {
-    if(player.hp < hp) {
-        showPopup("", 0, 0, 0, 0, 0, "Not enough HP.");
+function hasEnoughResources(happiness, hygiene, hunger, energy, money) {
+    if(player.happiness < happiness) {
+        showPopup("", 0, 0, 0, 0, 0, "Not enough happiness.");
         return false;
     }
-    if(player.mana < mana) {
-        showPopup("", 0, 0, 0, 0, 0, "Not enough mana.");
+    if(player.hygiene < hygiene) {
+        showPopup("", 0, 0, 0, 0, 0, "Not enough hygiene.");
         return false;
     }
     if(player.hunger < hunger) {
@@ -481,7 +505,7 @@ function playerEffect(statName, seconds, value){
 }
 
 // Create an in-game popup for actions
-function showPopup(action="", hp=0, mana=0, hunger=0, energy=0, earnings=0, customMessage = null) {
+function showPopup(action="", happiness=0, hygiene=0, hunger=0, energy=0, earnings=0, customMessage = null) {
     const popupContainer = document.getElementById("popupContainer");
     const popupMessage = document.getElementById("popupMessage");
     const confirmButton = document.getElementById("confirmButton");
@@ -491,13 +515,13 @@ function showPopup(action="", hp=0, mana=0, hunger=0, energy=0, earnings=0, cust
         let costs = [];
         let gains = [];
         // check, if negative then it's a cost, if positive then it's a gain, if 0 then ignore
-        if(hp < 0) costs.push(`${-hp} HP`);
-        if(mana < 0) costs.push(`${-mana} mana`);
+        if(happiness < 0) costs.push(`${-happiness} happiness`);
+        if(hygiene < 0) costs.push(`${-hygiene} hygiene`);
         if(hunger < 0) costs.push(`${-hunger} hunger`);
         if(energy < 0) costs.push(`${-energy} energy`);
         if(earnings < 0) costs.push(`${-earnings} money`);
-        if(hp > 0) gains.push(`${hp} HP`);
-        if(mana > 0) gains.push(`${mana} mana`);
+        if(happiness > 0) gains.push(`${happiness} happiness`);
+        if(hygiene > 0) gains.push(`${hygiene} hygiene`);
         if(hunger > 0) gains.push(`${hunger} hunger`);
         if(energy > 0) gains.push(`${energy} energy`);
         if(earnings > 0) gains.push(`${earnings} money`);
@@ -517,8 +541,8 @@ function showPopup(action="", hp=0, mana=0, hunger=0, energy=0, earnings=0, cust
 
     // Function to handle the confirm action
     const confirmAction = () => {
-        player.hp = Math.min(100, Math.max(0, player.hp + hp));
-        player.mana = Math.min(100, Math.max(0, player.mana + mana));
+        player.happiness = Math.min(100, Math.max(0, player.happiness + happiness));
+        player.hygiene = Math.min(100, Math.max(0, player.hygiene + hygiene));
         player.hunger = Math.min(100, Math.max(0, player.hunger + hunger));
         player.energy = Math.min(100, Math.max(0, player.energy + energy));
         player.money += earnings;
@@ -655,7 +679,7 @@ function handleArrival() {
     // Update player
     player.hunger = Math.max(0, player.hunger - destination.cost);
     visitedAreas.add(destination.area);
-    lastValidPosition = { x: player.x, y: player.y, area: player.area };
+    lastValidPosition = {x: player.x, y: player.y, area: player.area};
     destination = null;
     isMoving = false;
 
@@ -691,7 +715,7 @@ function updateButtonActions(area) {
 
 // Update the stats bars
 function updateStats() {
-    const stats = ["hp", "energy", "mana", "hunger"];
+    const stats = ["happiness", "energy", "hygiene", "hunger"];
     stats.forEach(stat => {
         const container = document.getElementById(`${stat}Container`);
         container.innerHTML = "";
@@ -723,14 +747,14 @@ function movePlayer(dx, dy) {
     player.y = newY;
     
     const areasContainingPlayer = getAreasContainingPoint(player.x, player.y);
-    for (const { name: areaName, loc } of areasContainingPlayer) {
+    for (const {name: areaName, loc} of areasContainingPlayer) {
         if (!isAreaUnlocked(loc)) {
             PlayerInLockedArea(loc);
             resetPlayerPosition();
             return;
         }
 
-        if (player.area !== areaName && !isMoving) {
+        if (player.area !== areaName && !isMoving && isPlayerInValidArea()) {
             destination = { 
                 x: loc.x + loc.width / 2,
                 y: loc.y + loc.height / 2,
@@ -845,7 +869,7 @@ function handleInteraction(clientX, clientY) {
     const clickY = (clientY - rect.top) * scaleY;
 
     const areasContainingClick = getAreasContainingPoint(clickX, clickY);
-    for (const { name: areaName, loc } of areasContainingClick) {
+    for (const {name: areaName, loc} of areasContainingClick) {
         if (player.area === areaName) return;
 
         // if player is in a locked area, show popup
@@ -906,7 +930,7 @@ function killPlayer() {
 
     // Reset visited areas
     areas[player.area].jumping = false;
-    player = { ...PLAYER_DEFAULT }; // reset the player stats
+    player = {...PLAYER_DEFAULT}; // reset the player stats
     visitedAreas.clear();
     visitedAreas.add("Home");
     
@@ -965,7 +989,7 @@ function draw() {
 function gameLoop() {
     // Check for hunger, if any drops to 0 just die
     if(player.hunger === 0 || player.energy === 0 || 
-        player.mana === 0 || player.hp === 0) {
+        player.hygiene === 0 || player.happiness === 0) {
         killPlayer();
     } else{
         updatePlayerPosition();
@@ -983,4 +1007,35 @@ preloadImages(allImageSources, () => {
     setInterval(updateClock, 1000, false); // set the clock to update every second
     firstrun();
     gameLoop();
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Prevent touch events on controls from triggering scrolling
+  const controls = document.getElementById('controls');
+  if (controls) {
+    controls.addEventListener('touchstart', function(e) {
+      e.preventDefault();
+    }, { passive: false });
+    
+    // Add touch event listeners to each control button
+    ['moveUp', 'moveDown', 'moveLeft', 'moveRight'].forEach(id => {
+      const button = document.getElementById(id);
+      if (button) {
+        // Trigger events on touch start for responsive feel
+        button.addEventListener('touchstart', function(e) {
+          e.preventDefault();
+          // Simulate button click
+          this.classList.add('active');
+          // Dispatch your game's movement event here
+          const event = new Event('moveAction');
+          this.dispatchEvent(event);
+        }, { passive: false });
+        
+        button.addEventListener('touchend', function() {
+          this.classList.remove('active');
+        });
+      }
+    });
+  }
 });
