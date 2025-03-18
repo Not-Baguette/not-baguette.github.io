@@ -4,6 +4,10 @@
         height: 20px;
         width: 100%;
     }
+    .username{
+        margin-top: -30px;
+        font-size: 40px !important;
+    }
     canvas {
         width: 90% !important;
     }
@@ -149,6 +153,12 @@ canvas {
     font-size: large;
 }
 
+.username {
+    font-family: monospace;
+    font-weight: bold;
+    font-size: xx-large;
+}
+
 .button:hover {
     background-color: #0f3582;
     color: white;
@@ -164,7 +174,7 @@ canvas {
     padding: 0;
 }
 
-/**/
+/* Controls */
 .controls {
     border-radius: 100%;
     position: relative;
@@ -189,6 +199,7 @@ canvas {
     background-size: cover;
     background-position: center;
 }
+
 
 /* Tooltip */
 #tooltip {

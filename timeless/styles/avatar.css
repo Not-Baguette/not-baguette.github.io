@@ -1,10 +1,3 @@
-@media (max-width:677px){
-    .username{
-        margin-top: -30px;
-        font-size: 40px !important;
-    }
-}
-
 /* Avatar selections */
 @keyframes float {
     0% {
@@ -49,12 +42,6 @@
     background-image: url('../assets/backgrounds/Avatar.png');
     background-size: cover;
     background-position: center;
-}
-
-.username {
-    font-family: monospace;
-    font-weight: bold;
-    font-size: xx-large;
 }
 
 .arrow {
