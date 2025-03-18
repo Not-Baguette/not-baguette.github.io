@@ -8,7 +8,7 @@
         <meta property="og:image" content="assets/Timeless_Adventure_logo.png" />
         <title>The Timeless Adventure</title>
         <script src="https://cdn.tailwindcss.com"></script>
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="styles/style.css">
         <link rel="icon" type="image/x-icon" href="assets/Timeless_Adventure_logo.png" />
     </head>
     <body class="flex flex-col items-center text-white min-h-screen bg-cover bg-center index-pg">
@@ -35,7 +35,7 @@
                 <!-- Stats bar -->
                 <div class="flex flex-col items-start gap-4 items-center">
                     <div class="flex items-center gap-2">
-                        <img src="assets/Stats/health.png" alt="health" class="w-8 h-8">
+                        <img src="assets/Stats/happiness.png" alt="happiness" class="w-8 h-8">
                         <div id="happinessContainer" class="bar-container">
                             <div class="bar bg-red-500" style="width: 100%;"></div>
                         </div>
@@ -69,6 +69,8 @@
 
         <!-- In-game clock -->
         <div id="clock" class="text-xl font-bold mb-4"></div>
+        <!-- Tooltip -->
+        <div id="tooltip" class="fixed bg-gray-700 text-white p-2 rounded"></div>
 
         <!-- The main game and the interaction menu -->
         <div class="flex flex-col sm:flex-row">
@@ -107,5 +109,6 @@
         <p class="mb-4">Click to move</p>
         
         <script src="index.js"></script>
+        <script src="game/tooltip.js"></script>
     </body>
 </html>

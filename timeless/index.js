@@ -258,11 +258,14 @@ function addEventListeners() {
 
     // Keyboard support
     document.addEventListener("keydown", (e) => {
-        e.preventDefault();
+        // only prevent default for arrow keys
+        if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
+            e.preventDefault();
+        }
         keysPressed[e.key] = true;
     });
     document.addEventListener("keyup", (e) => {
-        keysPressed[e.key] = false;
+        delete keysPressed[e.key];
     });
 
     canvas.addEventListener("mousedown", handleMouseDown);
@@ -294,10 +297,10 @@ function addEventListeners() {
         if(player.area === "Home") {
             showPopup(actions, 0, 0, 10, 0, 0);
         } else if(player.area === "Pontianak") {
-            if(!hasEnoughResources(0, 0, 0, 2, maxDebt)) return;
+            if(!hasEnoughResources(0, 0, 0, 20, maxDebt)) return;
             showPopup(actions, 0, 0, 0, -20, 5);
         } else if(player.area === "Jayapura"){
-            if(!hasEnoughResources(0, 0, 0, 3, maxDebt)) return;
+            if(!hasEnoughResources(0, 0, 0, 30, maxDebt)) return;
             showPopup(actions, 0, 0, 0, -30, 10)
         } else if(player.area === "Padang") {
             if(!hasEnoughResources(0, 0, 0, 0, 5)) return;
@@ -314,8 +317,7 @@ function addEventListeners() {
             showPopup(actions, 10, 0, 0, 0, 0);
         } else if(player.area === "Padang") {
             showPopup(actions, 0, 20, 0, 0, 0);
-        } else if(player.area === "Ponorogo") {
-            if(!hasEnoughResources(1, 1, 1, 1, maxDebt)) return;
+        } else if(player.area === "Ponorogo") { // no checks for boss
             showPopup(actions, -40, -40, -10, -40, 25);
         } 
     });
@@ -679,9 +681,13 @@ function handleArrival() {
     // Update player
     player.hunger = Math.max(0, player.hunger - destination.cost);
     visitedAreas.add(destination.area);
-    lastValidPosition = {x: player.x, y: player.y, area: player.area};
     destination = null;
     isMoving = false;
+
+    // ponorogo bugfix (sometimes player gets stuck somehow)
+    if (isPlayerInValidArea()) {
+        lastValidPosition = {x: player.x, y: player.y, area: player.area};
+    }
 
     // Enemy area animation
     if(areas[player.area].type === "enemy") {
@@ -1007,35 +1013,4 @@ preloadImages(allImageSources, () => {
     setInterval(updateClock, 1000, false); // set the clock to update every second
     firstrun();
     gameLoop();
-});
-
-
-document.addEventListener('DOMContentLoaded', function() {
-  // Prevent touch events on controls from triggering scrolling
-  const controls = document.getElementById('controls');
-  if (controls) {
-    controls.addEventListener('touchstart', function(e) {
-      e.preventDefault();
-    }, { passive: false });
-    
-    // Add touch event listeners to each control button
-    ['moveUp', 'moveDown', 'moveLeft', 'moveRight'].forEach(id => {
-      const button = document.getElementById(id);
-      if (button) {
-        // Trigger events on touch start for responsive feel
-        button.addEventListener('touchstart', function(e) {
-          e.preventDefault();
-          // Simulate button click
-          this.classList.add('active');
-          // Dispatch your game's movement event here
-          const event = new Event('moveAction');
-          this.dispatchEvent(event);
-        }, { passive: false });
-        
-        button.addEventListener('touchend', function() {
-          this.classList.remove('active');
-        });
-      }
-    });
-  }
 });

@@ -1,0 +1,112 @@
+@media (max-width:677px){
+    .username{
+        margin-top: -30px;
+        font-size: 40px !important;
+    }
+}
+
+/* Avatar selections */
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes moveClouds {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: -1000px 0;
+    }
+}
+
+.cloud {
+    position: absolute;
+    top: -10px;
+    left: 0;
+    width: 100%;
+    height: 150px;
+    z-index: 1;
+    background: url('../assets/backgrounds/cloud.png') repeat-x;
+    background-size: auto 100%;
+    filter: brightness(0) invert(1) opacity(0.2);
+    animation: moveClouds 100s linear infinite;
+}
+
+.logo {
+    animation: float 2s ease-in-out infinite;
+}
+
+.avatar-pg {
+    overflow-x: hidden;
+    background-image: url('../assets/backgrounds/Avatar.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.username {
+    font-family: monospace;
+    font-weight: bold;
+    font-size: xx-large;
+}
+
+.arrow {
+    min-width: 50px;
+    width: 100%;
+    margin: auto;
+    transition: transform 0.3s ease; /* Smooth transition hehe */
+}
+
+.arrow:hover {
+    transform: scale(1.2);
+}
+
+.avatar-selection {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 600px;
+    min-width: 200px;
+    min-height: 200px;
+    object-fit: contain; /* hold the aspect ratio */
+}
+
+#greeting {
+    font-family: monospace;
+    font-weight: bold;
+    font-size: xx-large;
+    text-shadow: /* Outline col */
+        -1px -1px 0 #000,  
+         1px -1px 0 #000,
+        -1px  1px 0 #000,
+         1px  1px 0 #000;
+}
+
+.name-box {
+    font-family: monospace;
+    padding: 5px 25px;
+    background-color: white;
+    color:black;
+    opacity: 60%;
+    border: 5px solid grey;
+    border-radius: 5px;
+}
+
+.button {
+    padding: 5px 25px;
+    border: 5px solid grey;
+    background-color: white;
+    border-radius: 5px;
+    color: #0f3582;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Add transition for background-color and color */
+}
+
+.logo{width: 210px;}

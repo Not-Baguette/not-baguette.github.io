@@ -4,10 +4,6 @@
         height: 20px;
         width: 100%;
     }
-    .username{
-        margin-top: -30px;
-        font-size: 40px !important;
-    }
     canvas {
         width: 90% !important;
     }
@@ -102,94 +98,11 @@ canvas {
 .background-transition {
     transition: background-image 1s ease-in-out; /* Ensure transition is applied */
 }
-.avatar-pg {
-    overflow-x: hidden;
-    background-image: url('assets/backgrounds/Avatar.png');
-    background-size: cover;
-    background-position: center;
-}
 
 .index-pg {
-    background-image: url('assets/backgrounds/Main.png');
+    background-image: url('../assets/backgrounds/Main.png');
     background-size: cover;
     background-position: center;
-}
-
-/* Avatar selections */
-@keyframes float {
-    0% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-5px);
-    }
-    100% {
-        transform: translateY(0);
-    }
-}
-
-@keyframes moveClouds {
-    0% {
-        background-position: 0 0;
-    }
-    100% {
-        background-position: -1000px 0;
-    }
-}
-
-.cloud {
-    position: absolute;
-    top: -10px;
-    left: 0;
-    width: 100%;
-    height: 150px;
-    z-index: 1;
-    background: url('assets/backgrounds/cloud.png') repeat-x;
-    background-size: auto 100%;
-    filter: brightness(0) invert(1) opacity(0.2);
-    animation: moveClouds 100s linear infinite;
-}
-
-.logo {
-    animation: float 2s ease-in-out infinite;
-}
-
-.username {
-    font-family:monospace;
-    font-weight: bold;
-    font-size: xx-large;
-}
-
-.arrow {
-    min-width: 50px;
-    width: 100%;
-    margin: auto;
-    transition: transform 0.3s ease; /* Smooth transition hehe */
-}
-
-.arrow:hover {
-    transform: scale(1.2);
-}
-
-.avatar-selection {
-    width: auto;
-    height: auto;
-    max-width: 100%;
-    max-height: 600px;
-    min-width: 200px;
-    min-height: 200px;
-    object-fit: contain; /* hold the aspect ratio */
-}
-
-#greeting {
-    font-family:monospace;
-    font-weight: bold;
-    font-size: xx-large;
-    text-shadow: /* Outline col */
-        -1px -1px 0 #000,  
-         1px -1px 0 #000,
-        -1px  1px 0 #000,
-         1px  1px 0 #000;
 }
 
 /* index.html UI */
@@ -204,12 +117,6 @@ canvas {
          1px -1px 0 #000,
         -1px  1px 0 #000,
          1px  1px 0 #000;
-}
-
-.controls {
-    border-radius: 100%;
-    position: relative;
-    max-width: 150px !important;
 }
 
 .pfp-zoom {
@@ -242,16 +149,6 @@ canvas {
     font-size: large;
 }
 
-.button {
-    padding: 5px 25px;
-    border: 5px solid grey;
-    background-color: white;
-    border-radius: 5px;
-    color: #0f3582;
-    font-weight: bold;
-    transition: background-color 0.3s ease, color 0.3s ease; /* Add transition for background-color and color */
-}
-
 .button:hover {
     background-color: #0f3582;
     color: white;
@@ -259,30 +156,61 @@ canvas {
     animation: float 2s ease-in-out infinite;
 }
 
-.name-box {
-    font-family: monospace;
-    padding: 5px 25px;
-    background-color: white;
-    color:black;
-    opacity: 60%;
-    border: 5px solid grey;
-    border-radius: 5px;
-}
-
 .ctrl-btn {
     border-radius: 50%;
     background-color: black;
     width: 50px;
     height: 50px;
-    align-items: center;
-    justify-content: center;
     padding: 0;
 }
 
+/**/
+.controls {
+    border-radius: 100%;
+    position: relative;
+    max-width: 150px !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.controls .flex {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+#moveUp, #moveDown, #moveLeft, #moveRight {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Tooltip */
+#tooltip {
+    position: absolute;
+    z-index: 1000;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    opacity: 0;
+    border: 1px solid #fff;
+}
+
+#tooltip.visible {
+    opacity: 1;
+}
+
 /* One-liners */
-.rounded-border{ border-radius: 10px; }
-.happiness { background-color: red; }
-.energy { background-color: orange; }
-.hygiene { background-color: blue; }
-.hunger { background-color: green; }
-.logo{ width: 210px; }
+#moveUp {background-image: url('../assets/util/Up.png');}
+#moveDown {background-image: url('../assets/util/Down.png');}
+#moveLeft {background-image: url('../assets/util/Left.png');}
+#moveRight {background-image: url('../assets/util/Right.png');}
+.rounded-border{border-radius: 10px;}
+.happiness {background-color: red;}
+.energy {background-color: orange;}
+.hygiene {background-color: blue;}
+.hunger {background-color: green;}
