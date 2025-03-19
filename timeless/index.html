@@ -74,11 +74,13 @@
 
         <!-- The main game and the interaction menu -->
         <div class="flex flex-col sm:flex-row">
-            <!-- Canvas -->
-            <canvas id="gameCanvas" width="800" height="600" class="m-4 w-auto"></canvas>
+            <!-- Canvas, center it on mobile -->
+            <div class="items-center justify-center flex flex-col">
+                <canvas id="gameCanvas" width="800" height="600" class="m-4 w-auto"></canvas>
+            </div>
             <!-- Area interaction menu, do not recombine this with inside div for mobile support -->
             <div class="m-4 bg-gray-500 bg-opacity-30 rounded lg:w-60 interaction-box">
-                <div class="sm:w-40 p-4 lg:w-60">
+                <div class="w-full p-4">
                     <h2 class="text-xl mb-2">Area Interactions</h2>
                     <p id="interactionText" class="mb-2"></p>
                     <button id="action1" class="hidden bg-blue-500 px-4 py-2 rounded mb-2"></button>
