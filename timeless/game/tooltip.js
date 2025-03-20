@@ -25,5 +25,6 @@ document.addEventListener("DOMContentLoaded", () => {
         element.addEventListener("mouseleave", () => {
             tooltip.classList.remove("visible");
         });
+        // TODO: Fix mouseleave not firing when quickly exiting
     });
 });

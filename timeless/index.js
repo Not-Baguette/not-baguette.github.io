@@ -393,9 +393,16 @@ function isMouseOverArea(clientX, clientY) {
 
 // return user to last valid position
 function resetPlayerPosition() {
+    // hacky fix for ponorogo bug, I literally cant reproduce this bug without knowing what went wrong
+    if (lastValidPosition.area === "ponorogo" && isAreaUnlocked(areas["ponorogo"])) {
+        lastValidPosition.x = areas["home"].x;
+        lastValidPosition.y = areas["home"].y;
+        lastValidPosition.area = "home";
+    }
     player.x = lastValidPosition.x;
     player.y = lastValidPosition.y;
     player.area = lastValidPosition.area;
+
 }
 
 // handle mobile
@@ -684,11 +691,6 @@ function handleArrival() {
     destination = null;
     isMoving = false;
 
-    // ponorogo bugfix (sometimes player gets stuck somehow)
-    if (isPlayerInValidArea()) {
-        lastValidPosition = {x: player.x, y: player.y, area: player.area};
-    }
-
     // Enemy area animation
     if(areas[player.area].type === "enemy") {
         areas[player.area].jumping = true;
@@ -842,7 +844,7 @@ function preloadImages(sources, callback) {
 
 // run to init everything
 function firstrun() {
-    inGameTime.setHours(8, 0, 0, 0); // Start at 08:00 AM
+    inGameTime = new Date(); // re-Initialize in-game time incase of death
     lastHour = inGameTime.getHours(); // set the last hour to the current hour
 
     // Grab the url param for avatar and username, only run this once
@@ -939,6 +941,7 @@ function killPlayer() {
     player = {...PLAYER_DEFAULT}; // reset the player stats
     visitedAreas.clear();
     visitedAreas.add("Home");
+    
     
     updateBackground("normal");
     firstrun(); // reset da game

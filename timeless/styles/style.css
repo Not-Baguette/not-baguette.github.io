@@ -23,6 +23,9 @@
     .flex-col {
         flex-direction: column !important;
     }
+    .interaction-box {
+        min-width: 100% !important;
+    }
 }
 
 /* Popup animation stuff */
@@ -199,7 +202,6 @@ canvas {
 /* Tooltip */
 #tooltip {
     position: absolute;
-    z-index: 1000;
     pointer-events: none;
     transition: opacity 0.2s;
     opacity: 0;
