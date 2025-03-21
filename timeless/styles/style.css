@@ -204,12 +204,7 @@ canvas {
     position: absolute;
     pointer-events: none;
     transition: opacity 0.2s;
-    opacity: 0;
     border: 1px solid #fff;
-}
-
-#tooltip.visible {
-    opacity: 1;
 }
 
 /* One-liners */

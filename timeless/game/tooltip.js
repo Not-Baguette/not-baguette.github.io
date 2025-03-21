@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const element = document.getElementById(stat.id);
         element.addEventListener("mouseenter", (e) => {
             tooltip.textContent = stat.text;
-            tooltip.classList.add("visible");
+            tooltip.classList.remove("hidden");
             tooltip.style.left = `${e.pageX + 10}px`;
             tooltip.style.top = `${e.pageY + 10}px`;
         });
@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         element.addEventListener("mouseleave", () => {
-            tooltip.classList.remove("visible");
+            tooltip.classList.add("hidden");
         });
         // TODO: Fix mouseleave not firing when quickly exiting
     });
