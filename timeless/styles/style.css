@@ -3,7 +3,7 @@
     canvas {
         width: 90% !important;
     }
-    .controls{
+    .controls {
         position: relative !important;
         bottom: 0 !important;
         right: 0 !important;
@@ -13,11 +13,11 @@
 }
 
 @media (max-width: 1050px) {
-    .username{
+    .username {
         margin-top: -30px;
         font-size: 40px !important;
     }
-    .gap-10, .gap-4{
+    .gap-10, .gap-4 {
         gap: 20px !important;
     }
     .flex-col {
@@ -113,7 +113,7 @@ canvas {
     background-color: transparent;
 }
 
-.clock {
+#clock {
     text-shadow: /* Outline col */
         -1px -1px 0 #000,  
          1px -1px 0 #000,
@@ -197,7 +197,6 @@ canvas {
     background-size: cover;
     background-position: center;
 }
-
 
 /* Tooltip */
 #tooltip {
