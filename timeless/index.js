@@ -87,50 +87,30 @@ const STATSTOOLTIP = [
    {id: "hungerContainer", text: "Hunger: Shows the player's need for food and nourishment." }
 ];
 
-const TUTORIALSTEPS = [
-    {
-        id: "welcome",
+const TUTORIALSTEPS = [{
         text: "Welcome to the game! Let's learn how to play.",
         element: null,
-        position: "center",
-        arrow: null
     },
     {
-        id: "movement",
         text: "Use the arrow keys or WASD to move your character. On mobile, use the buttons at the bottom.",
-        element: null,
-        position: "bottom",
-        arrow: "down"
+        element: "controls",
     },
     {
-        id: "stats",
         text: "These are your stats. Keep them above 0 or you'll die! Hover over them to learn more.",
-        element: "statsContainer",
-        position: "right",
-        arrow: "left"
+        element: "statExample",
     },
     {
-        id: "areas",
         text: "This is the map. Drag your character to different areas to explore them.",
         element: "gameCanvas",
-        position: "center",
-        arrow: null
     },
     {
-        id: "actions",
         text: "Each area has different actions you can take. Try them out!",
-        element: "actionButtons",
-        position: "top",
-        arrow: "down"
+        element: "action2",
     },
     {
-        id: "time",
         text: "Time affects your stats. At night, your energy drains faster!",
-        element: "clockContainer",
-        position: "left",
-        arrow: "right"
-    }
-];
+        element: "clockContainer",   
+}];
 
 // day-night cycle
 const backgroundColors = {
@@ -342,144 +322,53 @@ function addEventListeners(){
     });
 
     // Button actions using showPopup, I'm sorry for the shit code below
-    document.getElementById("action1").addEventListener("click", () => {
-        const actions = areaActions[player.area].action1;
-        if (player.area === "Home") {
-            showPopup({
-                action: actions,
-                happiness: 0,
-                hygiene: 0,
-                hunger: 0,
-                energy: 10,
-                earnings: 0
-            });
-        } else if (player.area === "Pontianak") {
-            if (!hasEnoughResources(10, 20, 0, 0, maxDebt)) return;
-            showPopup({
-                action: actions,
-                happiness: -10,
-                hygiene: -20,
-                hunger: 0,
-                energy: 0,
-                earnings: 10
-            });
-        } else if (player.area === "Jayapura") {
-            if (!hasEnoughResources(20, 30, 0, 0, maxDebt)) return;
-            showPopup({
-                action: actions,
-                happiness: -10,
-                hygiene: -20,
-                hunger: 0,
-                energy: 0,
-                earnings: 15
-            });
-        } else if (player.area === "Padang") {
-            if (!hasEnoughResources(0, 0, 0, 0, 5)) return;
-            showPopup({
-                action: actions,
-                happiness: 0,
-                hygiene: 0,
-                hunger: 0,
-                energy: 20,
-                earnings: -5
-            });
-        } else if (player.area === "Jambi") {
-            if (!hasEnoughResources(0, 0, 0, 0, 0)) return;
-            showPopup({
-                action: actions,
-                happiness: -10,
-                hygiene: -20,
-                hunger: 0,
-                energy: 0,
-                earnings: 20
-            });
+    document.getElementById("action1").addEventListener("click", () =>{
+        const actions = (areaActions[player.area]).action1;
+        if(player.area === "Home"){
+            showPopup(actions, 0, 0, 0, 10, 0); 
+        } else if(player.area === "Pontianak"){
+            if(!hasEnoughResources(10, 20, 0, 0, maxDebt)) return;
+            showPopup(actions, -10, -20, 0, 0, 10);
+        } else if(player.area === "Jayapura"){
+            if(!hasEnoughResources(20, 30, 0, 0, maxDebt)) return;
+            showPopup(actions, -10, -20, 0, 0, 15)
+        } else if(player.area === "Padang"){
+            if(!hasEnoughResources(0, 0, 0, 0, 5)) return;
+            showPopup(actions, 0, 0, 0, 20, -5);
+        } else if(player.area === "Jambi"){
+            if(!hasEnoughResources(0, 0, 0, 0, 0)) return;
+            showPopup(actions, -10, -20, 0, 0, 20);
         }
     });
 
-    document.getElementById("action2").addEventListener("click", () => {
-        const actions = areaActions[player.area].action2;
-        if (player.area === "Home") {
-            showPopup({
-                action: actions,
-                happiness: 0,
-                hygiene: 0,
-                hunger: 20,
-                energy: 0,
-                earnings: 0
-            });
-        } else if (player.area === "Pontianak") {
-            if (!hasEnoughResources(0, 0, 0, 20, maxDebt)) return;
-            showPopup({
-                action: actions,
-                happiness: 0,
-                hygiene: 0,
-                hunger: 0,
-                energy: -20,
-                earnings: 5
-            });
-        } else if (player.area === "Jayapura") {
-            if (!hasEnoughResources(0, 0, 0, 30, maxDebt)) return;
-            showPopup({
-                action: actions,
-                happiness: 0,
-                hygiene: 0,
-                hunger: 0,
-                energy: -30,
-                earnings: 10
-            });
-        } else if (player.area === "Padang") {
-            if (!hasEnoughResources(0, 0, 0, 0, 5)) return;
-            showPopup({
-                action: actions,
-                happiness: 0,
-                hygiene: 0,
-                hunger: 20,
-                energy: 0,
-                earnings: -5
-            });
-        } else if (player.area === "Jambi") {
-            if (!hasEnoughResources(0, 0, 0, 0, 0)) return;
-            showPopup({
-                action: actions,
-                happiness: 0,
-                hygiene: 0,
-                hunger: 0,
-                energy: -10,
-                earnings: 15
-            });
+    document.getElementById("action2").addEventListener("click", () =>{
+        const actions = (areaActions[player.area]).action2;
+        if(player.area === "Home"){
+            showPopup(actions, 0, 0, 10, 0, 0);
+        } else if(player.area === "Pontianak"){
+            if(!hasEnoughResources(0, 0, 0, 20, maxDebt)) return;
+            showPopup(actions, 0, 0, 0, -20, 5);
+        } else if(player.area === "Jayapura"){
+            if(!hasEnoughResources(0, 0, 0, 30, maxDebt)) return;
+            showPopup(actions, 0, 0, 0, -30, 10)
+        } else if(player.area === "Padang"){
+            if(!hasEnoughResources(0, 0, 0, 0, 5)) return;
+            showPopup(actions, 0, 0, 20, 0, -5);
+        } else if(player.area === "Jambi"){
+            if(!hasEnoughResources(0, 0, 0, 0, 0)) return;
+            showPopup(actions, 0, 0, 0, -10, 15);
         }
     });
 
-    document.getElementById("action3").addEventListener("click", () => {
-        const actions = areaActions[player.area].action3;
-        if (player.area === "Home") {
-            showPopup({
-                action: actions,
-                happiness: 10,
-                hygiene: 0,
-                hunger: 0,
-                energy: 0,
-                earnings: 0
-            });
-        } else if (player.area === "Padang") {
-            showPopup({
-                action: actions,
-                happiness: 0,
-                hygiene: 20,
-                hunger: 0,
-                energy: 0,
-                earnings: 0
-            });
-        } else if (player.area === "Ponorogo") { // no checks for boss
-            showPopup({
-                action: actions,
-                happiness: -40,
-                hygiene: -40,
-                hunger: -10,
-                energy: -40,
-                earnings: 25
-            });
-        }
+    document.getElementById("action3").addEventListener("click", () =>{
+        const actions = (areaActions[player.area]).action3;
+        if(player.area === "Home"){
+            showPopup(actions, 10, 0, 0, 0, 0);
+        } else if(player.area === "Padang"){
+            showPopup(actions, 0, 20, 0, 0, 0);
+        } else if(player.area === "Ponorogo"){ // no checks for boss
+            showPopup(actions, -40, -40, -10, -40, 25);
+        } 
     });
 }
 
@@ -821,6 +710,12 @@ function updateClock(overrule){
 
     // change time display
     document.getElementById("clock").textContent = `${hours}:${minutes}`;
+    // faster energy decay at night
+    if(hours >= 18 || hours < 6){
+        player.energy = Math.max(0, player.energy - 0.1); // Ensure energy doesn't go below 0
+    }
+
+
     if(hours == lastHour && !overrule) return; // same hour and no overrule = no need to update, for efficiency
 
     // Remove all possible background colors
@@ -1047,7 +942,8 @@ function firstrun(){
         }
     }
     updateClock(true); // Initial call to display the clock immediately
-    
+    updateButtonActions(player.area); // set button actions to home for tutorial
+
     // Start tutorial if first time
     if (checkFirstTimeUser()) {
         setTimeout(startTutorial, 1000); // Small delay to let everything load
@@ -1095,26 +991,25 @@ function showTutorialStep(stepIndex) {
             const targetRect = targetElement.getBoundingClientRect();
             let top, left;
 
-            // Position the tutorial box
-            if (window.innerWidth < 768) {
-                // Mobile view. TODO: FIX THIS
-                top = targetRect.top + window.scrollY - tutorialBox.offsetHeight - 100;
-                left = targetRect.right + window.scrollX - 100;
-            } else {
-                top = targetRect.top + window.scrollY - tutorialBox.offsetHeight - 10;
-                left = targetRect.right + window.scrollX + 10;
+            // Center the box over the target element
+            if (window.innerWidth > 768){
+                // for pc
+                top = targetRect.top + window.scrollY + (targetRect.height/2) - (tutorialBox.offsetHeight/2) + 250;
+                left = targetRect.left + window.scrollX + (targetRect.width/2) - (tutorialBox.offsetWidth/2) + 50;
+            } else { // for mobile (Yes I just centered it :< I give up)
+                tutorialBox.style.position = "absolute";
+                tutorialBox.style.top = "50%";
+                tutorialBox.style.left = "50%";
+                tutorialBox.style.transform = "translate(-50%, -50%)";
             }
+
+            // hardcode solution, bad practice but idk what else to do
+            // when the element is the canvas, move the box to the top
+            if (step.element === "gameCanvas") left += 800;
 
             tutorialBox.style.position = "absolute";
             tutorialBox.style.top = `${top}px`;
             tutorialBox.style.left = `${left}px`;
-
-            // Add arrow if specified
-            if (step.arrow) {
-                const arrow = document.createElement("div");
-                arrow.className = `tutorial-arrow ${step.arrow}`;
-                tutorialBox.appendChild(arrow);
-            }
         }
     } else {
         // Center the box if no element specified
@@ -1143,20 +1038,6 @@ function endTutorial() {
         el.classList.remove('highlight-element');
     });
 
-    // Save to localStorage that tutorial was completed
-    localStorage.setItem('tutorialCompleted', 'true');
-}
-
-function endTutorial() {
-    TutorialContainer.classList.add("hidden");
-    isTutorialActive = false;
-    currentTutorialStep = 0;
-    
-    // Remove highlights
-    document.querySelectorAll('.highlight-element').forEach(el => {
-        el.classList.remove('highlight-element');
-    });
-    
     // Save to localStorage that tutorial was completed
     localStorage.setItem('tutorialCompleted', 'true');
 }
