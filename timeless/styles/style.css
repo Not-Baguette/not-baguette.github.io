@@ -26,6 +26,9 @@
     .interaction-box {
         min-width: 100% !important;
     }
+    .stats-bar{
+        position: relative !important;
+    }
 }
 
 /* Popup animation stuff */
@@ -87,6 +90,13 @@
 }
 
 /* General stuff */
+.stats-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
 body {
     overflow-x: hidden;
 }
@@ -204,6 +214,99 @@ canvas {
     pointer-events: none;
     transition: opacity 0.2s;
     border: 1px solid #fff;
+}
+
+/* Tutorial */
+.tutorial-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s;
+}
+
+.tutorial-box {
+    background-color: #2d3748;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 400px;
+    position: relative;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.tutorial-arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+}
+
+.tutorial-arrow.down {
+    border-width: 15px 10px 0 10px;
+    border-color: #2d3748 transparent transparent transparent;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.tutorial-arrow.up {
+    border-width: 0 10px 15px 10px;
+    border-color: transparent transparent #2d3748 transparent;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.tutorial-arrow.left {
+    border-width: 10px 15px 10px 0;
+    border-color: transparent #2d3748 transparent transparent;
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.tutorial-arrow.right {
+    border-width: 10px 0 10px 15px;
+    border-color: transparent transparent transparent #2d3748;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.tutorial-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.tutorial-button {
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.tutorial-next {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.tutorial-skip {
+    background-color: #f44336;
+    color: white;
+}
+
+.highlight-element {
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+    position: relative;
+    z-index: 101;
 }
 
 /* One-liners */

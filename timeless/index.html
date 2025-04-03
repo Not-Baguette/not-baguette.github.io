@@ -20,7 +20,7 @@
             </div>
         </div>
         <!-- Top Row for Usernames n logo, good luck sis :sparkles: -->
-        <div class="w-full bg-gray-700 p-4 m-auto text-center mb-6">
+        <div class="w-full bg-gray-700 p-4 text-center mb-6 stats-bar">
             <h1 class="text-3xl font-bold mb-4">The Timeless Adventure</h1>
             <div class="flex flex-col sm:flex-row gap-10 justify-center">
                 <!-- pfp -->
@@ -68,7 +68,7 @@
         </div>
 
         <!-- In-game clock -->
-        <div id="clock" class="text-xl font-bold mb-4"></div>
+        <div id="clock" class="text-xl font-bold mb-4 pt-48"></div>
         <!-- Tooltip -->
         <div id="tooltip" class="fixed bg-gray-700 text-white p-2 rounded hidden"></div>
 
@@ -107,10 +107,19 @@
                 <button id="cancelButton" class="bg-red-500 px-4 py-2 rounded">Cancel</button>
             </div>
         </div>
+        <!-- Tutotial Container -->
+        <div id="TutorialContainer" class="tutorial-container hidden bg-opacity-30">
+            <div id="tutorialBox" class="tutorial-box">
+                <p id="tutorialText"></p>
+                <div class="tutorial-buttons">
+                    <button id="skipButton" class="tutorial-button tutorial-skip">Skip Tutorial</button>
+                    <button id="nextButton" class="tutorial-button tutorial-next">Next</button>
+                </div>
+            </div>
+        </div>
         <!-- bottom text -->
         <p class="mb-4">Click to move</p>
-        
+        <button id="helpButton" class="fixed bottom-4 right-4 bg-blue-500 text-white p-2 rounded-full shadow-lg">?</button>
         <script src="index.js"></script>
-        <script src="game/tooltip.js"></script>
     </body>
 </html>

@@ -9,6 +9,13 @@ let keysPressed = {}; // store the keys pressed by the user for keyboard support
 let inGameTime = new Date(); // ingame time
 let moveInterval; // button movement interval
 let lastHour; // store the last hour for day-night cycle & status decay
+let isInBattle = false; // TODO: DELETE THIS IF WE CANCEL THE MINIFIGHT FEATURE
+// tutorial
+let currentTutorialStep = 0;
+let isTutorialActive = true;
+const TutorialContainer = document.createElement("div");
+TutorialContainer.className = "tutorial-overlay hidden";
+document.body.appendChild(TutorialContainer);
 
 // Constants
 const PLAYERDEFAULT = {
@@ -78,6 +85,51 @@ const STATSTOOLTIP = [
    {id: "energyContainer", text: "Energy: Indicates the player's stamina and ability to perform actions." },
    {id: "hygieneContainer", text: "Hygiene: Reflects the player's cleanliness and health." },
    {id: "hungerContainer", text: "Hunger: Shows the player's need for food and nourishment." }
+];
+
+const TUTORIALSTEPS = [
+    {
+        id: "welcome",
+        text: "Welcome to the game! Let's learn how to play.",
+        element: null,
+        position: "center",
+        arrow: null
+    },
+    {
+        id: "movement",
+        text: "Use the arrow keys or WASD to move your character. On mobile, use the buttons at the bottom.",
+        element: null,
+        position: "bottom",
+        arrow: "down"
+    },
+    {
+        id: "stats",
+        text: "These are your stats. Keep them above 0 or you'll die! Hover over them to learn more.",
+        element: "statsContainer",
+        position: "right",
+        arrow: "left"
+    },
+    {
+        id: "areas",
+        text: "This is the map. Drag your character to different areas to explore them.",
+        element: "gameCanvas",
+        position: "center",
+        arrow: null
+    },
+    {
+        id: "actions",
+        text: "Each area has different actions you can take. Try them out!",
+        element: "actionButtons",
+        position: "top",
+        arrow: "down"
+    },
+    {
+        id: "time",
+        text: "Time affects your stats. At night, your energy drains faster!",
+        element: "clockContainer",
+        position: "left",
+        arrow: "right"
+    }
 ];
 
 // day-night cycle
@@ -282,54 +334,152 @@ function addEventListeners(){
     // Tooltip
     document.addEventListener("DOMContentLoaded", () => loadTooltip());
 
+    // Help Button
+    document.getElementById("helpButton").addEventListener("click", () => {
+        currentTutorialStep = 0;
+        isTutorialActive = true;
+        startTutorial();
+    });
+
     // Button actions using showPopup, I'm sorry for the shit code below
-    document.getElementById("action1").addEventListener("click", () =>{
-        const actions = (areaActions[player.area]).action1;
-        if(player.area === "Home"){
-            showPopup(actions, 0, 0, 0, 10, 0); 
-        } else if(player.area === "Pontianak"){
-            if(!hasEnoughResources(10, 20, 0, 0, maxDebt)) return;
-            showPopup(actions, -10, -20, 0, 0, 10);
-        } else if(player.area === "Jayapura"){
-            if(!hasEnoughResources(20, 30, 0, 0, maxDebt)) return;
-            showPopup(actions, -10, -20, 0, 0, 15)
-        } else if(player.area === "Padang"){
-            if(!hasEnoughResources(0, 0, 0, 0, 5)) return;
-            showPopup(actions, 0, 0, 0, 20, -5);
-        } else if(player.area === "Jambi"){
-            if(!hasEnoughResources(0, 0, 0, 0, 0)) return;
-            showPopup(actions, -10, -20, 0, 0, 20);
+    document.getElementById("action1").addEventListener("click", () => {
+        const actions = areaActions[player.area].action1;
+        if (player.area === "Home") {
+            showPopup({
+                action: actions,
+                happiness: 0,
+                hygiene: 0,
+                hunger: 0,
+                energy: 10,
+                earnings: 0
+            });
+        } else if (player.area === "Pontianak") {
+            if (!hasEnoughResources(10, 20, 0, 0, maxDebt)) return;
+            showPopup({
+                action: actions,
+                happiness: -10,
+                hygiene: -20,
+                hunger: 0,
+                energy: 0,
+                earnings: 10
+            });
+        } else if (player.area === "Jayapura") {
+            if (!hasEnoughResources(20, 30, 0, 0, maxDebt)) return;
+            showPopup({
+                action: actions,
+                happiness: -10,
+                hygiene: -20,
+                hunger: 0,
+                energy: 0,
+                earnings: 15
+            });
+        } else if (player.area === "Padang") {
+            if (!hasEnoughResources(0, 0, 0, 0, 5)) return;
+            showPopup({
+                action: actions,
+                happiness: 0,
+                hygiene: 0,
+                hunger: 0,
+                energy: 20,
+                earnings: -5
+            });
+        } else if (player.area === "Jambi") {
+            if (!hasEnoughResources(0, 0, 0, 0, 0)) return;
+            showPopup({
+                action: actions,
+                happiness: -10,
+                hygiene: -20,
+                hunger: 0,
+                energy: 0,
+                earnings: 20
+            });
         }
     });
 
-    document.getElementById("action2").addEventListener("click", () =>{
-        const actions = (areaActions[player.area]).action2;
-        if(player.area === "Home"){
-            showPopup(actions, 0, 0, 10, 0, 0);
-        } else if(player.area === "Pontianak"){
-            if(!hasEnoughResources(0, 0, 0, 20, maxDebt)) return;
-            showPopup(actions, 0, 0, 0, -20, 5);
-        } else if(player.area === "Jayapura"){
-            if(!hasEnoughResources(0, 0, 0, 30, maxDebt)) return;
-            showPopup(actions, 0, 0, 0, -30, 10)
-        } else if(player.area === "Padang"){
-            if(!hasEnoughResources(0, 0, 0, 0, 5)) return;
-            showPopup(actions, 0, 0, 20, 0, -5);
-        } else if(player.area === "Jambi"){
-            if(!hasEnoughResources(0, 0, 0, 0, 0)) return;
-            showPopup(actions, 0, 0, 0, -10, 15);
+    document.getElementById("action2").addEventListener("click", () => {
+        const actions = areaActions[player.area].action2;
+        if (player.area === "Home") {
+            showPopup({
+                action: actions,
+                happiness: 0,
+                hygiene: 0,
+                hunger: 20,
+                energy: 0,
+                earnings: 0
+            });
+        } else if (player.area === "Pontianak") {
+            if (!hasEnoughResources(0, 0, 0, 20, maxDebt)) return;
+            showPopup({
+                action: actions,
+                happiness: 0,
+                hygiene: 0,
+                hunger: 0,
+                energy: -20,
+                earnings: 5
+            });
+        } else if (player.area === "Jayapura") {
+            if (!hasEnoughResources(0, 0, 0, 30, maxDebt)) return;
+            showPopup({
+                action: actions,
+                happiness: 0,
+                hygiene: 0,
+                hunger: 0,
+                energy: -30,
+                earnings: 10
+            });
+        } else if (player.area === "Padang") {
+            if (!hasEnoughResources(0, 0, 0, 0, 5)) return;
+            showPopup({
+                action: actions,
+                happiness: 0,
+                hygiene: 0,
+                hunger: 20,
+                energy: 0,
+                earnings: -5
+            });
+        } else if (player.area === "Jambi") {
+            if (!hasEnoughResources(0, 0, 0, 0, 0)) return;
+            showPopup({
+                action: actions,
+                happiness: 0,
+                hygiene: 0,
+                hunger: 0,
+                energy: -10,
+                earnings: 15
+            });
         }
     });
 
-    document.getElementById("action3").addEventListener("click", () =>{
-        const actions = (areaActions[player.area]).action3;
-        if(player.area === "Home"){
-            showPopup(actions, 10, 0, 0, 0, 0);
-        } else if(player.area === "Padang"){
-            showPopup(actions, 0, 20, 0, 0, 0);
-        } else if(player.area === "Ponorogo"){ // no checks for boss
-            showPopup(actions, -40, -40, -10, -40, 25);
-        } 
+    document.getElementById("action3").addEventListener("click", () => {
+        const actions = areaActions[player.area].action3;
+        if (player.area === "Home") {
+            showPopup({
+                action: actions,
+                happiness: 10,
+                hygiene: 0,
+                hunger: 0,
+                energy: 0,
+                earnings: 0
+            });
+        } else if (player.area === "Padang") {
+            showPopup({
+                action: actions,
+                happiness: 0,
+                hygiene: 20,
+                hunger: 0,
+                energy: 0,
+                earnings: 0
+            });
+        } else if (player.area === "Ponorogo") { // no checks for boss
+            showPopup({
+                action: actions,
+                happiness: -40,
+                hygiene: -40,
+                hunger: -10,
+                energy: -40,
+                earnings: 25
+            });
+        }
     });
 }
 
@@ -732,6 +882,7 @@ function handleArrival(){
         setTimeout(() =>{
             areas[player.area].jumping = false;
         }, 500);
+        // startBattle(areas[player.area]); // DEBUG
     }
 
     // Update UI elements
@@ -896,6 +1047,122 @@ function firstrun(){
         }
     }
     updateClock(true); // Initial call to display the clock immediately
+    
+    // Start tutorial if first time
+    if (checkFirstTimeUser()) {
+        setTimeout(startTutorial, 1000); // Small delay to let everything load
+    }
+}
+
+/*  ----------------- */
+/* TUTORIAL FUNCTIONS  */
+/*  ----------------- */
+function startTutorial() {
+    if (!isTutorialActive) return;
+    showTutorialStep(currentTutorialStep);
+}
+
+function showTutorialStep(stepIndex) {
+    if (stepIndex >= TUTORIALSTEPS.length) {
+        endTutorial();
+        return;
+    }
+
+    const step = TUTORIALSTEPS[stepIndex];
+    const TutorialContainer = document.getElementById("TutorialContainer");
+    const tutorialBox = document.getElementById("tutorialBox");
+    const tutorialText = document.getElementById("tutorialText");
+    const skipButton = document.getElementById("skipButton");
+    const nextButton = document.getElementById("nextButton");
+
+    TutorialContainer.classList.remove("hidden");
+    tutorialText.textContent = step.text;
+
+    // Update the "Next" button text
+    nextButton.textContent = stepIndex === TUTORIALSTEPS.length - 1 ? "Finish" : "Next";
+
+    // Remove previous highlights
+    document.querySelectorAll('.highlight-element').forEach(el => {
+        el.classList.remove('highlight-element');
+    });
+
+    // Highlight the target element if specified
+    if (step.element) {
+        const targetElement = document.getElementById(step.element);
+        if (targetElement) {
+            targetElement.classList.add("highlight-element");
+
+            const targetRect = targetElement.getBoundingClientRect();
+            let top, left;
+
+            // Position the tutorial box
+            if (window.innerWidth < 768) {
+                // Mobile view. TODO: FIX THIS
+                top = targetRect.top + window.scrollY - tutorialBox.offsetHeight - 100;
+                left = targetRect.right + window.scrollX - 100;
+            } else {
+                top = targetRect.top + window.scrollY - tutorialBox.offsetHeight - 10;
+                left = targetRect.right + window.scrollX + 10;
+            }
+
+            tutorialBox.style.position = "absolute";
+            tutorialBox.style.top = `${top}px`;
+            tutorialBox.style.left = `${left}px`;
+
+            // Add arrow if specified
+            if (step.arrow) {
+                const arrow = document.createElement("div");
+                arrow.className = `tutorial-arrow ${step.arrow}`;
+                tutorialBox.appendChild(arrow);
+            }
+        }
+    } else {
+        // Center the box if no element specified
+        tutorialBox.style.position = "absolute";
+        tutorialBox.style.top = "50%";
+        tutorialBox.style.left = "50%";
+        tutorialBox.style.transform = "translate(-50%, -50%)";
+    }
+
+    // Add event listeners for buttons
+    skipButton.onclick = endTutorial;
+    nextButton.onclick = () => {
+        currentTutorialStep++;
+        showTutorialStep(currentTutorialStep);
+    };
+}
+
+function endTutorial() {
+    const TutorialContainer = document.getElementById("TutorialContainer");
+    TutorialContainer.classList.add("hidden");
+    isTutorialActive = false;
+    currentTutorialStep = 0;
+
+    // Remove highlights
+    document.querySelectorAll('.highlight-element').forEach(el => {
+        el.classList.remove('highlight-element');
+    });
+
+    // Save to localStorage that tutorial was completed
+    localStorage.setItem('tutorialCompleted', 'true');
+}
+
+function endTutorial() {
+    TutorialContainer.classList.add("hidden");
+    isTutorialActive = false;
+    currentTutorialStep = 0;
+    
+    // Remove highlights
+    document.querySelectorAll('.highlight-element').forEach(el => {
+        el.classList.remove('highlight-element');
+    });
+    
+    // Save to localStorage that tutorial was completed
+    localStorage.setItem('tutorialCompleted', 'true');
+}
+
+function checkFirstTimeUser() {
+    return !localStorage.getItem('tutorialCompleted');
 }
 
 /*  ----------------- */
@@ -1035,7 +1302,7 @@ function gameLoop(){
     if(player.hunger === 0 || player.energy === 0 || 
         player.hygiene === 0 || player.happiness === 0){
         killPlayer();
-    } else{
+    } else if (!isInBattle){
         updatePlayerPosition();
         update();
         draw();

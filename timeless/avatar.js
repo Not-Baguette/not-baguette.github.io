@@ -6,7 +6,7 @@ const avatars = [
         description: "Regina is a skilled archer." },
     { src: "assets/characters/LINA.png", name: "Lina", 
         description: "Lina is a powerful mage." },
-    { src: "assets/characters/BASTIAN.png", name: "Bastian", 
+    { src: "assets/characters/BASTIAN.png", name: "Bastian", // TODO: DELETE BEE SCRIPT ONCE PLACEHOLDER IS NO LONGER NEEDED
         description: `根據所有已知的法律
 的航空，
 
