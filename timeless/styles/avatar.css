@@ -4,12 +4,12 @@
         padding: 0.8rem 1.5rem;
     }
 
-    .modal-content {
+    .Container-content {
         width: 90%;
         max-width: 90%;
     }
 
-    .story-modal-content,
+    .story-Container-content,
     .avatar-selection-content {
         width: 95%;
         max-width: 95%;
@@ -24,6 +24,7 @@
 
     .character {
         max-height: 80%;
+        margin: auto;
     }
 
     .logo {
@@ -43,12 +44,12 @@
         padding: 0.5rem 1rem;
     }
 
-    .modal-content {
+    .Container-content {
         width: 95%;
         max-width: 95%;
     }
 
-    .story-modal-content,
+    .story-Container-content,
     .avatar-selection-content {
         width: 100%;
         max-width: 100%;
@@ -62,7 +63,7 @@
     }
 
     .character {
-        max-height: 60%;
+        max-height: 70%;
         margin: auto;
     }
 
@@ -165,7 +166,7 @@
 }
 
 .character {
-    max-height: 70%;
+    max-height: 500px;
     cursor: pointer;
     transition: transform 0.3s ease-in-out;
 }
@@ -184,8 +185,8 @@
     background-color: rgba(0, 0, 0, 0.7);
 }
 
-/* Modal styles */
-.modal {
+/* Container styles */
+.Container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -199,7 +200,7 @@
     background-color: rgba(0, 0, 0, 0.8);
 }
 
-.modal-content {
+.Container-content {
     background-color: #fefefe;
     margin: auto;
     padding: 20px;
@@ -211,7 +212,7 @@
     transition: transform 0.3s ease-in-out;
 }
 
-.story-modal-content {
+.story-Container-content {
     width: 90%;
     max-width: 800px;
     height: 90%;
@@ -225,7 +226,7 @@
     animation: expand 0.3s forwards;
 }
 
-/* Improved avatar selection modal */
+/* Improved avatar selection Container */
 .avatar-selection-content {
     width: 90%;
     max-width: 800px;

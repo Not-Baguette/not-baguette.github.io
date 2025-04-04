@@ -91,6 +91,18 @@ Ooming！
 
 let currentAvatarIndex = 0; // current avatar
 
+// elements
+const elements = {
+    avatarImage: document.getElementById("avatarImage"),
+    leftAvatar: document.getElementById("leftAvatar"),
+    currentAvatar: document.getElementById("currentAvatar"),
+    rightAvatar: document.getElementById("rightAvatar"),
+    characterName: document.querySelector("#characterStoryContainer h2"),
+    characterDescription: document.querySelector("#characterStoryContainer p"),
+    characterStoryContainer: document.getElementById("characterStoryContainer"),
+    avatarSelectionContainer: document.getElementById("avatarSelectionContainer"),
+};
+
 // Try preloading the image to improve server runtime performance
 function preloadImages() {
     return Promise.all(avatars.map(avatar => {
@@ -105,185 +117,88 @@ function preloadImages() {
     .catch(error => console.warn(error));
 }
 
-// Call this in your DOMContentLoaded event
+// Initialize the page
 document.addEventListener('DOMContentLoaded', () => {
     preloadImages();
-    avatarImage.src = avatars[currentAvatarIndex].src;
-    updateAvatarSelection();
+    elements.avatarImage.src = avatars[currentAvatarIndex].src;
+    updateAvatarDisplay();
+    
+    // Set up event listeners
+    elements.avatarImage.addEventListener("click", handleAvatarClick);
+    document.getElementById("avatarLore").addEventListener("click", handleAvatarClick);
+    document.getElementById("avatarSelection").addEventListener("click", () => {
+        toggleContainer(elements.avatarSelectionContainer);
+        updateAvatarDisplay();
+    });
+    
+    // Avatar selection
+    document.getElementById('prevAvatar').addEventListener("click", () => navigateAvatars(-1));
+    document.getElementById('nextAvatar').addEventListener("click", () => navigateAvatars(1));
+    document.getElementById('leftAvatar').addEventListener('click', () => handleAvatarSelect((currentAvatarIndex - 1 + avatars.length) % avatars.length));
+    document.getElementById('rightAvatar').addEventListener('click', () => handleAvatarSelect((currentAvatarIndex + 1) % avatars.length));
+    document.getElementById('confirmAvatar').addEventListener('click', () => handleAvatarSelect(currentAvatarIndex));
+    document.getElementById('currentAvatar').addEventListener('click', () => handleAvatarSelect(currentAvatarIndex));
+    
+    // Close buttons
+    document.getElementById('closeAvatarSelectionContainer').addEventListener("click", () => toggleContainer(elements.avatarSelectionContainer, false));
+    document.getElementById('closeStoryContainer').addEventListener("click", () => toggleContainer(elements.characterStoryContainer, false));
+    document.getElementById('closeCreditsContainer').addEventListener("click", () => toggleContainer(document.getElementById('creditsContainer'), false));
+    
+    // Start game and credits button
+    document.getElementById('credits').addEventListener('click', () => toggleContainer(document.getElementById('creditsContainer')));
+    document.getElementById('startGame').addEventListener('click', handleStartGame);
 });
 
-// Get elements
-const avatarImage = document.getElementById("avatarImage");
-const characterModal = document.getElementById("characterModal");
-const closeModal = document.getElementById("closeModal");
-const characterName = document.getElementById("characterName");
-const characterDescription = document.getElementById("characterDescription");
-const avatarLore = document.getElementById("avatarLore");
-const characterStoryModal = document.getElementById("characterStoryModal");
-const closeStoryModal = document.getElementById("closeStoryModal");
-const avatarSelection = document.getElementById("avatarSelection");
-const avatarSelectionModal = document.getElementById("avatarSelectionModal");
-const closeAvatarSelectionModal = document.getElementById("closeAvatarSelectionModal");
-const prevAvatar = document.getElementById("prevAvatar");
-const nextAvatar = document.getElementById("nextAvatar");
-
-// Function to add the hidden class
-function addHidden(element) {
-    element.classList.add("hidden");
+// Toggle container visibility
+function toggleContainer(container, show = true) {
+    container.classList.toggle('hidden', !show);
 }
 
-// Function to remove the hidden class
-function removeHidden(element) {
-    element.classList.remove("hidden");
-};
-
-// Function to open the character story modal
-function openCharacterStoryModal() {
-    const currentAvatar = avatars[currentAvatarIndex];
-    characterStoryModal.querySelector('h2').textContent = `${currentAvatar.name}'s Story`;
-    characterStoryModal.querySelector('p').textContent = currentAvatar.description;
-    removeHidden(characterStoryModal);
-}
-
-// Function to select an avatar
-function selectAvatar(index) {
-    currentAvatarIndex = index;
-    avatarImage.src = avatars[index].src;
-    addHidden(avatarSelectionModal);
-}
-
-// Function to update avatar selection display
-function updateAvatarSelection() {
-    // Calculate indices for left and right avatars (circular)
-    const leftIndex = (currentAvatarIndex - 1 + avatars.length) % avatars.length;
+// Update the avatar selection display
+function updateAvatarDisplay() {
+    const leftIndex = (currentAvatarIndex - 1 + avatars.length) % avatars.length; // circular index
     const rightIndex = (currentAvatarIndex + 1) % avatars.length;
     
-    // Get the avatar elements
-    const leftAvatar = document.getElementById('leftAvatar');
-    const currentAvatar = document.getElementById('currentAvatar');
-    const rightAvatar = document.getElementById('rightAvatar');
+    // Update avatar images
+    elements.leftAvatar.src = avatars[leftIndex].src;
+    elements.currentAvatar.src = avatars[currentAvatarIndex].src;
+    elements.rightAvatar.src = avatars[rightIndex].src;
     
-    // Set the src attributes
-    leftAvatar.src = avatars[leftIndex].src;
-    currentAvatar.src = avatars[currentAvatarIndex].src;
-    rightAvatar.src = avatars[rightIndex].src;
-    
-    // Set alt attributes for accessibility
-    leftAvatar.alt = avatars[leftIndex].name;
-    currentAvatar.alt = avatars[currentAvatarIndex].name;
-    rightAvatar.alt = avatars[rightIndex].name;
-    
-    // Apply styles to indicate the current selection
-    leftAvatar.classList.add('blurred');
-    leftAvatar.style.transform = 'scale(0.8)';
-    
-    currentAvatar.classList.remove('blurred');
-    currentAvatar.style.transform = 'scale(1)';
-    
-    rightAvatar.classList.add('blurred');
-    rightAvatar.style.transform = 'scale(0.8)';
-}
-
-// Function to show the next avatar
-function showNextAvatar() {
-    currentAvatarIndex = (currentAvatarIndex + 1) % avatars.length;
-    updateAvatarSelection();
-}
-
-// Function to show the previous avatar
-function showPrevAvatar() {
-    currentAvatarIndex = (currentAvatarIndex - 1 + avatars.length) % avatars.length;
-    updateAvatarSelection();
-}
-
-// Event listener for character image click
-avatarImage.addEventListener("click", () => {
-    openCharacterStoryModal(currentAvatarIndex);
-});
-
-// Event listener for "Character's Story" menu option
-avatarLore.addEventListener("click", openCharacterStoryModal);
-
-// Event listener for "Select Avatar" menu option
-avatarSelection.addEventListener("click", () => {
-    removeHidden(avatarSelectionModal);
-    updateAvatarSelection();
-});
-
-// Event listener for close button in avatar selection modal
-closeAvatarSelectionModal.addEventListener("click", () => addHidden(avatarSelectionModal));
-
-// Clear the previous event listeners and add new ones
-document.getElementById('leftAvatar').addEventListener('click', () => {
-    selectAvatar((currentAvatarIndex - 1 + avatars.length) % avatars.length);
-});
-
-function confirmCurrentAvatar() {
-    selectAvatar(currentAvatarIndex);
-}
-
-// Add event listeners using the shared function
-document.getElementById('confirmAvatar').addEventListener('click', confirmCurrentAvatar);
-document.getElementById('currentAvatar').addEventListener('click', confirmCurrentAvatar);
-
-document.getElementById('rightAvatar').addEventListener('click', () => {
-    selectAvatar((currentAvatarIndex + 1) % avatars.length);
-});
-
-// Remove previous listeners setup to avoid conflicts
-// The following code replaces the previous event listeners for avatar selection
-/*
-document.querySelectorAll('.avatar-selection').forEach((element, index) => {
-    element.addEventListener('click', () => {
-        selectAvatar(index);
-    });
-});
-*/
-
-// Event listener for next and previous buttons
-nextAvatar.addEventListener("click", showNextAvatar);
-prevAvatar.addEventListener("click", showPrevAvatar);
-
-// Event listener for close button in story modal
-closeStoryModal.addEventListener("click", () => addHidden(characterStoryModal));
-
-// Set the initial avatar image and update selection on page load
-document.addEventListener('DOMContentLoaded', () => {
-    avatarImage.src = avatars[currentAvatarIndex].src;
-    updateAvatarSelection();
-});
-
-document.getElementById('startGame').addEventListener('click', () => {
-    // Get the current username
-    const username = document.getElementById('avatarName').value || 'Player';
-    
-    if (username === '') {
-        alert('Please enter a username.');
-        return;
-    }
-    // Create URL with parameters - use the index instead of name/src
-    const gameUrl = 'index.html';
-    const params = new URLSearchParams({
-        username: username,
-        avatar: currentAvatarIndex+1
+    [elements.leftAvatar, elements.rightAvatar].forEach(el => { // Update VFX (FOr all characters on the left/right side)
+        el.classList.add('blurred');
+        el.style.transform = 'scale(0.8)';
     });
     
-    // Navigate to the game page with parameters
-    window.location.href = `${gameUrl}?${params.toString()}`;
-});
+    // Update current avatar
+    elements.currentAvatar.classList.remove('blurred');
+    elements.currentAvatar.style.transform = 'scale(1)';
+}
 
-/* */
-// Get elements for credits modals
-const creditsButton = document.getElementById('credits');
-const creditsModal = document.getElementById('creditsModal');
-const closeCreditsModal = document.getElementById('closeCreditsModal')
-const showMoreCreditsButton = document.getElementById('showMoreCredits');
-// Event listener for Credits button
-creditsButton.addEventListener('click', () => {
-    removeHidden(creditsModal);
-});
+// Handle avatar navigation
+function navigateAvatars(direction) {
+    currentAvatarIndex = (currentAvatarIndex + direction + avatars.length) % avatars.length;
+    updateAvatarDisplay();
+}
 
-// Event listener for close button in credits modal
-closeCreditsModal.addEventListener('click', () => {
-    addHidden(creditsModal);
-});
+// Show character story
+function handleAvatarClick() {
+    const current = avatars[currentAvatarIndex];
+    elements.characterName.textContent = `${current.name}'s Story`;
+    elements.characterDescription.textContent = current.description;
+    toggleContainer(elements.characterStoryContainer);
+}
+
+// Handle avatar selection confirm
+function handleAvatarSelect(index) {
+    currentAvatarIndex = index;
+    elements.avatarImage.src = avatars[index].src;
+    toggleContainer(elements.avatarSelectionContainer, false);
+}
+
+// Start game if username is already set
+function handleStartGame() {
+    const username = document.getElementById('avatarName').value;
+    if (!username) return alert('Please enter a username.');
+    
+    window.location.href = `index.html?username=${username}&avatar=${currentAvatarIndex+1}`;
+}

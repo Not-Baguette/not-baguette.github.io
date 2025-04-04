@@ -26,7 +26,7 @@
             </div>
             
             <!-- main menu -->
-            <div class="flex flex-col items-center text-center p-6 w-full max-w-lg">
+            <div class="flex flex-col items-center text-center p-6 w-full max-w-lg m-auto">
                 <img src="assets/Timeless_Adventure_logo.png" alt="Timeless Adventure Logo" class="logo">
                 <button class="menu-option cursor-pointer" id="startGame">Start Game</button>
                 <button class="menu-option cursor-pointer" id="avatarSelection">Select Avatar</button>
@@ -35,10 +35,10 @@
             </div>
         </div>
 
-        <!-- Avatar selection modal -->
-        <div id="avatarSelectionModal" class="modal hidden">
-            <div class="modal-content avatar-selection-content mx-4">
-                <span class="close" id="closeAvatarSelectionModal">&times;</span>
+        <!-- Avatar selection Container -->
+        <div id="avatarSelectionContainer" class="Container hidden">
+            <div class="Container-content avatar-selection-content mx-4">
+                <span class="close" id="closeAvatarSelectionContainer">&times;</span>
                 <div class="avatar-selection-container flex flex-col">
                     <div class="avatars flex flex-row justify-center">
                         <img alt="leftAvatar" class="avatar-selection" id="leftAvatar">
@@ -46,25 +46,25 @@
                         <img alt="rightAvatar" class="avatar-selection" id="rightAvatar">
                     </div>
                     <div class="avatar-selection-buttons flex flex-row justify-between mt-4">
-                        <img src="assets/util/prev.png" alt="Previous" class="arrow" id="prevAvatar">
+                        <img src="assets/util/Prev.png" alt="Previous" class="arrow" id="prevAvatar">
                         <button class="confirm-button cursor-pointer" id="confirmAvatar">Confirm</button>
-                        <img src="assets/util/next.png" alt="Next" class="arrow" id="nextAvatar">
+                        <img src="assets/util/Next.png" alt="Next" class="arrow" id="nextAvatar">
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Character story modal -->
-        <div id="characterStoryModal" class="modal hidden">
-            <div class="modal-content story-modal-content mx-4">
-                <span class="close" id="closeStoryModal">&times;</span>
+        <!-- Character story Container -->
+        <div id="characterStoryContainer" class="Container hidden">
+            <div class="Container-content story-Container-content mx-4">
+                <span class="close" id="closeStoryContainer">&times;</span>
                 <h2 class="mb-4">Character's Story</h2>
                 <p>Here is the detailed story of the character...</p>
             </div>
         </div>
-        <div id="creditsModal" class="modal hidden">
-            <div class="modal-content story-modal-content mx-4">
-                <span class="close" id="closeCreditsModal">&times;</span>
+        <div id="creditsContainer" class="Container hidden">
+            <div class="Container-content story-Container-content mx-4">
+                <span class="close" id="closeCreditsContainer">&times;</span>
                 <h2 class="mb-4 text-2xl font-bold">Credits</h2>
                 <div class="credit-container">
                     <p class="mb-3">Made with love by;</p>
