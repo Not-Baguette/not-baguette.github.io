@@ -1008,7 +1008,7 @@ function highlightTargetElement(elementId, tutorialBox) {
     const targetRect = targetElement.getBoundingClientRect();
     let top, left;
 
-    if (window.innerWidth > 768) {
+    if (window.innerWidth > 1050) {
         // Position for PC
         top = targetRect.top + window.scrollY + (targetRect.height / 2) - (tutorialBox.offsetHeight / 2) + 250;
         left = targetRect.left + window.scrollX + (targetRect.width / 2) - (tutorialBox.offsetWidth / 2) + 50;

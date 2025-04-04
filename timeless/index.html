@@ -22,7 +22,7 @@
         <!-- Top Row for Usernames n logo, good luck sis :sparkles: -->
         <div class="w-full bg-gray-700 p-4 text-center mb-6 stats-bar">
             <h1 class="text-3xl font-bold mb-4">The Timeless Adventure</h1>
-            <div class="flex flex-col sm:flex-row gap-10 justify-center">
+            <div class="flex flex-row gap-10 justify-center">
                 <!-- pfp -->
                 <div class="my-auto">
                     <img src="assets/logo.jpeg" id="profilePic" alt="Profile pic" class="m-auto rounded-full mb-3 w-20">
@@ -62,7 +62,7 @@
                     </div>
                 </div>
                 <div> <!-- to fit it beside the stats bar -->
-                    <img class="w-40 mx-auto" src="assets/Timeless_Adventure_logo.png" alt="Logo">
+                    <img class="w-40 mx-auto logo" src="assets/Timeless_Adventure_logo.png" alt="Logo">
                 </div>
             </div>
         </div>
@@ -73,7 +73,7 @@
         <div id="tooltip" class="fixed bg-gray-700 text-white p-2 rounded hidden"></div>
 
         <!-- The main game and the interaction menu -->
-        <div class="flex flex-col sm:flex-row">
+        <div class="flex flex-col flex-switch sm:flex-row">
             <!-- Canvas, center it on mobile -->
             <div class="items-center justify-center flex flex-col">
                 <canvas id="gameCanvas" width="800" height="600" class="m-4 w-auto"></canvas>
