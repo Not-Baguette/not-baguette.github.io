@@ -953,11 +953,13 @@ function firstrun(){
 /*  ----------------- */
 /* TUTORIAL FUNCTIONS  */
 /*  ----------------- */
+// Start the tutorial
 function startTutorial() {
     if (!isTutorialActive) return;
     showTutorialStep(currentTutorialStep);
 }
 
+// apply the tutorial steps in order
 function showTutorialStep(stepIndex) {
     if (stepIndex >= TUTORIALSTEPS.length) {
         endTutorial();
@@ -971,52 +973,21 @@ function showTutorialStep(stepIndex) {
     const skipButton = document.getElementById("skipButton");
     const nextButton = document.getElementById("nextButton");
 
+    // Show tutorial container and update text
     TutorialContainer.classList.remove("hidden");
     tutorialText.textContent = step.text;
 
-    // Update the "Next" button text
+    // Update "Next" button text
     nextButton.textContent = stepIndex === TUTORIALSTEPS.length - 1 ? "Finish" : "Next";
 
     // Remove previous highlights
-    document.querySelectorAll('.highlight-element').forEach(el => {
-        el.classList.remove('highlight-element');
-    });
+    document.querySelectorAll('.highlight-element').forEach(el => el.classList.remove('highlight-element'));
 
     // Highlight the target element if specified
     if (step.element) {
-        const targetElement = document.getElementById(step.element);
-        if (targetElement) {
-            targetElement.classList.add("highlight-element");
-
-            const targetRect = targetElement.getBoundingClientRect();
-            let top, left;
-
-            // Center the box over the target element
-            if (window.innerWidth > 768){
-                // for pc
-                top = targetRect.top + window.scrollY + (targetRect.height/2) - (tutorialBox.offsetHeight/2) + 250;
-                left = targetRect.left + window.scrollX + (targetRect.width/2) - (tutorialBox.offsetWidth/2) + 50;
-            } else { // for mobile (Yes I just centered it :< I give up)
-                tutorialBox.style.position = "absolute";
-                tutorialBox.style.top = "50%";
-                tutorialBox.style.left = "50%";
-                tutorialBox.style.transform = "translate(-50%, -50%)";
-            }
-
-            // hardcode solution, bad practice but idk what else to do
-            // when the element is the canvas, move the box to the top
-            if (step.element === "gameCanvas") left += 800;
-
-            tutorialBox.style.position = "absolute";
-            tutorialBox.style.top = `${top}px`;
-            tutorialBox.style.left = `${left}px`;
-        }
+        highlightTargetElement(step.element, tutorialBox);
     } else {
-        // Center the box if no element specified
-        tutorialBox.style.position = "absolute";
-        tutorialBox.style.top = "50%";
-        tutorialBox.style.left = "50%";
-        tutorialBox.style.transform = "translate(-50%, -50%)";
+        centerTutorialBox(tutorialBox);
     }
 
     // Add event listeners for buttons
@@ -1027,6 +998,43 @@ function showTutorialStep(stepIndex) {
     };
 }
 
+// Highlight the target element and position the tutorial box
+function highlightTargetElement(elementId, tutorialBox) {
+    const targetElement = document.getElementById(elementId);
+    if (!targetElement) return;
+
+    targetElement.classList.add("highlight-element");
+
+    const targetRect = targetElement.getBoundingClientRect();
+    let top, left;
+
+    if (window.innerWidth > 768) {
+        // Position for PC
+        top = targetRect.top + window.scrollY + (targetRect.height / 2) - (tutorialBox.offsetHeight / 2) + 250;
+        left = targetRect.left + window.scrollX + (targetRect.width / 2) - (tutorialBox.offsetWidth / 2) + 50;
+    } else {
+        // Center for mobile
+        centerTutorialBox(tutorialBox);
+        return;
+    }
+
+    // Adjust position for specific elements
+    if (elementId === "gameCanvas") left += 800;
+
+    tutorialBox.style.position = "absolute";
+    tutorialBox.style.top = `${top}px`;
+    tutorialBox.style.left = `${left}px`;
+}
+
+// Center the tutorial box (for non-targeted elements or mobile)
+function centerTutorialBox(tutorialBox) {
+    tutorialBox.style.position = "absolute";
+    tutorialBox.style.top = "50%";
+    tutorialBox.style.left = "50%";
+    tutorialBox.style.transform = "translate(-50%, -50%)";
+}
+
+// End the tutorial
 function endTutorial() {
     const TutorialContainer = document.getElementById("TutorialContainer");
     TutorialContainer.classList.add("hidden");
@@ -1042,6 +1050,7 @@ function endTutorial() {
     localStorage.setItem('tutorialCompleted', 'true');
 }
 
+// Check if the user is a first-time user via localStorage
 function checkFirstTimeUser() {
     return !localStorage.getItem('tutorialCompleted');
 }
