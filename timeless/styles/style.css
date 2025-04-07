@@ -121,7 +121,7 @@ canvas {
 }
 
 .stats-pad {
-    padding-top: 200px;
+    margin-top: 200px;
 }
 
 /* Interaction box */
