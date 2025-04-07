@@ -1,18 +1,8 @@
 /* Mobile Support */
-@media (max-width: 820px) {
-    canvas {
-        width: 90% !important;
+@media (max-width:1050px) {
+    .stats-pad {
+        padding-top: 600px;
     }
-    .controls {
-        position: relative !important;
-        bottom: 0 !important;
-        right: 0 !important;
-        margin: auto !important;
-        margin-top: 10px !important;
-    }
-}
-
-@media (max-width: 1050px) {
     .username {
         margin-top: -30px;
         font-size: 40px !important;
@@ -20,15 +10,40 @@
     .gap-10, .gap-4 {
         gap: 20px !important;
     }
-    .flex-col {
-        flex-direction: column !important;
-    }
     .interaction-box {
         min-width: 100% !important;
     }
+    .flex-switch{
+        flex-direction: column !important;
+        align-items: center !important;
+    }
 }
 
-/* Popup animation stuff */
+@media (max-width:820px) {
+    .bar-container {
+        min-width: 100px !important; /* Reduce the width of the bar container */
+    }
+    .stats-pad {
+        padding-top: 200px !important;
+    }
+    .username {
+        font-size: 20px !important;
+    }
+    canvas {
+        width: 90% !important;
+    }
+    .controls {
+        position: relative !important;
+        margin: auto !important;
+        margin-top: 10px !important;
+    }
+    .logo, #profilePic {
+        /* Hide on smaller screens*/
+        display: none !important;
+    }
+}
+
+/* Popup animations */
 @keyframes popupAnimationOpen {
     0% {
         transform: scale(0.75);
@@ -69,10 +84,6 @@
     }
 }
 
-.jump {
-    animation: jump 0.5s ease;
-}
-
 #popupContainer {
     animation: shadowFadeIn 0.3s ease-out;
 }
@@ -86,7 +97,13 @@
     animation: popupAnimationClose 0.3s ease-out;
 }
 
-/* General stuff */
+/* General styles */
+.stats-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
 body {
     overflow-x: hidden;
 }
@@ -97,58 +114,41 @@ canvas {
     margin-top: 20px;
 }
 
-.background-transition {
-    transition: background-image 1s ease-in-out; /* Ensure transition is applied */
-}
-
 .index-pg {
     background-image: url('../assets/backgrounds/Main.png');
     background-size: cover;
     background-position: center;
 }
 
-/* index.html UI */
+.stats-pad {
+    padding-top: 200px;
+}
+
+/* Interaction box */
 .interaction-box {
     min-height: 150px;
     background-color: transparent;
 }
 
 #clock {
-    text-shadow: /* Outline col */
-        -1px -1px 0 #000,  
-         1px -1px 0 #000,
-        -1px  1px 0 #000,
-         1px  1px 0 #000;
-}
-
-.pfp-zoom {
-    /* increase the size of the pfp */
-    transform: scale(1.5); 
-    transform-origin: center;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
 .bar-container {
-    /* container for bar-block */
     min-width: 250px;
     height: 30px;
     background-color: #222;
     border: 1px solid white;
     display: flex;
     align-items: center;
+    justify-content: flex-start;
+    direction: rtl; /* I DONT KNOW WHY I NEED TO REVERSE IT NOW, LIKE BRO IT DOESNT MAKE SENSE HOW DOES A TRANSITION MAKES IT RTL */
 }
+
 .bar-block {
-    /* bar blocks for the stats */
-    height: 30px;
+    height: 100%;
     border: 2px solid white;
-}
-
-.bar-block:last-child {
-    margin-right: 0;
-}
-
-#money {
-    font-family: 'Franklin Gothic Medium';
-    font-size: large;
+    flex-shrink: 0; 
 }
 
 .username {
@@ -157,19 +157,11 @@ canvas {
     font-size: xx-large;
 }
 
-.button:hover {
-    background-color: #0f3582;
-    color: white;
-    cursor: pointer;
-    animation: float 2s ease-in-out infinite;
-}
-
 .ctrl-btn {
     border-radius: 50%;
     background-color: black;
     width: 50px;
     height: 50px;
-    padding: 0;
 }
 
 /* Controls */
@@ -181,12 +173,6 @@ canvas {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-}
-
-.controls .flex {
-    display: flex;
-    justify-content: center;
-    width: 100%;
 }
 
 #moveUp, #moveDown, #moveLeft, #moveRight {
@@ -204,6 +190,64 @@ canvas {
     pointer-events: none;
     transition: opacity 0.2s;
     border: 1px solid #fff;
+    z-index: 3;
+}
+
+/* Tutorial */
+.tutorial-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s;
+    z-index: 1;
+}
+
+.tutorial-box {
+    background-color: #2d3748;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    z-index: 2;
+}
+
+.tutorial-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.tutorial-button {
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.tutorial-next {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.tutorial-skip {
+    background-color: #f44336;
+    color: white;
+}
+
+/* Highlight effect */
+.highlight-element {
+    position: relative;
+    z-index: 2;
+    outline: 3px solid rgba(255, 165, 0, 0.8);
+    box-shadow: 0 0 10px rgba(255, 165, 0, 0.8);
+    border-radius: 5px;
 }
 
 /* One-liners */
@@ -211,7 +255,7 @@ canvas {
 #moveDown {background-image: url('../assets/util/Down.png');}
 #moveLeft {background-image: url('../assets/util/Left.png');}
 #moveRight {background-image: url('../assets/util/Right.png');}
-.rounded-border{border-radius: 10px;}
+.rounded-border {border-radius: 10px;}
 .happiness {background-color: red;}
 .energy {background-color: orange;}
 .hygiene {background-color: blue;}

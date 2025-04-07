@@ -9,6 +9,13 @@ let keysPressed = {}; // store the keys pressed by the user for keyboard support
 let inGameTime = new Date(); // ingame time
 let moveInterval; // button movement interval
 let lastHour; // store the last hour for day-night cycle & status decay
+let isInBattle = false; // TODO: DELETE THIS IF WE CANCEL THE MINIFIGHT FEATURE
+// tutorial
+let currentTutorialStep = 0;
+let isTutorialActive = true;
+const TutorialContainer = document.createElement("div");
+TutorialContainer.className = "tutorial-overlay hidden";
+document.body.appendChild(TutorialContainer);
 
 // Constants
 const PLAYERDEFAULT = {
@@ -79,6 +86,47 @@ const STATSTOOLTIP = [
    {id: "hygieneContainer", text: "Hygiene: Reflects the player's cleanliness and health." },
    {id: "hungerContainer", text: "Hunger: Shows the player's need for food and nourishment." }
 ];
+
+const TUTORIALSTEPS = [{
+        text: "Welcome to the game! Let's learn how to play this game!",
+        element: null,
+    },
+    {
+        text: "For Desktop users, feel free to use the arrow keys or WASD to move your character!",
+        element: null,
+    },
+    {
+        text: "For Mobile users, use the buttons on the bottom to move your character or click to move!",
+        element: "controls",
+    },
+    {
+        text: "These are your stats. Keep them above 0 or you'll die! On Desktop, Hover over them to learn more.",
+        element: "statExample",
+    },
+    {
+        text: "This is the map. Drag your character to different areas to explore them.",
+        element: "gameCanvas",
+    },
+    {
+        text: "Each area has different actions you can take. Try them out! There will be a popup to confirm your actions.",
+        element: "action2",
+    },
+    {
+        text: "Time affects your stats. At night, your energy drains faster! So be careful and manage your time wisely.",
+        element: "clockContainer",   
+    },
+    {
+        text: "In order to win, You need to defeat the boss in Ponorogo. But be careful, you need to unlock the areas first.",
+        element: "gameCanvas",
+    },
+    {
+        text: "You can also find a secret area! Good luck! ;)",
+        element: "gameCanvas",
+    },
+    {
+        text: "That's it for the tutorial! You can always revisit it by clicking the help button :>",
+        element: null,
+}];
 
 // day-night cycle
 const backgroundColors = {
@@ -281,6 +329,13 @@ function addEventListeners(){
 
     // Tooltip
     document.addEventListener("DOMContentLoaded", () => loadTooltip());
+
+    // Help Button
+    document.getElementById("helpButton").addEventListener("click", () => {
+        currentTutorialStep = 0;
+        isTutorialActive = true;
+        startTutorial();
+    });
 
     // Button actions using showPopup, I'm sorry for the shit code below
     document.getElementById("action1").addEventListener("click", () =>{
@@ -671,19 +726,25 @@ function updateClock(overrule){
 
     // change time display
     document.getElementById("clock").textContent = `${hours}:${minutes}`;
+    // faster energy decay at night
+    if(hours >= 18 || hours < 6){
+        player.energy = Math.max(0, player.energy - 0.1); // Ensure energy doesn't go below 0
+    }
+
+
     if(hours == lastHour && !overrule) return; // same hour and no overrule = no need to update, for efficiency
 
     // Remove all possible background colors
     body.classList.remove(...Object.values(backgroundColors)); 
 
     // day-night cycle
-    if(hours < 11){
+    if(hours >= 4 && hours < 12) {
         body.classList.add(backgroundColors.morning);
-    } else if(hours < 16){
+    } else if (hours < 15) {
         body.classList.add(backgroundColors.afternoon);
-    } else if(hours <= 18){
+    } else if (hours < 18) {
         body.classList.add(backgroundColors.evening);
-    } else{
+    } else {
         body.classList.add(backgroundColors.night);
     }
 
@@ -732,6 +793,7 @@ function handleArrival(){
         setTimeout(() =>{
             areas[player.area].jumping = false;
         }, 500);
+        // startBattle(areas[player.area]); // DEBUG
     }
 
     // Update UI elements
@@ -770,6 +832,31 @@ function updateStats() {
     });
     // Update money display
     document.getElementById("money").innerText = `$${player.money}`;
+}
+
+function updateStats() {
+    const stats = ["happiness", "energy", "hygiene", "hunger"];
+    stats.forEach(stat => {
+        const container = document.getElementById(`${stat}Container`);
+        const currentBlock = container.querySelector(".bar-block");
+        const percentage = player[stat];
+
+        if (!currentBlock) {
+            // Create the bar block if it doesn't exist
+            const block = document.createElement("div");
+            block.classList.add("bar-block", stat);
+            block.style.width = `${percentage}%`;
+            container.appendChild(block);
+        } else {
+            // Animate the width change
+            currentBlock.style.transition = "width 0.5s ease-in-out"; // Smooth transition
+            currentBlock.style.width = `${percentage}%`;
+        }
+    });
+
+    // Update money display
+    const moneyElement = document.getElementById("money");
+    moneyElement.innerText = `$${player.money}`;
 }
 
 /*  ----------------- */
@@ -896,6 +983,114 @@ function firstrun(){
         }
     }
     updateClock(true); // Initial call to display the clock immediately
+    updateButtonActions(player.area); // set button actions to home for tutorial
+
+    // Start tutorial if first time
+    if (checkFirstTimeUser()) {
+        setTimeout(startTutorial, 1000); // Small delay to let everything load
+    }
+}
+
+/*  ----------------- */
+/* TUTORIAL FUNCTIONS  */
+/*  ----------------- */
+// Start the tutorial
+function startTutorial() {
+    if (!isTutorialActive) return;
+    showTutorialStep(currentTutorialStep);
+}
+
+function showTutorialStep(stepIndex) {
+    if (stepIndex >= TUTORIALSTEPS.length) {
+        endTutorial();
+        return;
+    }
+
+    const step = TUTORIALSTEPS[stepIndex];
+    const TutorialContainer = document.getElementById("TutorialContainer");
+    const tutorialBox = document.getElementById("tutorialBox");
+    const tutorialText = document.getElementById("tutorialText");
+    const skipButton = document.getElementById("skipButton");
+    const nextButton = document.getElementById("nextButton");
+
+    // Show tutorial container and tutorial box, and update text
+    TutorialContainer.classList.remove("hidden");
+    tutorialBox.classList.remove("hidden");
+    tutorialText.textContent = step.text;
+
+    // Update "Next" button text & remove prev highlight
+    nextButton.textContent = stepIndex === TUTORIALSTEPS.length - 1 ? "Finish" : "Next";
+    document.querySelectorAll('.highlight-element').forEach(el => el.classList.remove('highlight-element'));
+
+    // Highlight the target element if specified
+    if (step.element) {
+        highlightTargetElement(step.element, tutorialBox);
+    } else {
+        centerTutorialBox(tutorialBox);
+    }
+
+    // Add event listeners for buttons
+    skipButton.onclick = endTutorial;
+    nextButton.onclick = () => {
+        currentTutorialStep++;
+        showTutorialStep(currentTutorialStep);
+    };
+}
+
+function highlightTargetElement(elementId, tutorialBox) {
+    const targetElement = document.getElementById(elementId);
+    if (!targetElement) return;
+
+    targetElement.classList.add("highlight-element");
+
+    const targetRect = targetElement.getBoundingClientRect();
+    let top, left;
+
+    if (window.innerWidth > 1050) {
+        // Position for PC
+        top = targetRect.top + window.scrollY + (targetRect.height / 2) - (tutorialBox.offsetHeight / 2) + 250;
+        left = targetRect.left + window.scrollX + (targetRect.width / 2) - (tutorialBox.offsetWidth / 2) + 50;
+    } else {
+        // Center for mobile
+        centerTutorialBox(tutorialBox);
+        return;
+    }
+
+    // Adjust position for specific elements
+    if (elementId === "gameCanvas") left += 800;
+
+    tutorialBox.style.position = "absolute";
+    tutorialBox.style.top = `${top}px`;
+    tutorialBox.style.left = `${left}px`;
+}
+
+function centerTutorialBox(tutorialBox) {
+    tutorialBox.style.position = "absolute";
+    tutorialBox.style.top = "50%";
+    tutorialBox.style.left = "50%";
+    tutorialBox.style.transform = "translate(-50%, -50%)";
+}
+
+function endTutorial() {
+    const TutorialContainer = document.getElementById("TutorialContainer");
+    const tutorialBox = document.getElementById("tutorialBox");
+    TutorialContainer.classList.add("hidden");
+    tutorialBox.classList.add("hidden");
+    isTutorialActive = false;
+    currentTutorialStep = 0;
+
+    // Remove highlights
+    document.querySelectorAll('.highlight-element').forEach(el => {
+        el.classList.remove('highlight-element');
+    });
+
+    // Save to localStorage that tutorial was completed
+    localStorage.setItem('tutorialCompleted', 'true');
+}
+
+// Check if the user is a first-time user via localStorage
+function checkFirstTimeUser() {
+    return !localStorage.getItem('tutorialCompleted');
 }
 
 /*  ----------------- */
@@ -1035,7 +1230,7 @@ function gameLoop(){
     if(player.hunger === 0 || player.energy === 0 || 
         player.hygiene === 0 || player.happiness === 0){
         killPlayer();
-    } else{
+    } else if (!isInBattle){
         updatePlayerPosition();
         update();
         draw();

@@ -6,44 +6,84 @@
         <meta name="description" content="The Timeless Adventure is a web-type adventure game 
                 where you can explore the world and interact with the environment!" />
         <meta property="og:image" content="assets/Timeless_Adventure_logo.png" />
-        <title>Avatar Selection | The Timeless Adventure</title>
+        <title>Main Menu | The Timeless Adventure</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="styles/avatar.css">
         <link rel="icon" type="image/x-icon" href="assets/Timeless_Adventure_logo.png">
     </head>
-    <body class="overflow-hidden h-screen min-h-screen w-screen flex flex-col items-center 
-                avatar-pg text-white bg-blue-200 backdrop-saturate-100">
-        <!-- cloud on top of the avatar screen -->
+    <body class="overflow-hidden h-screen min-h-screen w-screen flex items-center justify-center 
+                avatar-pg main-menu text-white bg-blue-200 backdrop-saturate-100">
+        <!-- cloud on top of the main menu screen -->
         <img src="assets/backgrounds/cloud.png" alt="Cloud" class="cloud">
-        <!-- logo -->
-        <div class="flex flex-col items-center text-center p-6 w-full max-w-lg">
-            <img src="assets/Timeless_Adventure_logo.png" alt="Timeless Adventure Logo" class="logo">
-        </div>
         
-        <!-- avatar selection -->
-        <div class="flex flex-col items-center text-center p-6 w-full max-w-lg">
-            <div class="flex justify-center items-center gap-6">
-                <div id="prevAvatar" class="cursor-pointer">
-                    <img src="assets/util/Prev.png" alt="Previous" class="arrow">
-                </div>
-                <div id="avatar" class="flex flex-col">
-                    <img id="avatarImage" src="assets/characters/KEVIN.png" alt="Avatar" class="avatar-selection">
-                </div>
-                <div id="nextAvatar" class="cursor-pointer">
-                    <img src="assets/util/Next.png" alt="Next" class="arrow">
+        <!-- main content -->
+        <div class="flex items-center justify-center w-full h-full">
+            <!-- character image -->
+            <div class="flex flex-col justify-start character-container m-auto">
+                <img src="assets/characters/KEVIN.png" alt="Character" class="character" id="avatarImage">
+                <input class="name-box text-center" type="text" id="avatarName" 
+                placeholder="Enter your name here..." maxlength="20" autocomplete="off">
+            </div>
+            
+            <!-- main menu -->
+            <div class="flex flex-col items-center text-center p-6 w-full max-w-lg m-auto">
+                <img src="assets/Timeless_Adventure_logo.png" alt="Timeless Adventure Logo" class="logo">
+                <button class="menu-option cursor-pointer" id="startGame">Start Game</button>
+                <button class="menu-option cursor-pointer" id="avatarSelection">Select Avatar</button>
+                <button class="menu-option cursor-pointer" id="avatarLore">Character's Story</button>
+                <button class="menu-option cursor-pointer" id="credits">Credits</button>
+            </div>
+        </div>
+
+        <!-- Avatar selection Container -->
+        <div id="avatarSelectionContainer" class="Container hidden">
+            <div class="Container-content avatar-selection-content mx-4">
+                <span class="close" id="closeAvatarSelectionContainer">&times;</span>
+                <div class="avatar-selection-container flex flex-col">
+                    <div class="avatars flex flex-row justify-center">
+                        <img alt="leftAvatar" class="avatar-selection" id="leftAvatar">
+                        <img alt="currentAvatar" class="avatar-selection" id="currentAvatar">
+                        <img alt="rightAvatar" class="avatar-selection" id="rightAvatar">
+                    </div>
+                    <div class="avatar-selection-buttons flex flex-row justify-between mt-4">
+                        <img src="assets/util/Prev.png" alt="Previous" class="arrow" id="prevAvatar">
+                        <button class="confirm-button cursor-pointer" id="confirmAvatar">Confirm</button>
+                        <img src="assets/util/Next.png" alt="Next" class="arrow" id="nextAvatar">
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="my-auto w-full px-4 text-center">
-            <div id="greeting"></div>
-            <div class="text-center mt-6">
-                <input id="username" class="name-box text-center w-60" type="text" 
-                    autocomplete="off" placeholder="Enter your name here...">
-            </div>
-            <div class="text-center mt-4">
-                <button id="submitBtn" class="button w-auto" type="button">Enter the game</button>
+
+        <!-- Character story Container -->
+        <div id="characterStoryContainer" class="Container hidden">
+            <div class="Container-content story-Container-content mx-4">
+                <span class="close" id="closeStoryContainer">&times;</span>
+                <h2 class="mb-4">Character's Story</h2>
+                <p>Here is the detailed story of the character...</p>
             </div>
         </div>
+        <div id="creditsContainer" class="Container hidden">
+            <div class="Container-content story-Container-content mx-4">
+                <span class="close" id="closeCreditsContainer">&times;</span>
+                <h2 class="mb-4 text-2xl font-bold">Credits</h2>
+                <div class="credit-container">
+                    <p class="mb-3">Made with love by the Timeless Incorporated ❤️. Special thanks to everyone who supported this project!</p>
+                    <ul class="pl-6 mb-4">
+                        <li>Everyone on the Timeless Inc.</li>
+                        <li>Mr. Wawo for making this possible</li>
+                        <li>Blahaj, mental support</li>
+                        <li>Everyone who supported us!</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- Loading screen transition, break line when mobile -->
+        <div id="introSequence" class="fixed inset-0 z-50 hidden flex flex-col items-center justify-center">
+            <div id="introText" class="text-white text-2xl font-mono mb-8 h-12 text-center break-words whitespace-normal"></div>
+            <p id="presentsText" class="text-center text-white text-3xl mb-8 break-words whitespace-normal">Timeless Inc. presents</p>
+            <img id="introLogo" src="assets/Timeless_Adventure_logo.png" alt="Logo" class="w-96">
+        </div>
+        <!-- additional scripts -->
         <script src="avatar.js"></script>
     </body>
 </html>
