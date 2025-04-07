@@ -21,13 +21,13 @@
 
 @media (max-width:820px) {
     .bar-container {
-        min-width: 120px !important; /* Reduce the width of the bar container */
+        min-width: 100px !important; /* Reduce the width of the bar container */
     }
     .stats-pad {
         padding-top: 200px !important;
     }
     .username {
-        font-size: 30px !important;
+        font-size: 20px !important;
     }
     canvas {
         width: 90% !important;
@@ -37,7 +37,7 @@
         margin: auto !important;
         margin-top: 10px !important;
     }
-    .logo, .profilePic {
+    .logo, #profilePic {
         /* Hide on smaller screens*/
         display: none !important;
     }
@@ -141,11 +141,14 @@ canvas {
     border: 1px solid white;
     display: flex;
     align-items: center;
+    justify-content: flex-start;
+    direction: rtl; /* I DONT KNOW WHY I NEED TO REVERSE IT NOW, LIKE BRO IT DOESNT MAKE SENSE HOW DOES A TRANSITION MAKES IT RTL */
 }
 
 .bar-block {
-    height: 30px;
+    height: 100%;
     border: 2px solid white;
+    flex-shrink: 0; 
 }
 
 .username {
@@ -187,7 +190,7 @@ canvas {
     pointer-events: none;
     transition: opacity 0.2s;
     border: 1px solid #fff;
-    z-index: 2;
+    z-index: 3;
 }
 
 /* Tutorial */
@@ -202,6 +205,7 @@ canvas {
     justify-content: center;
     align-items: center;
     transition: opacity 0.3s;
+    z-index: 1;
 }
 
 .tutorial-box {
@@ -211,7 +215,7 @@ canvas {
     border-radius: 10px;
     max-width: 400px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-    z-index: 1;
+    z-index: 2;
 }
 
 .tutorial-buttons {

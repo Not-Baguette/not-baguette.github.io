@@ -199,6 +199,101 @@ function handleAvatarSelect(index) {
 function handleStartGame() {
     const username = document.getElementById('avatarName').value;
     if (!username) return alert('Please enter a username.');
-    
-    window.location.href = `index.html?username=${username}&avatar=${currentAvatarIndex+1}`;
+
+    // Show the intro sequence
+    const introSequence = document.getElementById('introSequence');
+    introSequence.classList.remove('hidden');
+
+    setTimeout(() => {
+        introSequence.style.transition = 'background-color 1s ease';
+        introSequence.style.backgroundColor = '#1a202c';
+    }, 10);
+
+    // Start the sequence after background fade
+    setTimeout(() => {
+        startIntroSequence(username);
+    }, 1000);
+}
+
+// Show the intro sequence after the user presses start game
+function startIntroSequence(username) {
+    const introText = document.getElementById('introText');
+    const introLogo = document.getElementById('introLogo');
+    const presentsText = document.getElementById('presentsText');
+
+    const messages = [
+        "Once upon a time...",
+        "There was once a legendary traveler",
+        `Their name was ${username}`,
+        `Listen, for their tale is filled with pain`,
+    ];
+
+    // Helper to fade an element in or out
+    const fade = (element, type, duration=500) => {
+        element.style.transition = `opacity ${duration}ms ease`;
+        element.style.opacity = type === 'in' ? 1 : 0; // in = 1, out = 0
+    };
+
+    // helper for "Timeless Inc. presents" text
+    const showPresentsText = () => {
+        presentsText.textContent = "Timeless Inc. presents";
+        presentsText.classList.add('glow');
+        fade(presentsText, 'in', 2000);
+
+        setTimeout(() => fade(presentsText, 'out', 2000), 2000); // Show for 2 seconds
+    };
+
+    // Start the intro sequence
+    typeOrderedMessages(introText, messages, () => {
+        fade(introText, 'out', 500); // Fade out intro text (from typeorderedMessages function)
+
+        setTimeout(() => {
+            introText.classList.add('hidden');
+            showPresentsText(); // Show "Timeless Inc. presents"
+
+            setTimeout(() => {
+                fade(introLogo, 'in', 1000); // Fade in logo
+
+                // Transition to the game
+                setTimeout(() => {
+                    window.location.href = `index.html?username=${username}&avatar=${currentAvatarIndex + 1}`;}, 2000);
+            }, 3000);
+        }, 500);
+    });
+}
+
+// Type messages in a sequence elegantly :3
+function typeOrderedMessages(element, messages, onComplete) {
+    let currentMessage = 0;
+
+    // yes this function is recursive, no i wont make it iterative
+    const typeNextMessage = () => {
+        if (currentMessage >= messages.length) { // If all messages are done
+            onComplete(); // Call whatever function is passed when all messages are done
+            return;
+        }
+
+        const message = messages[currentMessage];
+        element.textContent = ''; // Clear the element incase of clutter
+        element.style.borderRight = '.15em solid white'; // Add a typing cursor to be more immersive
+
+        let charIndex = 0;
+        const typingInterval = setInterval(() => {
+            if (charIndex < message.length) {
+                element.textContent += message[charIndex]; // Add one character at a time
+                charIndex++;
+            } else {
+                // once done, stop typing, remove the cursor and wait for 2000ms before typing the next message
+                clearInterval(typingInterval);
+                element.style.borderRight = 'none';
+
+                setTimeout(() => {
+                    currentMessage++;
+                    typeNextMessage(); // Move to the next message/continue if done
+                }, 2000);
+            }
+        }, 50); // Type one character every 50ms
+    };
+
+    typeNextMessage(); // Start typing the first message
 }

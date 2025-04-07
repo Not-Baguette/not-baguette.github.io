@@ -88,15 +88,19 @@ const STATSTOOLTIP = [
 ];
 
 const TUTORIALSTEPS = [{
-        text: "Welcome to the game! Let's learn how to play.",
+        text: "Welcome to the game! Let's learn how to play this game!",
         element: null,
     },
     {
-        text: "Use the arrow keys or WASD to move your character. On mobile, use the buttons at the bottom.",
+        text: "For Desktop users, feel free to use the arrow keys or WASD to move your character!",
+        element: null,
+    },
+    {
+        text: "For Mobile users, use the buttons on the bottom to move your character or click to move!",
         element: "controls",
     },
     {
-        text: "These are your stats. Keep them above 0 or you'll die! Hover over them to learn more.",
+        text: "These are your stats. Keep them above 0 or you'll die! On Desktop, Hover over them to learn more.",
         element: "statExample",
     },
     {
@@ -104,12 +108,24 @@ const TUTORIALSTEPS = [{
         element: "gameCanvas",
     },
     {
-        text: "Each area has different actions you can take. Try them out!",
+        text: "Each area has different actions you can take. Try them out! There will be a popup to confirm your actions.",
         element: "action2",
     },
     {
-        text: "Time affects your stats. At night, your energy drains faster!",
+        text: "Time affects your stats. At night, your energy drains faster! So be careful and manage your time wisely.",
         element: "clockContainer",   
+    },
+    {
+        text: "In order to win, You need to defeat the boss in Ponorogo. But be careful, you need to unlock the areas first.",
+        element: "gameCanvas",
+    },
+    {
+        text: "You can also find a secret area! Good luck! ;)",
+        element: "gameCanvas",
+    },
+    {
+        text: "That's it for the tutorial! You can always revisit it by clicking the help button :>",
+        element: null,
 }];
 
 // day-night cycle
@@ -722,13 +738,13 @@ function updateClock(overrule){
     body.classList.remove(...Object.values(backgroundColors)); 
 
     // day-night cycle
-    if(hours < 11){
+    if(hours >= 4 && hours < 12) {
         body.classList.add(backgroundColors.morning);
-    } else if(hours < 16){
+    } else if (hours < 15) {
         body.classList.add(backgroundColors.afternoon);
-    } else if(hours <= 18){
+    } else if (hours < 18) {
         body.classList.add(backgroundColors.evening);
-    } else{
+    } else {
         body.classList.add(backgroundColors.night);
     }
 
@@ -816,6 +832,31 @@ function updateStats() {
     });
     // Update money display
     document.getElementById("money").innerText = `$${player.money}`;
+}
+
+function updateStats() {
+    const stats = ["happiness", "energy", "hygiene", "hunger"];
+    stats.forEach(stat => {
+        const container = document.getElementById(`${stat}Container`);
+        const currentBlock = container.querySelector(".bar-block");
+        const percentage = player[stat];
+
+        if (!currentBlock) {
+            // Create the bar block if it doesn't exist
+            const block = document.createElement("div");
+            block.classList.add("bar-block", stat);
+            block.style.width = `${percentage}%`;
+            container.appendChild(block);
+        } else {
+            // Animate the width change
+            currentBlock.style.transition = "width 0.5s ease-in-out"; // Smooth transition
+            currentBlock.style.width = `${percentage}%`;
+        }
+    });
+
+    // Update money display
+    const moneyElement = document.getElementById("money");
+    moneyElement.innerText = `$${player.money}`;
 }
 
 /*  ----------------- */
@@ -959,7 +1000,6 @@ function startTutorial() {
     showTutorialStep(currentTutorialStep);
 }
 
-// apply the tutorial steps in order
 function showTutorialStep(stepIndex) {
     if (stepIndex >= TUTORIALSTEPS.length) {
         endTutorial();
@@ -973,14 +1013,13 @@ function showTutorialStep(stepIndex) {
     const skipButton = document.getElementById("skipButton");
     const nextButton = document.getElementById("nextButton");
 
-    // Show tutorial container and update text
+    // Show tutorial container and tutorial box, and update text
     TutorialContainer.classList.remove("hidden");
+    tutorialBox.classList.remove("hidden");
     tutorialText.textContent = step.text;
 
-    // Update "Next" button text
+    // Update "Next" button text & remove prev highlight
     nextButton.textContent = stepIndex === TUTORIALSTEPS.length - 1 ? "Finish" : "Next";
-
-    // Remove previous highlights
     document.querySelectorAll('.highlight-element').forEach(el => el.classList.remove('highlight-element'));
 
     // Highlight the target element if specified
@@ -998,7 +1037,6 @@ function showTutorialStep(stepIndex) {
     };
 }
 
-// Highlight the target element and position the tutorial box
 function highlightTargetElement(elementId, tutorialBox) {
     const targetElement = document.getElementById(elementId);
     if (!targetElement) return;
@@ -1026,7 +1064,6 @@ function highlightTargetElement(elementId, tutorialBox) {
     tutorialBox.style.left = `${left}px`;
 }
 
-// Center the tutorial box (for non-targeted elements or mobile)
 function centerTutorialBox(tutorialBox) {
     tutorialBox.style.position = "absolute";
     tutorialBox.style.top = "50%";
@@ -1034,10 +1071,11 @@ function centerTutorialBox(tutorialBox) {
     tutorialBox.style.transform = "translate(-50%, -50%)";
 }
 
-// End the tutorial
 function endTutorial() {
     const TutorialContainer = document.getElementById("TutorialContainer");
+    const tutorialBox = document.getElementById("tutorialBox");
     TutorialContainer.classList.add("hidden");
+    tutorialBox.classList.add("hidden");
     isTutorialActive = false;
     currentTutorialStep = 0;
 

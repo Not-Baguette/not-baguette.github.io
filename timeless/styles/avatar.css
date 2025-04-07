@@ -1,4 +1,10 @@
+/* ===== Responsive Styles =====*/
 @media (max-width: 768px) {
+    #introSequence p, #introSequence div {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+
     .main-menu .menu-option {
         font-size: 1.2rem;
         padding: 0.8rem 1.5rem;
@@ -78,27 +84,79 @@
     }
 }
 
-
-/* Avatar selections */
+/* ===== Animations ===== */
 @keyframes float {
-    0% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-5px);
-    }
-    100% {
-        transform: translateY(0);
-    }
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
 }
 
 @keyframes moveClouds {
-    0% {
-        background-position: 0 0;
-    }
-    100% {
-        background-position: -1000px 0;
-    }
+    0% { background-position: 0 0; }
+    100% { background-position: -1000px 0; }
+}
+
+@keyframes expand {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
+}
+
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: white; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-20px); }
+}
+
+@keyframes logoZoom {
+    0% { transform: scale(0.5); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes bgFadeToDark {
+    from { background-color: transparent; }
+    to { background-color: #1a202c; }
+}
+
+@keyframes textFade {
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+@keyframes logoFadeIn {
+    0% { opacity: 0; transform: scale(0.5); }
+    50% { opacity: 1; transform: scale(1.1); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes logoFadeOut {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0; transform: scale(1.5); }
+}
+
+/* ===== General Styles ===== */
+.main-menu .menu-option {
+    /* TODO: IMPROVE THIS BTN DESIGN */
+    font-size: 1.5rem;
+    padding: 1rem 2rem;
+    margin: 0.5rem 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 0.5rem;
+    transition: background-color 0.3s;
 }
 
 .cloud {
@@ -130,18 +188,14 @@
     font-family: monospace;
     font-weight: bold;
     font-size: xx-large;
-    text-shadow: /* Outline col */
-        -1px -1px 0 #000,  
-         1px -1px 0 #000,
-        -1px  1px 0 #000,
-         1px  1px 0 #000;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
 .name-box {
     font-family: monospace;
     padding: 5px 25px;
     background-color: white;
-    color:black;
+    color: black;
     opacity: 60%;
     border: 5px solid grey;
     border-radius: 5px;
@@ -157,35 +211,7 @@
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.character-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-    max-width: 40%;
-}
-
-.character {
-    max-height: 500px;
-    cursor: pointer;
-    transition: transform 0.3s ease-in-out;
-}
-
-.main-menu .menu-option {
-    /* TODO: IMPROVE THIS BTN DESIGN */
-    font-size: 1.5rem;
-    padding: 1rem 2rem;
-    margin: 0.5rem 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 0.5rem;
-    transition: background-color 0.3s;
-}
-
-.main-menu .menu-option:hover {
-    background-color: rgba(0, 0, 0, 0.7);
-}
-
-/* Container styles */
+/* ===== Containers ===== */
 .Container {
     display: flex;
     justify-content: center;
@@ -212,21 +238,7 @@
     transition: transform 0.3s ease-in-out;
 }
 
-.story-Container-content {
-    width: 90%;
-    max-width: 800px;
-    height: 90%;
-    max-height: 600px;
-    background-color: #333;
-    color: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    transform: scale(0);
-    animation: expand 0.3s forwards;
-}
-
-/* Improved avatar selection Container */
+.story-Container-content,
 .avatar-selection-content {
     width: 90%;
     max-width: 800px;
@@ -243,6 +255,7 @@
     overflow: hidden;
 }
 
+/* ===== Avatar Selection ===== */
 .avatar-selection-container {
     display: flex;
     flex-direction: column;
@@ -270,13 +283,6 @@
     margin: 0 10px;
 }
 
-#currentAvatar {
-    transform: scale(1.2) !important;
-    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
-    z-index: 10;
-    position: relative;
-}
-
 .avatar-selection.blurred {
     filter: blur(3px) brightness(0.6);
     transform: scale(0.8);
@@ -302,15 +308,6 @@
     transform: scale(1.2);
 }
 
-@keyframes expand {
-    from {
-        transform: scale(0);
-    }
-    to {
-        transform: scale(1);
-    }
-}
-
 .close {
     color: #aaa;
     float: right;
@@ -322,37 +319,28 @@
     transition: color 0.2s ease;
 }
 
-.close:hover,
-.close:focus {
-    color: white;
-    text-decoration: none;
-    cursor: pointer;
+/* ===== Intro Sequence =====*/
+#introSequence {
+    background-color: transparent;
 }
 
-.hidden {
-    display: none;
+#introLogo {
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 3s ease;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.5);
 }
 
-/* Confirm button styling */
-.confirm-button {
-    color: white;
-    padding: 10px 28px;
-    border: none;
-    border-radius: 8px;
-    transition: all 0.2s ease;
-    position: relative;
+#presentsText {
+    opacity: 0;
 }
 
-.confirm-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3), 
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-.credit-container{
-    text-align: left;
-    overflow: auto;
-    height: 80%;
-    padding: 0 1rem;
-    margin: 0 auto;
+.typing-text {
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: .15em solid white;
+    animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
 }
