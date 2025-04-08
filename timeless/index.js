@@ -16,7 +16,7 @@ let currentTutorialStep = 0;
 let isTutorialActive = true;
 const TutorialContainer = document.createElement("div");
 TutorialContainer.className = "tutorial-overlay hidden";
-document.body.appendChild(TutorialContainer);
+document.body.appendChild(TutorialContainer); // this is not supposed to be here but it works, so i'll just leave it be
 
 // Constants
 const PLAYERDEFAULT = {
@@ -267,16 +267,29 @@ const AUDIOPATH = {
     clickSound: "assets/audio/index/click.mp3",
     jumpscareSound: "assets/audio/index/jumpscare.mp3",
     gameOverSound: "assets/audio/index/gameover.mp3",
-    fightSound: "assets/audio/index/fight.mp3",
-    exploreSound: "assets/audio/index/explore.mp3",
     nightAmbianceSound: "assets/audio/index/night.mp3"
 };
 */
 const AUDIOPATH = {
     backgroundMusic: "assets/audio/index/background.mp3",
-    fightSound: "assets/audio/index/fight.mp3",
+    nightAmbianceSound: "assets/audio/index/night.mp3",
+    clickSound: "assets/audio/index/click.mp3",
 }
 const allAudioSources = Object.values(AUDIOPATH);
+
+// Audio elements
+const backgroundMusic = document.getElementById("backgroundMusic");
+const clickSound = document.getElementById("clickSound");
+const jumpScareSound = document.getElementById("jumpScareSound");
+const gameOverSound = document.getElementById("gameOverSound");
+const nightAmbianceSound = document.getElementById("nightAmbianceSound");
+
+// Volume settings
+backgroundMusic.volume    = 0.5;
+clickSound.volume         = 1.0;
+jumpScareSound.volume     = 0.5;
+gameOverSound.volume      = 0.5;
+nightAmbianceSound.volume = 1.0;
 
 // Load images
 lockedOverlayImage.src = LOCKEDSRC;
@@ -368,6 +381,9 @@ function addEventListeners(){
         });
     });
 
+    // Bgm button
+    document.getElementById("bgmButton").addEventListener("click", toggleBackgroundMusic);
+
     // Help Button
     document.getElementById("helpButton").addEventListener("click", () => {
         currentTutorialStep = 0;
@@ -378,6 +394,7 @@ function addEventListeners(){
     // Button actions using showPopup, I'm sorry for the shit code below
     document.getElementById("action1").addEventListener("click", () =>{
         const actions = (areaActions[player.area]).action1;
+        playClickSound();
         if(player.area === "Home"){
             showPopup(actions, 0, 0, 0, 10, 0); 
         } else if(player.area === "Pontianak"){
@@ -397,6 +414,7 @@ function addEventListeners(){
 
     document.getElementById("action2").addEventListener("click", () =>{
         const actions = (areaActions[player.area]).action2;
+        playClickSound();
         if(player.area === "Home"){
             showPopup(actions, 0, 0, 10, 0, 0);
         } else if(player.area === "Pontianak"){
@@ -416,6 +434,7 @@ function addEventListeners(){
 
     document.getElementById("action3").addEventListener("click", () =>{
         const actions = (areaActions[player.area]).action3;
+        playClickSound();
         if(player.area === "Home"){
             showPopup(actions, 10, 0, 0, 0, 0);
         } else if(player.area === "Padang"){
@@ -449,6 +468,50 @@ function loadTooltip(){
             tooltip.classList.add("hidden");
         });
     });
+}
+
+// Toggle background music
+function toggleBackgroundMusic() {
+    const bgmButton = document.getElementById("bgmButton");
+
+    if (bgmButton.classList.contains("playing")) { // If playing
+        bgmButton.classList.remove("playing");
+        bgmButton.innerText = "♫"; 
+        backgroundMusic.pause(); // Pause the audio
+    } else { // If not playing
+        bgmButton.classList.add("playing");
+        bgmButton.innerText = "■";
+        backgroundMusic.play(); // Play the audio
+    }
+}
+
+function playClickSound() {
+    clickSound.currentTime = 0; // Reset to the beginning
+    clickSound.play();
+}
+
+function playJumpScareSound() {
+    jumpScareSound.currentTime = 0; // Reset to the beginning
+    jumpScareSound.volume = 1; // Set volume to 100%
+    jumpScareSound.play();
+}
+
+function playGameOverSound() {
+    gameOverSound.currentTime = 0; // Reset to the beginning
+    gameOverSound.play();
+}
+
+function playNightAmbiance() {
+    if (!nightAmbianceSound.paused) return; // check if it's already playing
+
+    // play the night ambiance sound
+    nightAmbianceSound.volume = 0.5; 
+    nightAmbianceSound.play();
+}
+
+function stopNightAmbiance() {
+    nightAmbianceSound.pause();
+    nightAmbianceSound.currentTime = 0; // Reset to the beginning
 }
 
 // handle button movement
@@ -587,11 +650,6 @@ function isAreaUnlocked(loc){
 
 // get pfp from avatar selection
 function updateProfilePic(avatarIndex){
-    if (!profilePic){
-        console.error("profilePic element not found"); // DEBUG
-        return;
-    }
-
     profilePic.src = AVATARIMG[avatarIndex] || AVATARIMG["default"];
     profilePic.classList.add("pfp-zoom"); // Add the zoom class
 }
@@ -692,6 +750,7 @@ function showPopup(action="", happiness=0, hygiene=0, hunger=0, energy=0, earnin
         player.hunger = Math.min(100, Math.max(0, player.hunger + hunger));
         player.energy = Math.min(100, Math.max(0, player.energy + energy));
         player.money += earnings;
+        playClickSound();
         closePopup();
     };
 
@@ -786,12 +845,16 @@ function updateClock(overrule){
     // day-night cycle
     if(hours >= 4 && hours < 12) {
         body.classList.add(backgroundColors.morning);
+        if (!nightAmbianceSound.paused) stopNightAmbiance();
     } else if (hours < 15) {
         body.classList.add(backgroundColors.afternoon);
+        if(!nightAmbianceSound.paused) stopNightAmbiance();
     } else if (hours < 18) {
         body.classList.add(backgroundColors.evening);
+        if(!nightAmbianceSound.paused) stopNightAmbiance();
     } else {
         body.classList.add(backgroundColors.night);
+        if(nightAmbianceSound.paused) playNightAmbiance();
     }
 
     if(overrule) return; // prevent overrule from updating the stats, just day-night cycle
@@ -810,9 +873,9 @@ function getGreeting() {
         return "You're up late";
     } else if(hours < 12) {
         return "Good morning";
-    } else if(hours < 18) {
+    } else if(hours < 15) {
         return "Good afternoon";
-    } else if(hours < 22) {
+    } else if(hours < 19) {
         return "Good evening";
     } else{
         return "Don't forget to take a rest";
