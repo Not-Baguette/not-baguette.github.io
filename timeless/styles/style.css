@@ -1,17 +1,11 @@
 /* Mobile Support */
 @media (max-width:1050px) {
-    .stats-pad {
-        margin-top: 100px;
-    }
+    .stats-pad {margin-top: 100px;}
+    .gap-10, .gap-4 {gap: 20px !important;}
+    .interaction-box {min-width: 90% !important;}
     .username {
         margin-top: -30px;
         font-size: 40px !important;
-    }
-    .gap-10, .gap-4 {
-        gap: 20px !important;
-    }
-    .interaction-box {
-        min-width: 90% !important;
     }
     .flex-switch{
         flex-direction: column !important;
@@ -20,26 +14,15 @@
 }
 
 @media (max-width:820px) {
-    .bar-container {
-        min-width: 100px !important; /* Reduce the width of the bar container */
-    }
-    .stats-pad {
-        margin-top: 200px !important;
-    }
-    .username {
-        font-size: 20px !important;
-    }
-    canvas {
-        width: 90% !important;
-    }
+    .bar-container {min-width: 100px !important;}
+    .stats-pad {margin-top: 200px !important;}
+    .username {font-size: 20px !important;}
+    canvas {width: 90% !important;}
+    .logo, #profilePic {display: none !important;}
     .controls {
         position: relative !important;
         margin: auto !important;
         margin-top: 10px !important;
-    }
-    .logo, #profilePic {
-        /* Hide on smaller screens*/
-        display: none !important;
     }
 }
 
@@ -120,10 +103,6 @@ canvas {
     background-position: center;
 }
 
-.stats-pad {
-    margin-top: 200px;
-}
-
 #greeting {
     font-family: monospace;
     font-weight: bold;
@@ -135,15 +114,21 @@ canvas {
          1px  1px 0 #000;
 }
 
+
+#clock {
+    text-shadow: 
+        -1px -1px 0 #000, 
+        1px -1px 0 #000, 
+        -1px 1px 0 #000, 
+        1px 1px 0 #000;
+}
+
 /* Interaction box */
 .interaction-box {
     min-height: 150px;
     background-color: transparent;
 }
 
-#clock {
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-}
 
 .bar-container {
     min-width: 250px;
@@ -262,6 +247,7 @@ canvas {
 }
 
 /* One-liners */
+.stats-pad {margin-top: 200px;}
 #moveUp {background-image: url('../assets/util/Up.png');}
 #moveDown {background-image: url('../assets/util/Down.png');}
 #moveLeft {background-image: url('../assets/util/Left.png');}

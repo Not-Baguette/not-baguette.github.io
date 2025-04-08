@@ -35,9 +35,9 @@ function preloadAssets() {
         });
     });
     const audioFiles = [
-        "assets/audio/background.mp3",
-        "assets/audio/click.mp3",
-        "assets/audio/intro.mp3",
+        "assets/audio/avatar/background.mp3",
+        "assets/audio/avatar/click.mp3",
+        "assets/audio/avatar/intro.mp3",
     ];
 
     const audioPromises = audioFiles.map(src => {
@@ -187,7 +187,7 @@ function startIntroSequence(username) {
         `Listen, for their tale is filled with labor and strife...`,
     ];
 
-    introMusic.volume = 0.6;
+    introMusic.volume = 0.1; // too loud...
     introMusic.play();
 
     const fade = (element, type, duration = 500) => {

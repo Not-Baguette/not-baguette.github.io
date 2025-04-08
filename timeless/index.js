@@ -125,7 +125,7 @@ const TUTORIALSTEPS = [{
     },
     {
         text: "That's it for the tutorial! You can always revisit it by clicking the help button :>",
-        element: null,
+        element: "helpButton",
 }];
 
 // day-night cycle
