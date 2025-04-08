@@ -81,7 +81,7 @@
     }
 
     .logo {
-        width: 120px;
+        display: none;
     }
 
     .flex.items-center.justify-center.w-full.h-full {
@@ -300,6 +300,11 @@
     height: 80%;
     padding: 0 1rem;
     margin: 0 auto;
+}
+
+.credit-container ul {
+    list-style-type: disc;
+    padding: 0;
 }
 
 /* ===== Avatar Selection ===== */
