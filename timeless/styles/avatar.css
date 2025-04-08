@@ -29,8 +29,13 @@
     }
 
     .character {
-        max-height: 80%;
+        max-height: 50% !important;
         margin: auto;
+    }
+
+    .name-box {
+        margin-top: -100px !important;
+        padding: 5px 15px;
     }
 
     .logo {
@@ -64,12 +69,12 @@
     }
 
     .avatar-selection {
-        max-width: 45%;
-        max-height: 45%;
+        max-width: 35%;
+        max-height: 35%;
     }
 
     .character {
-        max-height: 70%;
+        max-height: 30%;
         margin: auto;
     }
 
