@@ -28,14 +28,16 @@
         max-height: 40%;
     }
 
+    .character-container {
+        max-height: 40% !important;
+    }
     .character {
         max-height: 50% !important;
         margin: auto;
     }
 
     .name-box {
-        margin-top: -100px !important;
-        padding: 5px 15px;
+        margin: -12px !important;
     }
 
     .logo {
@@ -233,13 +235,13 @@
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-character-container {
+.character-container {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     margin-top: 20px;
-    max-width: 40%;
-
+    position: relative;
 }
  
 .character {
