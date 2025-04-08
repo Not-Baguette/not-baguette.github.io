@@ -24,50 +24,80 @@ const elements = {
     avatarSelectionContainer: document.getElementById("avatarSelectionContainer"),
 };
 
-// Try preloading the image to improve server runtime performance
-function preloadImages() {
-    return Promise.all(avatars.map(avatar => {
+// Try preloading all assets to improve server runtime performance
+function preloadAssets() {
+    const imagePromises = avatars.map(avatar => {
         return new Promise((resolve, reject) => {
             const img = new Image();
             img.onload = () => resolve(img);
             img.onerror = () => reject(`Failed to load image: ${avatar.src}`);
             img.src = avatar.src;
         });
-    }))
-    .then(() => console.log('All avatar images preloaded successfully'))
-    .catch(error => console.warn(error));
+    });
+    const audioFiles = [
+        "assets/audio/background.mp3",
+        "assets/audio/click.mp3",
+        "assets/audio/intro.mp3",
+    ];
+
+    const audioPromises = audioFiles.map(src => {
+        return new Promise((resolve, reject) => {
+            const audio = new Audio(src);
+            audio.oncanplaythrough = () => resolve(audio); // Preload audio
+            audio.onerror = () => reject(`Failed to load audio: ${src}`);
+            audio.src = src;
+        });
+    });
+    return Promise.all([...imagePromises, ...audioPromises])
+        .then(() => console.log('All assets preloaded successfully'))
+        .catch(error => console.warn(error));
 }
 
 // Initialize the page
 document.addEventListener('DOMContentLoaded', () => {
-    preloadImages();
-    elements.avatarImage.src = avatars[currentAvatarIndex].src;
-    updateAvatarDisplay();
-    
-    // Set up event listeners
-    elements.avatarImage.addEventListener("click", handleAvatarClick);
-    document.getElementById("avatarLore").addEventListener("click", handleAvatarClick);
-    document.getElementById("avatarSelection").addEventListener("click", () => {
-        toggleContainer(elements.avatarSelectionContainer);
+    preloadAssets().then(() => {
+        console.log('Assets preloaded. Waiting for user interaction to start the game.');
+
+        // Show the BGM button
+        const bgmButton = document.getElementById('enableBgmButton');
+        bgmButton.classList.remove('hidden');
+
+        // Play background music when the button is clicked
+        bgmButton.addEventListener('click', () => {
+            const backgroundMusic = document.getElementById('backgroundMusic');
+            backgroundMusic.volume = 0.6; // Adjust volume
+            backgroundMusic.play().catch(error => console.warn('Failed to play background music:', error));
+            bgmButton.classList.add('hidden'); // Hide the button after enabling BGM
+        });
+        preloadAssets();
+        elements.avatarImage.src = avatars[currentAvatarIndex].src;
         updateAvatarDisplay();
+        
+        // Set up event listeners
+        elements.avatarImage.addEventListener("click", handleAvatarClick);
+        document.getElementById("avatarLore").addEventListener("click", handleAvatarClick);
+        document.getElementById("avatarSelection").addEventListener("click", () => {
+            toggleContainer(elements.avatarSelectionContainer);
+            updateAvatarDisplay();
+        });
+        
+        // Avatar selection
+        document.getElementById('prevAvatar').addEventListener("click", () => navigateAvatars(-1));
+        document.getElementById('nextAvatar').addEventListener("click", () => navigateAvatars(1));
+        document.getElementById('leftAvatar').addEventListener('click', () => handleAvatarSelect((currentAvatarIndex - 1 + avatars.length) % avatars.length));
+        document.getElementById('rightAvatar').addEventListener('click', () => handleAvatarSelect((currentAvatarIndex + 1) % avatars.length));
+        document.getElementById('confirmAvatar').addEventListener('click', () => handleAvatarSelect(currentAvatarIndex));
+        document.getElementById('currentAvatar').addEventListener('click', () => handleAvatarSelect(currentAvatarIndex));
+        
+        // Close buttons
+        document.getElementById('closeAvatarSelectionContainer').addEventListener("click", () => toggleContainer(elements.avatarSelectionContainer, false));
+        document.getElementById('closeStoryContainer').addEventListener("click", () => toggleContainer(elements.characterStoryContainer, false));
+        document.getElementById('closeCreditsContainer').addEventListener("click", () => toggleContainer(document.getElementById('creditsContainer'), false));
+        
+        // Start game and credits button
+        document.getElementById('credits').addEventListener('click', () => toggleContainer(document.getElementById('creditsContainer')));
+        document.getElementById('startGame').addEventListener('click', handleStartGame);
     });
-    
-    // Avatar selection
-    document.getElementById('prevAvatar').addEventListener("click", () => navigateAvatars(-1));
-    document.getElementById('nextAvatar').addEventListener("click", () => navigateAvatars(1));
-    document.getElementById('leftAvatar').addEventListener('click', () => handleAvatarSelect((currentAvatarIndex - 1 + avatars.length) % avatars.length));
-    document.getElementById('rightAvatar').addEventListener('click', () => handleAvatarSelect((currentAvatarIndex + 1) % avatars.length));
-    document.getElementById('confirmAvatar').addEventListener('click', () => handleAvatarSelect(currentAvatarIndex));
-    document.getElementById('currentAvatar').addEventListener('click', () => handleAvatarSelect(currentAvatarIndex));
-    
-    // Close buttons
-    document.getElementById('closeAvatarSelectionContainer').addEventListener("click", () => toggleContainer(elements.avatarSelectionContainer, false));
-    document.getElementById('closeStoryContainer').addEventListener("click", () => toggleContainer(elements.characterStoryContainer, false));
-    document.getElementById('closeCreditsContainer').addEventListener("click", () => toggleContainer(document.getElementById('creditsContainer'), false));
-    
-    // Start game and credits button
-    document.getElementById('credits').addEventListener('click', () => toggleContainer(document.getElementById('creditsContainer')));
-    document.getElementById('startGame').addEventListener('click', handleStartGame);
 });
 
 // Toggle container visibility
@@ -75,6 +105,7 @@ function toggleContainer(container, show = true) {
     container.classList.toggle('hidden', !show);
 }
 
+/* ===== Avatars ===== */
 // Update the avatar selection display
 function updateAvatarDisplay() {
     const leftIndex = (currentAvatarIndex - 1 + avatars.length) % avatars.length; // circular index
@@ -103,6 +134,10 @@ function navigateAvatars(direction) {
 
 // Show character story
 function handleAvatarClick() {
+    const clickSound = document.getElementById('clickSound');
+    clickSound.volume = 0.6;
+    clickSound.play();
+
     const current = avatars[currentAvatarIndex];
     elements.characterName.textContent = `${current.name}'s Story`;
     elements.characterDescription.textContent = current.description;
@@ -116,6 +151,7 @@ function handleAvatarSelect(index) {
     toggleContainer(elements.avatarSelectionContainer, false);
 }
 
+/* ===== Intro Sequence ===== */
 // Start game if username is already set
 function handleStartGame() {
     const username = document.getElementById('avatarName').value;
@@ -136,8 +172,10 @@ function handleStartGame() {
     }, 1000);
 }
 
+
 // Show the intro sequence after the user presses start game
 function startIntroSequence(username) {
+    const introMusic = document.getElementById('introMusic');
     const introText = document.getElementById('introText');
     const introLogo = document.getElementById('introLogo');
     const presentsText = document.getElementById('presentsText');
@@ -149,35 +187,38 @@ function startIntroSequence(username) {
         `Listen, for their tale is filled with labor and strife...`,
     ];
 
-    // Helper to fade an element in or out
-    const fade = (element, type, duration=500) => {
+    introMusic.volume = 0.6;
+    introMusic.play();
+
+    const fade = (element, type, duration = 500) => {
         element.style.transition = `opacity ${duration}ms ease`;
-        element.style.opacity = type === 'in' ? 1 : 0; // in = 1, out = 0
+        element.style.opacity = type === 'in' ? 1 : 0;
     };
 
-    // helper for "Timeless Inc. presents" text
     const showPresentsText = () => {
         presentsText.textContent = "Timeless Inc. presents";
         presentsText.classList.add('glow');
         fade(presentsText, 'in', 2000);
 
-        setTimeout(() => fade(presentsText, 'out', 2000), 2000); // Show for 2 seconds
+        setTimeout(() => fade(presentsText, 'out', 2000), 2000);
     };
 
-    // Start the intro sequence
     typeOrderedMessages(introText, messages, () => {
-        fade(introText, 'out', 500); // Fade out intro text (from typeorderedMessages function)
+        fade(introText, 'out', 500);
 
         setTimeout(() => {
             introText.classList.add('hidden');
-            showPresentsText(); // Show "Timeless Inc. presents"
+            showPresentsText();
 
             setTimeout(() => {
-                fade(introLogo, 'in', 1000); // Fade in logo
+                fade(introLogo, 'in', 1000);
 
-                // Transition to the game
+                // Stop intro music and transition to the game
                 setTimeout(() => {
-                    window.location.href = `index.html?username=${username}&avatar=${currentAvatarIndex + 1}`;}, 2000);
+                    introMusic.pause(); // Stop intro music
+                    introMusic.currentTime = 0; // Reset to the beginning
+                    window.location.href = `index.html?username=${username}&avatar=${currentAvatarIndex + 1}`;
+                }, 2000);
             }, 3000);
         }, 500);
     });

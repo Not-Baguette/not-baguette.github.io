@@ -196,6 +196,22 @@
     animation: moveClouds 100s linear infinite;
 }
 
+.bgm-button {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    padding: 10px 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    z-index: 1000;
+    transition: background-color 0.3s ease;
+}
+.bgm-button:hover {background-color: rgba(0, 0, 0, 0.9);}
+
 .logo {
     animation: float 2s ease-in-out infinite;
     width: 210px;
