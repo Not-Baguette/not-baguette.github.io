@@ -347,6 +347,25 @@ function addEventListeners(){
 
     // Tooltip
     document.addEventListener("DOMContentLoaded", () => loadTooltip());
+    STATSTOOLTIP.forEach(stat => {
+        const element = document.getElementById(stat.id);
+        
+        // Attach event listeners if the element exists
+        element.addEventListener("mouseenter", (e) => {
+            const statValue = player[stat.id.replace("Container", "")];
+            tooltip.textContent = `${stat.text} Current level: ${statValue}`;
+            tooltip.classList.remove("hidden");
+            tooltip.style.left = `${e.pageX + 10}px`;
+            tooltip.style.top = `${e.pageY + 10}px`;
+        });
+        element.addEventListener("mousemove", (e) => {
+            tooltip.style.left = `${e.pageX + 10}px`;
+            tooltip.style.top = `${e.pageY + 10}px`;
+        });
+        element.addEventListener("mouseleave", () => {
+            tooltip.classList.add("hidden");
+        });
+    });
 
     // Help Button
     document.getElementById("helpButton").addEventListener("click", () => {
