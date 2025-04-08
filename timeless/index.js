@@ -265,7 +265,6 @@ const profilePic = document.getElementById("profilePic");
 const AUDIOPATH = {
     backgroundMusic: "assets/audio/index/background.mp3",
     clickSound: "assets/audio/index/click.mp3",
-    jumpscareSound: "assets/audio/index/jumpscare.mp3",
     gameOverSound: "assets/audio/index/gameover.mp3",
     nightAmbianceSound: "assets/audio/index/night.mp3"
 };
@@ -439,8 +438,8 @@ function addEventListeners(){
             showPopup(actions, 10, 0, 0, 0, 0);
         } else if(player.area === "Padang"){
             showPopup(actions, 0, 20, 0, 0, 0);
-        } else if(player.area === "Ponorogo"){ // no checks for boss
-            showPopup(actions, -40, -40, -10, -40, 25);
+        } else if(player.area === "Ponorogo"){
+            handleBoss();
         } 
     });
 }
@@ -488,12 +487,6 @@ function toggleBackgroundMusic() {
 function playClickSound() {
     clickSound.currentTime = 0; // Reset to the beginning
     clickSound.play();
-}
-
-function playJumpScareSound() {
-    jumpScareSound.currentTime = 0; // Reset to the beginning
-    jumpScareSound.volume = 1; // Set volume to 100%
-    jumpScareSound.play();
 }
 
 function playGameOverSound() {
@@ -687,14 +680,9 @@ function hasEnoughResources(happiness, hygiene, hunger, energy, money){
 
 // give player effect for x seconds
 function playerEffect(statName, seconds, value){
-    // BUG: Player dying does not reset this interval
-    console.log(`Applying effect to ${statName}: ${value} every second for ${seconds} seconds`); // DEBUG
-    console.log(`Current ${statName}: ${player[statName]}`); // DEBUG
-
     // apply effect every second until timeout
     const intervalId = setInterval(() =>{
         player[statName] = Math.min(100, Math.max(0, player[statName] + value));
-        console.log(`Updated ${statName}: ${player[statName]}`); // DEBUG
         updateStats(); // Ensure the stats are updated in the UI
     }, 1000);
 
@@ -704,7 +692,6 @@ function playerEffect(statName, seconds, value){
     // stop after x seconds
     setTimeout(() =>{
         clearInterval(intervalId);
-        console.log(`Effect ${statName} end`); // DEBUG
     }, seconds * 1000);
 }
 
@@ -742,6 +729,8 @@ function showPopup(action="", happiness=0, hygiene=0, hunger=0, energy=0, earnin
     popupMessage.innerText = customMessage;
     cancelButton.classList.remove("hidden");
     popupContainer.classList.remove("hidden");
+
+    if (action === "nocancel") cancelButton.classList.add("hidden");
 
     // Function to handle the confirm action
     const confirmAction = () =>{
@@ -783,6 +772,55 @@ function showPopup(action="", happiness=0, hygiene=0, hunger=0, energy=0, earnin
     confirmButton.onclick = confirmAction;
     cancelButton.onclick = cancelAction;
     document.addEventListener("keydown", handleKeyDown); // Add the event listener for keydown
+}
+
+// Showpopup but with extra features
+function showPopupAdvanced(timeout, happiness, hygiene, hunger, energy, earnings, message, action="nocancel") {
+    // Remove any existing event listeners
+    const confirmButton = document.getElementById("confirmButton");
+    const cancelButton = document.getElementById("cancelButton");
+    confirmButton.replaceWith(confirmButton.cloneNode(true));
+    cancelButton.replaceWith(cancelButton.cloneNode(true));
+
+    const newConfirmButton = document.getElementById("confirmButton");
+    const newCancelButton = document.getElementById("cancelButton");
+
+    showPopup(action, happiness, hygiene, hunger, energy, earnings, message);
+
+    // Create a timeout that triggers if the user doesn't click the button
+    const timeoutId = setTimeout(() => {
+        console.log("Timeout reached! User did not click the button.");
+        showPopup("nocancel", 0, 0, 0, 0, 0, "You failed to act in time!");
+        player.happiness = Math.max(0, player.happiness + happiness);
+        player.hygiene = Math.max(0, player.hygiene + hygiene);
+        player.hunger = Math.max(0, player.hunger + hunger);
+        player.energy = Math.max(0, player.energy + energy);
+        player.money = Math.max(0, player.money + earnings);
+    }, timeout);
+
+    // Event listener for the confirm and cancel
+    newConfirmButton.addEventListener(
+        "click",
+        () => {
+            clearTimeout(timeoutId);
+            console.log("Button clicked! Timeout cleared.");
+        },
+        {once:true}
+    );
+    newCancelButton.addEventListener(
+        "click",
+        () => {
+            clearTimeout(timeoutId);
+            console.log("Cancel button clicked! Timeout cleared.");
+            if (action === "cancel") return; // if cancel then bypass
+            player.happiness = Math.max(0, player.happiness + happiness);
+            player.hygiene = Math.max(0, player.hygiene + hygiene);
+            player.hunger = Math.max(0, player.hunger + hunger);
+            player.energy = Math.max(0, player.energy + energy);
+            player.money = Math.max(0, player.money + earnings);
+        },
+        {once:true}
+    );
 }
 
 /*  ----------------- */
@@ -904,7 +942,7 @@ function handleArrival(){
 
     // Secret area discovery
     if(player.area === "Secret"){
-        showPopup("", 0, 0, 0, 0, 200, "Congratulations, You found a secret area! GET OUT");
+        showPopup("nocancel", 0, 0, 0, 0, 200, "Congratulations, You found a secret area! GET OUT");
     }
 
     // Update player
@@ -945,21 +983,6 @@ function updateButtonActions(area){
 }
 
 // Update the stats bars
-function updateStats() {
-    const stats = ["happiness", "energy", "hygiene", "hunger"];
-    stats.forEach(stat => {
-        const container = document.getElementById(`${stat}Container`);
-        container.innerHTML = "";
-        const percentage = player[stat];
-        const block = document.createElement("div");
-        block.classList.add("bar-block", stat);
-        block.style.width = `${percentage}%`;
-        container.appendChild(block);
-    });
-    // Update money display
-    document.getElementById("money").innerText = `$${player.money}`;
-}
-
 function updateStats() {
     const stats = ["happiness", "energy", "hygiene", "hunger"];
     stats.forEach(stat => {
@@ -1263,9 +1286,11 @@ function handleInteraction(clientX, clientY){
     }
 }
 
+
 // Kill the player when they die
 function killPlayer() {
     if (isPaused) return; // Prevent multiple executions of killPlayer
+    const bloodDrip = document.getElementsByClassName("blood")[0];
     const popupContainer = document.getElementById("popupContainer");
     const popupMessage = document.getElementById("popupMessage");
     const confirmButton = document.getElementById("confirmButton");
@@ -1279,7 +1304,7 @@ function killPlayer() {
 
     // Pause the game loop
     isPaused = true;
-
+    bloodDrip.classList.remove("hidden");
     // Draw game over screen on canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "rgba(0, 0, 0)"; // black
@@ -1341,7 +1366,119 @@ function killPlayer() {
 
         // Resume the game loop
         isPaused = false;
+        bloodDrip.classList.add("hidden");
     }, 3000); // Wait for 3 seconds
+}
+
+// DEBUG: Cheat code for testing
+function cheatCode(code){
+    if(code === "op"){
+        player.happiness = 100;
+        player.energy = 100;
+        player.hygiene = 100;
+        player.hunger = 100;
+        player.money = 1000;
+        updateStats();
+        return "Cheat code activated!";
+    } else if(code === "unlock"){
+        visitedAreas.add("Pontianak");
+        visitedAreas.add("Jayapura");
+        visitedAreas.add("Padang");
+        visitedAreas.add("Ponorogo");
+        visitedAreas.add("Secret");
+        visitedAreas.add("Jambi");
+        updateStats();
+        return "All areas unlocked!";
+    } else if(code === "test"){
+        cheatCode("unlock");
+        cheatCode("op");
+        player.hunger -= 20;
+        handleBoss();
+    }
+
+}
+
+// Handle the boss fight (3 waves)
+function handleBoss() {
+    function startWave1() {
+        console.log("Wave 1 started!");
+        showPopupAdvanced(12000, -40, -90, -10, -40, 0, "You dare to challenge me? Let us see who wins!", "nocancel");
+        playerEffect("happiness", 10, -1);
+        playerEffect("energy", 10, -1);
+        playerEffect("hygiene", 10, -1);
+        playerEffect("hunger", 5, -5);
+
+        setTimeout(() => {
+            console.log("Wave 1 completed!");
+            if (player.happiness <= 0 || player.energy <= 0 || 
+                player.hygiene <= 0 || player.hunger <= 0) {
+                killPlayer();
+            } else {
+                updateStats(); // Ensure stats are updated after the wave
+                startWave2(); // Trigger wave 2
+            }
+        }, 12000);
+    }
+
+    function startWave2() {
+        console.log("Wave 2 started!");
+        showPopupAdvanced(10000, -20, 0, -20, -20, 0, "You think you can win? EVEN Cancelling won't save you now!", "cancel");
+        playerEffect("happiness", 10, -2);
+        playerEffect("energy", 10, -2);
+        playerEffect("hunger", 5, -10);
+        playerEffect("hygiene", 3, 1);
+
+        setTimeout(() => {
+            console.log("Wave 2 completed!");
+            if (player.happiness <= 0 || player.energy <= 0 || 
+                player.hygiene <= 0 || player.hunger <= 0) {
+                killPlayer();
+            } else {
+                updateStats(); // Ensure stats are updated after the wave
+                startWave3(); // Trigger wave 3
+            }
+        }, 10000);
+    }
+
+    function startWave3() {
+        console.log("Wave 3 started!");
+        showPopupAdvanced(10000, -20, 0, 1, 0, -10, "LAST CHANCE TO BACK OFF HUMAN, STAY AWAY", "");
+        playerEffect("happiness", 10, -1);
+        playerEffect("energy", 10, -0.5);
+
+        setTimeout(() => {
+            console.log("Wave 3 completed!");
+            if (player.happiness <= 0 || player.energy <= 0 || 
+                player.hygiene <= 0 || player.hunger <= 0) {
+                killPlayer();
+            } else {
+                updateStats(); // Ensure stats are updated after the wave
+                endGame(); // Trigger end game
+            }
+        }, 10000);
+    }
+
+    function endGame() {
+        showPopup("nocancel", 0, 0, 0, 0, 0, "You have defeated the boss! Congratulations!");
+        setTimeout(() => {
+            console.log("win!");
+        }, 5000);
+    }
+
+    // add thunder effect
+    const thunderEffect = document.createElement("div");
+    thunderEffect.className = "thunder-effect";
+    document.body.appendChild(thunderEffect);
+    thunderEffect.classList.remove("hidden");
+    setTimeout(() => {
+        thunderEffect.classList.add("hidden");
+    }, 3000);
+    startWave1();
+}
+
+// Roll the credits scene
+function handleVictory() {
+    console.log("You have defeated the boss! Congratulations!");
 }
 
 // Draw the player and areas
