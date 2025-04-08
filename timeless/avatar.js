@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Play background music when the button is clicked
         bgmButton.addEventListener('click', () => {
             const backgroundMusic = document.getElementById('backgroundMusic');
-            backgroundMusic.volume = 0.6; // Adjust volume
+            backgroundMusic.volume = 0.3; // Jesus this was loud
             backgroundMusic.play().catch(error => console.warn('Failed to play background music:', error));
             bgmButton.classList.add('hidden'); // Hide the button after enabling BGM
         });
@@ -103,6 +103,10 @@ document.addEventListener('DOMContentLoaded', () => {
 // Toggle container visibility
 function toggleContainer(container, show = true) {
     container.classList.toggle('hidden', !show);
+    
+    const clickSound = document.getElementById('clickSound');
+    clickSound.volume = 1;
+    clickSound.play();
 }
 
 /* ===== Avatars ===== */
@@ -134,10 +138,6 @@ function navigateAvatars(direction) {
 
 // Show character story
 function handleAvatarClick() {
-    const clickSound = document.getElementById('clickSound');
-    clickSound.volume = 0.6;
-    clickSound.play();
-
     const current = avatars[currentAvatarIndex];
     elements.characterName.textContent = `${current.name}'s Story`;
     elements.characterDescription.textContent = current.description;
