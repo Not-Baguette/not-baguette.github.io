@@ -17,6 +17,7 @@
     .bar-container {min-width: 100px !important;}
     .stats-pad {margin-top: 200px !important;}
     .username {font-size: 20px !important;}
+    #greeting {font-size: medium !important;}
     canvas {width: 90% !important;}
     .logo, #profilePic {display: none !important;}
     .controls {
@@ -106,7 +107,7 @@ canvas {
 #greeting {
     font-family: monospace;
     font-weight: bold;
-    font-size: medium;
+    font-size: xx-large;
     text-shadow: /* Outline col */
         -1px -1px 0 #000,  
          1px -1px 0 #000,
@@ -122,6 +123,10 @@ canvas {
         -1px 1px 0 #000, 
         1px 1px 0 #000;
 }
+
+logo, #profilePic {
+    width: 150px; 
+    margin-top: -50px !important;}
 
 /* Interaction box */
 .interaction-box {
@@ -151,6 +156,7 @@ canvas {
     font-family: monospace;
     font-weight: bold;
     font-size: xx-large;
+    margin-top: -10px !important;
 }
 
 .ctrl-btn {

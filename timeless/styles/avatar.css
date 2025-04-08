@@ -5,9 +5,9 @@
         line-height: 1.5;
    }
 
-    .main-menu .menu-option {
-        font-size: 1.2rem;
-        padding: 0.8rem 1.5rem;
+   .menu-option {
+        /*decrease image size*/
+        width: 50% !important;
    }
 
     .Container-content {
@@ -52,11 +52,6 @@
 }
 
 @media (max-width: 480px) {
-    .main-menu .menu-option {
-        font-size: 1rem;
-        padding: 0.5rem 1rem;
-   }
-
     .Container-content {
         width: 95%;
         max-width: 95%;
@@ -157,16 +152,11 @@
 
 /* ===== General Styles ===== */
 .main-menu .menu-option {
-    /* TODO: IMPROVE THIS BTN DESIGN */
-    font-size: 1.5rem;
-    padding: 1rem 2rem;
     margin: 0.5rem 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 0.5rem;
     transition: background-color 0.3s;
 }
 .main-menu .menu-option:hover {
-    background-color: rgba(0, 0, 0, 0.7);
+    transform: scale(1.05);
 }
 
 .confirm-button {
@@ -214,7 +204,7 @@
 
 .logo {
     animation: float 2s ease-in-out infinite;
-    width: 210px;
+    width: 400px;
 }
 
 .avatar-pg {
@@ -399,7 +389,6 @@
 
 #introLogo {
     opacity: 0;
-    transform: scale(0.5);
     transition: all 3s ease;
     position: fixed;
     top: 50%;

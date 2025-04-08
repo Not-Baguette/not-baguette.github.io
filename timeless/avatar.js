@@ -156,10 +156,18 @@ function handleAvatarSelect(index) {
 function handleStartGame() {
     const username = document.getElementById('avatarName').value;
     if (!username) return alert('Please enter a username.');
-
-    // Show the intro sequence
     const introSequence = document.getElementById('introSequence');
+    const bgmButton = document.getElementById('enableBgmButton');
+    // Stop the background music if it's playing
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    if (!backgroundMusic.paused) {
+        backgroundMusic.pause();
+        backgroundMusic.currentTime = 0; // Reset to the beginning
+    }
+
+    // Show the intro sequence & hide the Enable BGM button
     introSequence.classList.remove('hidden');
+    bgmButton.classList.add('hidden');
 
     setTimeout(() => {
         introSequence.style.transition = 'background-color 1s ease';

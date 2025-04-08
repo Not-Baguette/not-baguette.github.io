@@ -259,6 +259,24 @@ const bgImage = new Image();
 const lockedOverlayImage = new Image();
 const profilePic = document.getElementById("profilePic");
 
+// Audio files
+/*
+const AUDIOPATH = {
+    backgroundMusic: "assets/audio/index/background.mp3",
+    clickSound: "assets/audio/index/click.mp3",
+    jumpscareSound: "assets/audio/index/jumpscare.mp3",
+    gameOverSound: "assets/audio/index/gameover.mp3",
+    fightSound: "assets/audio/index/fight.mp3",
+    exploreSound: "assets/audio/index/explore.mp3",
+    nightAmbianceSound: "assets/audio/index/night.mp3"
+};
+*/
+const AUDIOPATH = {
+    backgroundMusic: "assets/audio/index/background.mp3",
+    fightSound: "assets/audio/index/fight.mp3",
+}
+const allAudioSources = Object.values(AUDIOPATH);
+
 // Load images
 lockedOverlayImage.src = LOCKEDSRC;
 bgImage.src = BGIMGSRC;
@@ -964,19 +982,56 @@ function hideLoadingScreen(){
 }
 
 // preload the images, hopefully will fix perf. issue
-function preloadImages(sources, callback){
+function preloadImages(sources, callback) {
     let loadedImages = 0;
     const totalImages = sources.length;
 
-    sources.forEach(src =>{
+    sources.forEach(src => {
         const img = new Image();
         img.src = src;
-        img.onload = () =>{
+        img.onload = () => {
             loadedImages++;
-            if (loadedImages === totalImages){
+            if (loadedImages === totalImages) {
                 callback();
             }
         };
+    });
+}
+
+// Preload audio
+function preloadAudios(sources, callback) {
+    let loadedAudios = 0;
+    const totalAudios = sources.length;
+
+    sources.forEach(src => {
+        const audio = new Audio();
+        audio.src = src;
+        audio.onloadeddata = () => {
+            loadedAudios++;
+            if (loadedAudios === totalAudios) {
+                callback();
+            }
+        };
+    });
+}
+
+// Preload both images and audios
+function preloadAssets(imageSources, audioSources, callback) {
+    let imagesLoaded = false;
+    let audiosLoaded = false;
+
+    preloadImages(imageSources, () => {
+        imagesLoaded = true;
+        if (imagesLoaded && audiosLoaded) {
+            callback();
+        }
+    });
+
+    preloadAudios(audioSources, () => {
+        audiosLoaded = true;
+        if (imagesLoaded && audiosLoaded) {
+            callback();
+        }
     });
 }
 
@@ -1276,11 +1331,11 @@ function gameLoop(){
     requestAnimationFrame(gameLoop);
 }
 
-// Preload images and hide loading screen when done
-preloadImages(allImageSources, () =>{
+// Preload the assets and hide loading screen when done
+preloadAssets(allImageSources, allAudioSources, () => {
     hideLoadingScreen();
     addEventListeners();
-    setInterval(updateClock, 1000, false); // set the clock to update every second
+    setInterval(updateClock, 1000, false); // Set the clock to update every second
     firstrun();
     gameLoop();
 });
