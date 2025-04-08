@@ -9,7 +9,7 @@ let keysPressed = {}; // store the keys pressed by the user for keyboard support
 let inGameTime = new Date(); // ingame time
 let moveInterval; // button movement interval
 let lastHour; // store the last hour for day-night cycle & status decay
-let isInBattle = false; // TODO: DELETE THIS IF WE CANCEL THE MINIFIGHT FEATURE
+let isPaused = false;
 // tutorial
 let currentTutorialStep = 0;
 let isTutorialActive = true;
@@ -731,7 +731,6 @@ function updateClock(overrule){
         player.energy = Math.max(0, player.energy - 0.1); // Ensure energy doesn't go below 0
     }
 
-
     if(hours == lastHour && !overrule) return; // same hour and no overrule = no need to update, for efficiency
 
     // Remove all possible background colors
@@ -754,6 +753,23 @@ function updateClock(overrule){
     player.energy = Math.max(0, player.energy - 10); // Ensure energy doesn't go below 0
     lastHour = hours;
     updateStats(); // Update the stats display
+}
+
+// Greeting Function to get the greeting based on the current time
+function getGreeting() {
+    const now = new Date();
+    const hours = now.getHours();
+    if(hours < 4) {
+        return "You're up late";
+    } else if(hours < 12) {
+        return "Good morning";
+    } else if(hours < 18) {
+        return "Good afternoon";
+    } else if(hours < 22) {
+        return "Good evening";
+    } else{
+        return "Don't forget to take a rest";
+    }
 }
 
 // change bg based on region
@@ -968,6 +984,7 @@ function preloadImages(sources, callback){
 function firstrun(){
     inGameTime = new Date(); // re-Initialize in-game time incase of death
     lastHour = inGameTime.getHours(); // set the last hour to the current hour
+    const greetingMessage = `${getGreeting()}! Welcome to Timeless Adventure!`;
 
     // Grab the url param for avatar and username, only run this once
     if(!avatarIndex || !usernameParam){ // if param is missing, redirect to avatar selection
@@ -982,6 +999,7 @@ function firstrun(){
             usernameElement.innerText = usernameParam;
         }
     }
+    document.getElementById("greeting").innerText = greetingMessage;
     updateClock(true); // Initial call to display the clock immediately
     updateButtonActions(player.area); // set button actions to home for tutorial
 
@@ -1136,7 +1154,8 @@ function handleInteraction(clientX, clientY){
 }
 
 // Kill the player when they die
-function killPlayer(){
+function killPlayer() {
+    if (isPaused) return; // Prevent multiple executions of killPlayer
     const popupContainer = document.getElementById("popupContainer");
     const popupMessage = document.getElementById("popupMessage");
     const confirmButton = document.getElementById("confirmButton");
@@ -1145,56 +1164,74 @@ function killPlayer(){
     const action1 = document.getElementById("action1");
     const action2 = document.getElementById("action2");
     const action3 = document.getElementById("action3");
-    
+
     let cancelcounter = 0;
 
-    // clr the effect intervals
-    effectIntervals.forEach(intervalId => clearInterval(intervalId));
-    effectIntervals = [];
+    // Pause the game loop
+    isPaused = true;
 
-    popupMessage.innerText = `You died!`;
-    popupContainer.classList.remove("hidden");
-    cancelButton.classList.remove("hidden");
+    // Draw game over screen on canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "rgba(0, 0, 0)"; // black
+    ctx.fillRect(0, 0, canvas.width, canvas.height); // fill the entire canvas
 
-    confirmButton.onclick = () =>{
-        popupContainer.classList.add("hidden");
-        jumpscare.classList.add("hidden");
-    };
+    ctx.font = "48px monospace";
+    ctx.fillStyle = "red"; // red text
+    ctx.textAlign = "center";
+    ctx.fillText("You died! :<", canvas.width / 2, canvas.height / 2 - 50); // center text
 
-    inter_text.innerHTML = "";
-    action1.classList.add("hidden");
-    action2.classList.add("hidden");
-    action3.classList.add("hidden");
+    // Pause for 3 seconds
+    setTimeout(() => {
+        // Clear the effect intervals
+        effectIntervals.forEach(intervalId => clearInterval(intervalId));
+        effectIntervals = [];
 
-    // Reset visited areas
-    areas[player.area].jumping = false;
-    player = {...PLAYERDEFAULT}; // reset the player stats
-    visitedAreas.clear();
-    visitedAreas.add("Home");
-    
-    
-    updateBackground("normal");
-    firstrun(); // reset da game
+        popupMessage.innerText = `You died!`;
+        popupContainer.classList.remove("hidden");
+        cancelButton.classList.remove("hidden");
 
-    // cancel easter egg
-    cancelButton.onclick = () =>{
-        cancelcounter++;
-        if(cancelcounter === 1){
-            popupMessage.innerText = `You can't cancel death silly :b`;
-        } else if(cancelcounter === 2){
-            popupMessage.innerText = `You really can't cancel death, you know?`;
-        } else if(cancelcounter === 3){
-            popupMessage.innerText = `I'm sorry, but you can't cancel death. you're dead....`;
-        } else if(cancelcounter === 4){
-            popupMessage.innerText = `cancel and you're gay`;
-        } else if(cancelcounter > 4){
-            popupMessage.innerText = `You just got jumpscared!`;
-            const jumpscare = document.getElementById("jumpscare");
-            jumpscare.src = "assets/easter-egg/reaper.gif"; // Add the path to your image
-            jumpscare.classList.remove("hidden");
-            cancelButton.classList.add("hidden"); // Hide the cancel button
-        }
-    };
+        confirmButton.onclick = () => {
+            popupContainer.classList.add("hidden");
+            jumpscare.classList.add("hidden");
+        };
+
+        inter_text.innerHTML = "";
+        action1.classList.add("hidden");
+        action2.classList.add("hidden");
+        action3.classList.add("hidden");
+
+        // Reset visited areas
+        areas[player.area].jumping = false;
+        player = { ...PLAYERDEFAULT }; // reset the player stats
+        visitedAreas.clear();
+        visitedAreas.add("Home");
+
+        updateBackground("normal");
+        firstrun(); // reset the game
+
+        // Cancel easter egg
+        cancelButton.onclick = () => {
+            cancelcounter++;
+            if (cancelcounter === 1) {
+                popupMessage.innerText = `You can't cancel death silly :b`;
+            } else if (cancelcounter === 2) {
+                popupMessage.innerText = `You really can't cancel death, you know?`;
+            } else if (cancelcounter === 3) {
+                popupMessage.innerText = `I'm sorry, but you can't cancel death. you're dead....`;
+            } else if (cancelcounter === 4) {
+                popupMessage.innerText = `cancel and you're gay`;
+            } else if (cancelcounter > 4) {
+                popupMessage.innerText = `You just got jumpscared!`;
+                const jumpscare = document.getElementById("jumpscare");
+                jumpscare.src = "assets/easter-egg/reaper.gif"; // Add the path to your image
+                jumpscare.classList.remove("hidden");
+                cancelButton.classList.add("hidden"); // Hide the cancel button
+            }
+        };
+
+        // Resume the game loop
+        isPaused = false;
+    }, 3000); // Wait for 3 seconds
 }
 
 // Draw the player and areas
@@ -1230,7 +1267,7 @@ function gameLoop(){
     if(player.hunger === 0 || player.energy === 0 || 
         player.hygiene === 0 || player.happiness === 0){
         killPlayer();
-    } else if (!isInBattle){
+    } else if (!isPaused){
         updatePlayerPosition();
         update();
         draw();

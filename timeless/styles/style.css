@@ -1,7 +1,7 @@
 /* Mobile Support */
 @media (max-width:1050px) {
     .stats-pad {
-        padding-top: 600px;
+        margin-top: 100px;
     }
     .username {
         margin-top: -30px;
@@ -11,7 +11,7 @@
         gap: 20px !important;
     }
     .interaction-box {
-        min-width: 100% !important;
+        min-width: 90% !important;
     }
     .flex-switch{
         flex-direction: column !important;
@@ -24,7 +24,7 @@
         min-width: 100px !important; /* Reduce the width of the bar container */
     }
     .stats-pad {
-        padding-top: 200px !important;
+        margin-top: 200px !important;
     }
     .username {
         font-size: 20px !important;
@@ -122,6 +122,17 @@ canvas {
 
 .stats-pad {
     margin-top: 200px;
+}
+
+#greeting {
+    font-family: monospace;
+    font-weight: bold;
+    font-size: medium;
+    text-shadow: /* Outline col */
+        -1px -1px 0 #000,  
+         1px -1px 0 #000,
+        -1px  1px 0 #000,
+         1px  1px 0 #000;
 }
 
 /* Interaction box */

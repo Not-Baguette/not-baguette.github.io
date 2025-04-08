@@ -1,29 +1,13 @@
 // avatar 1-4 (index 0-3)
 const avatars = [
     { src: "assets/characters/KEVIN.png", name: "Kevin", 
-        description: `Kevin was once the Empire's most revered knight. He stood for the imperial will his entire life. 
-        However, this changed after the Purge of Ponorogo. Where the Imperial command demanded the execution of Ponorogo 
-        citizens. Among them were Kevin's ailed father and his younger sister. On the dawn of the execution day, 
-        the people watched as the Empire's perfect weapon fire upon his own family. \n\n
-        With a single sword draw, Kevin cuts cleanly with precision that branded him as the Empire's Perfect Weapon.\n
-        But it was not his family that he cut. It was the executioner's blade. Kevin decided to betray the Empire and 
-        escaped with his family, outpacing the Imperial Guards. Now, he wanders through cities, fighting against evil 
-        wherever he could despite the people he protect calling him a traitor.` },
+        description: `Kevin is a descendant of a great knight family from Ponorogo. He used to live happily with his parents in Ponorogo before "the incident" that caused monsters from the underworld to crawl to the surface and occupy several key cities, one of them, Ponorogo. Kevin was evacuated to Jakarta and spent the rest of his life training himself to be a good knight. Now he's ready for a new journey to take back what he had lost!` },
     { src: "assets/characters/REGINA.png", name: "Regina", 
-        description: `Regina was a member of the Imperial Family. She is the daughter of the Emperor, Regina is skilled 
-        on archery, However, this became an irony as the emperor was assassinated by the Demon Queen's forces by a 
-        poisoned arrow. \n\n She vows to make things right by shooting the same arrow through the heart of the Demon Queen.
-        Recently, she has caught rumours of the queen's presence in Ponorogo. Will she reach her?` },
+        description: `Regina is a daughter of a noble in Jambi, since she was a kid, she always wanted to become a mage. But after several rejections from her noble family, she ran away to Jakarta and learn magic herself to prove that her parents were wrong. After "the incident" occurred, she finally had a chance to prove herself worthy and began her new journey!` },
     { src: "assets/characters/LINA.png", name: "Lina", 
-        description: `Lina is a powerful mage within the Imperial Guards. She questioned the will of the Emperor her 
-        entire life. Despising the lavish life that the emperor enjoyed. She grew close to a knight called Kevin. As time 
-        goes on, Kevin and Lina became close friends. Lina was one of the key orchestrator of Kevin's escape with his family.
-        \n\n Her appearance might suggests otherwise, but she is one of the strongest mage on the continent. She recently 
-        hear a rumor of a Knight that travels from city through city. Fighting monsters. \n Hearing this, Lina decided to 
-        resign from her position and embark a journey to find a long lost friend.` },
+        description: `Lina is a daughter of a famous trader from Pontianak. Lina is also known for her skilled stealth with dagger and sword. During "the incident", her father died after being attacked by several monsters, and Lina was forced to evacuate to Jakarta. She grew as a fighter to avenge her father and left her normal life for a new journey ahead!` },
     { src: "assets/characters/BASTIAN.png", name: "Bastian",
-        description: `Never gonna give you up, never gonna let you down. Never gonna go around and desert you. 
-        Never gonna make you cry. Never gonna say goodbye~` }, // TODO: add lore, remove rickroll
+        description: `Bastian is an orphan in Jakarta, since he was little he developed his interest in magic and spells. He's often nicknamed a kid prodigy and wonder boy for he is a skilled caster. After "the incident" occurred, he saw the opportunity to use his power for greater good, after all he loves a little journey!` },
 ];
 
 let currentAvatarIndex = 0; // current avatar
@@ -160,9 +144,9 @@ function startIntroSequence(username) {
 
     const messages = [
         "Once upon a time...",
-        "There was once a legendary traveler",
-        `Their name was ${username}`,
-        `Listen, for their tale is filled with pain`,
+        "There was once a legendary traveler,",
+        `Their name was ${username}.`,
+        `Listen, for their tale is filled with labor and strife...`,
     ];
 
     // Helper to fade an element in or out

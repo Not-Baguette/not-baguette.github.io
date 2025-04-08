@@ -81,7 +81,7 @@
                 <canvas id="gameCanvas" width="800" height="600" class="m-4 w-auto"></canvas>
             </div>
             <!-- Area interaction menu, do not recombine this with inside div for mobile support -->
-            <div class="m-4 bg-gray-500 bg-opacity-30 rounded lg:w-60 interaction-box">
+            <div class="m-4 bg-gray-500 bg-opacity-30 rounded w-60 interaction-box">
                 <div class="w-full p-4">
                     <h2 class="text-xl mb-2">Area Interactions</h2>
                     <p id="interactionText" class="mb-2"></p>
@@ -120,7 +120,7 @@
         </div>
 
         <!-- bottom text -->
-        <p class="mb-4">Click to move</p>
+        <p class="mb-4" id="greeting"></p>
         <button id="helpButton" class="fixed bottom-4 right-4 bg-blue-500 text-white p-2 rounded-full shadow-lg">?</button>
         <script src="index.js"></script>
     </body>
