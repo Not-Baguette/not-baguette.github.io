@@ -234,7 +234,7 @@ const areaActions = {
     "Padang": {
         action1: "Stay on an Inn",
         action2: "Go to a Restaurant",
-        action3: "Go to a Library"
+        action3: "Go to a Bathouse"
     },
     "Ponorogo": {
         action1: "",
@@ -1090,43 +1090,6 @@ function preloadImages(sources, callback) {
     });
 }
 
-// Preload audio
-function preloadAudios(sources, callback) {
-    let loadedAudios = 0;
-    const totalAudios = sources.length;
-
-    sources.forEach(src => {
-        const audio = new Audio();
-        audio.src = src;
-        audio.onloadeddata = () => {
-            loadedAudios++;
-            if (loadedAudios === totalAudios) {
-                callback();
-            }
-        };
-    });
-}
-
-// Preload both images and audios
-function preloadAssets(imageSources, audioSources, callback) {
-    let imagesLoaded = false;
-    let audiosLoaded = false;
-
-    preloadImages(imageSources, () => {
-        imagesLoaded = true;
-        if (imagesLoaded && audiosLoaded) {
-            callback();
-        }
-    });
-
-    preloadAudios(audioSources, () => {
-        audiosLoaded = true;
-        if (imagesLoaded && audiosLoaded) {
-            callback();
-        }
-    });
-}
-
 // run to init everything
 function firstrun(){
     inGameTime = new Date(); // re-Initialize in-game time incase of death
@@ -1424,7 +1387,7 @@ function gameLoop(){
 }
 
 // Preload the assets and hide loading screen when done
-preloadAssets(allImageSources, allAudioSources, () => {
+preloadImages(allImageSources, () => {
     hideLoadingScreen();
     addEventListeners();
     setInterval(updateClock, 1000, false); // Set the clock to update every second
