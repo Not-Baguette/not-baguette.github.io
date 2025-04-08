@@ -6,6 +6,7 @@ const ctx = canvas.getContext("2d"); // 2D rendering context
 const avatarIndex = getUrlParam("avatar");
 const usernameParam = getUrlParam("username");
 let keysPressed = {}; // store the keys pressed by the user for keyboard support
+let moveDirection = {dx: 0, dy: 0}; // Store the current movement direction
 let inGameTime = new Date(); // ingame time
 let moveInterval; // button movement interval
 let lastHour; // store the last hour for day-night cycle & status decay
@@ -307,19 +308,19 @@ Object.keys(PLAYERIMG).forEach(index =>{
 // init event listeners
 function addEventListeners(){
     // Button movement support, *5 for faster movement in mobile
-    document.getElementById("moveUp").addEventListener("mousedown", () => startMoving(0, -player.speed*5));
-    document.getElementById("moveDown").addEventListener("mousedown", () => startMoving(0, player.speed*5));
-    document.getElementById("moveLeft").addEventListener("mousedown", () => startMoving(-player.speed*5, 0));
-    document.getElementById("moveRight").addEventListener("mousedown", () => startMoving(player.speed*5, 0));
+    document.getElementById("moveUp").addEventListener("mousedown", () => startMoving(0, -player.speed));
+    document.getElementById("moveDown").addEventListener("mousedown", () => startMoving(0, player.speed));
+    document.getElementById("moveLeft").addEventListener("mousedown", () => startMoving(-player.speed, 0));
+    document.getElementById("moveRight").addEventListener("mousedown", () => startMoving(player.speed, 0));
 
     document.addEventListener("mouseup", stopMoving);
     document.addEventListener("mouseleave", stopMoving);
 
     // Ensure touch support for mobile devices for buttons
-    document.getElementById("moveUp").addEventListener("touchstart", () => startMoving(0, -player.speed*5));
-    document.getElementById("moveDown").addEventListener("touchstart", () => startMoving(0, player.speed*5));
-    document.getElementById("moveLeft").addEventListener("touchstart", () => startMoving(-player.speed*5, 0));
-    document.getElementById("moveRight").addEventListener("touchstart", () => startMoving(player.speed*5, 0));
+    document.getElementById("moveUp").addEventListener("touchstart", () => startMoving(0, -player.speed));
+    document.getElementById("moveDown").addEventListener("touchstart", () => startMoving(0, player.speed));
+    document.getElementById("moveLeft").addEventListener("touchstart", () => startMoving(-player.speed, 0));
+    document.getElementById("moveRight").addEventListener("touchstart", () => startMoving(player.speed, 0));
 
     document.addEventListener("touchend", stopMoving);
     document.addEventListener("touchcancel", stopMoving);
@@ -452,11 +453,20 @@ function loadTooltip(){
 
 // handle button movement
 function startMoving(dx, dy){
-    movePlayer(dx, dy);
-    moveInterval = setInterval(() => movePlayer(dx, dy), 100);
+    moveDirection = {dx, dy}; // Set the movement direction
+    if (!moveInterval) {
+        moveInterval = requestAnimationFrame(function updateMovement() {
+            movePlayer(moveDirection.dx, moveDirection.dy);
+            moveInterval = requestAnimationFrame(updateMovement); // Continue the loop
+        });
+    }
 }
 function stopMoving(){
-    clearInterval(moveInterval);
+    moveDirection = {dx:0, dy:0}; // Reset the movement direction
+    if (moveInterval){
+        cancelAnimationFrame(moveInterval); // Stop the movement loop
+        moveInterval = null;
+    }
 }
 
 // handle mouse movement
