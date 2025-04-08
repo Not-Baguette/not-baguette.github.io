@@ -34,22 +34,9 @@ function preloadAssets() {
             img.src = avatar.src;
         });
     });
-    const audioFiles = [
-        "assets/audio/avatar/background.mp3",
-        "assets/audio/avatar/click.mp3",
-        "assets/audio/avatar/intro.mp3",
-    ];
 
-    const audioPromises = audioFiles.map(src => {
-        return new Promise((resolve, reject) => {
-            const audio = new Audio(src);
-            audio.oncanplaythrough = () => resolve(audio); // Preload audio
-            audio.onerror = () => reject(`Failed to load audio: ${src}`);
-            audio.src = src;
-        });
-    });
-    return Promise.all([...imagePromises, ...audioPromises])
-        .then(() => console.log('All assets preloaded successfully'))
+    return Promise.all(imagePromises)
+        .then(() => console.log('All image assets preloaded successfully'))
         .catch(error => console.warn(error));
 }
 
