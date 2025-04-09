@@ -10,7 +10,7 @@ let moveDirection = {dx: 0, dy: 0}; // Store the current movement direction
 let inGameTime = new Date(); // ingame time
 let moveInterval; // button movement interval
 let lastHour; // store the last hour for day-night cycle & status decay
-let isPaused = false;
+let isDead = false; // player death status
 // tutorial
 let currentTutorialStep = 0;
 let isTutorialActive = true;
@@ -423,6 +423,7 @@ function addEventListeners(){
         } else if(player.area === "Padang"){
             showPopup(actions, 0, 20, 0, 0, 0);
         } else if(player.area === "Ponorogo"){
+            isDead = false; // hacky fix but should work
             handleBoss();
         } 
     });
@@ -1386,7 +1387,6 @@ function handleInteraction(clientX, clientY){
 
 // Kill the player when they die
 function killPlayer(){
-    if (isPaused) return; // Prevent multiple executions of killPlayer
     const bloodDrip = document.getElementsByClassName("blood")[0];
     const popupContainer = document.getElementById("popupContainer");
     const popupMessage = document.getElementById("popupMessage");
@@ -1398,9 +1398,9 @@ function killPlayer(){
     const action3 = document.getElementById("action3");
 
     let cancelcounter = 0;
+    isDead = true; // Set the isDead flag to true
 
     // Pause the game loop
-    isPaused = true;
     bloodDrip.classList.remove("hidden");
     // Draw game over screen on canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -1462,7 +1462,6 @@ function killPlayer(){
         };
 
         // Resume the game loop
-        isPaused = false;
         bloodDrip.classList.add("hidden");
     }, 3000); // Wait for 3 seconds
 }
@@ -1507,10 +1506,10 @@ function handleBoss() {
 
         setTimeout(() => {
             console.log("Wave 1 completed!");
-            if (player.happiness <= 0 || player.energy <= 0 || 
-                player.hygiene <= 0 || player.hunger <= 0) {
+            if(isDead){
                 killPlayer();
-            } else {
+                return;
+            } else{
                 updateStats(); // Ensure stats are updated after the wave
                 startWave2(); // Trigger wave 2
             }
@@ -1527,10 +1526,10 @@ function handleBoss() {
 
         setTimeout(() => {
             console.log("Wave 2 completed!");
-            if (player.happiness <= 0 || player.energy <= 0 || 
-                player.hygiene <= 0 || player.hunger <= 0) {
+            if(isDead){
                 killPlayer();
-            } else {
+                return;
+            } else{
                 updateStats(); // Ensure stats are updated after the wave
                 startWave3(); // Trigger wave 3
             }
@@ -1539,15 +1538,15 @@ function handleBoss() {
 
     function startWave3() {
         console.log("Wave 3 started!");
-        showPopupAdvanced(10000, -20, 0, 1, 0, -10, "Perish.", "");
+        showPopupAdvanced(10000, -20, 0, 1, 0, 0, "Perish.", "");
         playerEffect("happiness", 5, -2);
         playerEffect("energy", 5, -1);
 
         setTimeout(() => {
             console.log("Wave 3 completed!");
-            if (player.happiness <= 0 || player.energy <= 0 || 
-                player.hygiene <= 0 || player.hunger <= 0) {
+            if(isDead){
                 killPlayer();
+                return;
             } else {
                 updateStats(); // Ensure stats are updated after the wave
                 endGame(); // Trigger end game
@@ -1639,7 +1638,7 @@ function gameLoop(){
     if(player.hunger === 0 || player.energy === 0 || 
         player.hygiene === 0 || player.happiness === 0){
         killPlayer();
-    } else if (!isPaused){
+    } else{
         updatePlayerPosition();
         update();
         draw();
