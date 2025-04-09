@@ -134,7 +134,7 @@ const backgroundColors = {
     morning: "bg-blue-200",
     afternoon: "bg-[#FFFFDC]",
     evening: "bg-orange-200",
-    night: "bg-blue-400"
+    night: "bg-blue-700"
 };
 
 // Area props
@@ -271,8 +271,8 @@ const outroMusic = document.getElementById("outroMusic");
 backgroundMusic.volume    = 0.5;
 clickSound.volume         = 1.0;
 gameOverSound.volume      = 0.5;
-nightAmbianceSound.volume = 1.0;
-outroMusic.volume         = 0.5;
+nightAmbianceSound.volume = 0.7;
+outroMusic.volume         = 1.0;
 
 // Load images
 lockedOverlayImage.src = LOCKEDSRC;
@@ -862,18 +862,22 @@ function updateClock(overrule){
     body.classList.remove(...Object.values(backgroundColors)); 
 
     // day-night cycle
-    if(hours >= 4 && hours < 12) {
+
+    if (hours < 4 && hours >= 0) {
+        body.classList.add(backgroundColors.night); // Use night background for 00:00 to 03:59
+        if (nightAmbianceSound.paused) playNightAmbiance();
+    } else if (hours < 12) {
         body.classList.add(backgroundColors.morning);
         if (!nightAmbianceSound.paused) stopNightAmbiance();
-    } else if (hours < 15) {
+    } else if (hours < 16) {
         body.classList.add(backgroundColors.afternoon);
-        if(!nightAmbianceSound.paused) stopNightAmbiance();
-    } else if (hours < 18) {
+        if (!nightAmbianceSound.paused) stopNightAmbiance();
+    } else if (hours < 19) {
         body.classList.add(backgroundColors.evening);
-        if(!nightAmbianceSound.paused) stopNightAmbiance();
+        if (!nightAmbianceSound.paused) stopNightAmbiance();
     } else {
         body.classList.add(backgroundColors.night);
-        if(nightAmbianceSound.paused) playNightAmbiance();
+        if (nightAmbianceSound.paused) playNightAmbiance();
     }
 
     if(overrule) return; // prevent overrule from updating the stats, just day-night cycle
