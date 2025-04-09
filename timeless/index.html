@@ -24,9 +24,9 @@
         <!-- audio files -->
         <audio id="backgroundMusic" src="assets/audio/index/background.mp3" loop></audio>
         <audio id="clickSound" src="assets/audio/index/click.mp3"></audio>
-        <audio id="jumpScareSound" src="assets/audio/index/jumpscare.mp3"></audio>
         <audio id="gameOverSound" src="assets/audio/index/gameover.mp3"></audio>
         <audio id="nightAmbianceSound" src="assets/audio/index/night.mp3" loop></audio>
+        <audio id="outroMusic" src="assets/audio/index/outro.mp3"></audio>
         <!-- Top Row for Usernames n logo, good luck sis :sparkles: -->
         <div class="w-full bg-gray-700 p-4 text-center mb-6 stats-bar">
             <h1 class="text-3xl font-bold mb-4">The Timeless Adventure</h1>
@@ -134,6 +134,41 @@
             <button id="bgmButton" class="bg-gray-700 text-white p-2 rounded-full shadow-lg">♫</button>
             <button id="helpButton" class="bg-blue-500 text-white p-2 rounded-full shadow-lg">?</button>
         </div>
+
+        <!-- End Screen -->
+        <div id="outroSequence" class="fixed inset-0 z-50 hidden flex flex-col items-center justify-center">
+            <div id="outroTale" class="text-white text-2xl font-mono mb-8 h-12 text-center break-words whitespace-normal"></div>
+            <p id="credits" class="text-center text-white text-3xl mb-8 break-words whitespace-normal">Timeless Inc. presents</p>
+            <img id="outroLogo" src="assets/Timeless_Adventure_logo.png" alt="Logo">
+        </div>
+
+        <div id="creditsContainer" class="hidden">
+            <div id="creditsContent">
+                <div class="credits-section">
+                    <h2>Game Development</h2>
+                    <p>@bagubaguu - Game developer</p>
+                    <p>@pum_kin - Game developer</p>
+                    <img src="assets/credits/1.jpeg" alt="Early development photo">
+                </div>
+                <div class="credits-section">
+                    <h2>Assets & Music</h2>
+                    <p>@qizura - Music Composer, Assets</p>
+                    <p>@bonastralitee - Assets</p>
+                    <img src="assets/credits/2.jpeg" alt="Making the assets">
+                </div>
+                <div class="credits-section">
+                    <h2>Special Thanks</h2>
+                    <p>Mr. Wawo</p>
+                    <p>Howard & Kafijaya</p>
+                    <p>Our Beta testers</p>
+                    <p>Peanut, Blahaj, Eggie, Aira. Our loyal plushies</p>
+                    <p>Everyone who supported us!</p>
+                    <p>You, the player who plays this game!</p>
+                    <img src="assets/credits/3.jpeg" alt="Plushies">
+                </div>
+            </div>
+        </div>
+
         <script src="index.js"></script>
     </body>
 </html>

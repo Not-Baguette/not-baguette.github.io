@@ -260,35 +260,19 @@ const bgImage = new Image();
 const lockedOverlayImage = new Image();
 const profilePic = document.getElementById("profilePic");
 
-// Audio files
-/*
-const AUDIOPATH = {
-    backgroundMusic: "assets/audio/index/background.mp3",
-    clickSound: "assets/audio/index/click.mp3",
-    gameOverSound: "assets/audio/index/gameover.mp3",
-    nightAmbianceSound: "assets/audio/index/night.mp3"
-};
-*/
-const AUDIOPATH = {
-    backgroundMusic: "assets/audio/index/background.mp3",
-    nightAmbianceSound: "assets/audio/index/night.mp3",
-    clickSound: "assets/audio/index/click.mp3",
-}
-const allAudioSources = Object.values(AUDIOPATH);
-
 // Audio elements
 const backgroundMusic = document.getElementById("backgroundMusic");
 const clickSound = document.getElementById("clickSound");
-const jumpScareSound = document.getElementById("jumpScareSound");
 const gameOverSound = document.getElementById("gameOverSound");
 const nightAmbianceSound = document.getElementById("nightAmbianceSound");
+const outroMusic = document.getElementById("outroMusic");
 
 // Volume settings
 backgroundMusic.volume    = 0.5;
 clickSound.volume         = 1.0;
-jumpScareSound.volume     = 0.5;
 gameOverSound.volume      = 0.5;
 nightAmbianceSound.volume = 1.0;
+outroMusic.volume         = 0.5;
 
 // Load images
 lockedOverlayImage.src = LOCKEDSRC;
@@ -1245,6 +1229,121 @@ function checkFirstTimeUser() {
 }
 
 /*  ----------------- */
+/*       OUTRO        */
+/*  ----------------- */
+// Show the credits
+function showCredits() {
+    const creditsContainer = document.getElementById("creditsContainer");
+    const outroMusic = document.getElementById('outroMusic');
+    outroMusic.volume = 0.1;
+    outroMusic.play();
+    creditsContainer.classList.remove("hidden");
+
+    // Hide the credits after the animation ends
+    const creditsDuration = 45000; // IF CHANGED: Match the duration of the CSS animation
+    setTimeout(() => {
+        creditsContainer.classList.add("hidden");
+        outroStoryteller();
+    }, creditsDuration);
+    
+}
+
+// after the outro
+function outroStoryteller(){
+    const outroSequence = document.getElementById('outroSequence');
+    const outroTale = document.getElementById('outroTale');
+    const outroLogo = document.getElementById('outroLogo');
+    const creditsContainer = document.getElementById("creditsContainer");
+    const outroMusic = document.getElementById('outroMusic');
+    const messages = [
+        `and thus, the story of ${usernameParam} ends.`,
+        `Or.. did it?`
+    ];
+
+    const fade = (element, type, duration) => {
+        element.style.transition = `opacity ${duration}ms ease`;
+        element.style.opacity = type === 'in' ? 1 : 0;
+    };
+
+    // transition to blueish screen for storyteller
+    outroSequence.classList.remove('hidden');
+
+    typeOrderedMessages(outroTale, messages, () => {
+        fade(outroTale, 'out', 500);
+        setTimeout(() => { // logo fade in
+            outroLogo.classList.remove('hidden');
+            fade(outroLogo, 'in', 1000);
+            setTimeout(() => { // reset it for endless mode
+                outroLogo.classList.add('hidden');
+                outroTale.classList.add('hidden');
+                outroMusic.pause();
+                outroMusic.currentTime = 0; // Reset to the beginning
+                creditsContainer.classList.add("hidden");
+                outroSequence.classList.add('hidden');
+                showPopup("nocancel", 0, 0, 0, 0, 0, "Thank you for playing! You've unlocked endless mode");
+            }, 2000);
+        }, 500);
+    });
+}
+
+// Type messages in a sequence elegantly :3
+function typeOrderedMessages(element, messages, onComplete) {
+    let currentMessage = 0;
+
+    // yes this function is recursive, no i wont make it iterative
+    const typeNextMessage = () => {
+        if (currentMessage >= messages.length) { // If all messages are done
+            onComplete(); // Call whatever function is passed when all messages are done
+            return;
+        }
+
+        const message = messages[currentMessage];
+        element.textContent = ''; // Clear the element incase of clutter
+        element.style.borderRight = '.15em solid white'; // Add a typing cursor to be more immersive
+
+        let charIndex = 0;
+        const typingInterval = setInterval(() => {
+            if (charIndex < message.length) {
+                element.textContent += message[charIndex]; // Add one character at a time
+                charIndex++;
+            } else {
+                // once done, stop typing, remove the cursor and wait for 2000ms before typing the next message
+                clearInterval(typingInterval);
+                element.style.borderRight = 'none';
+
+                setTimeout(() => {
+                    currentMessage++;
+                    typeNextMessage(); // Move to the next message/continue if done
+                }, 2000);
+            }
+        }, 50); // Type one character every 50ms
+    };
+
+    typeNextMessage(); // Start typing the first message
+}
+
+
+// Handle transition to outro
+function handleVictory(){
+    // Stop the background music if it's playing
+    if (!backgroundMusic.paused) {
+        backgroundMusic.pause();
+        backgroundMusic.currentTime = 0; // Reset to the beginning
+    }
+
+
+    setTimeout(() => {
+        outroSequence.style.transition = 'background-color 1s ease';
+        outroSequence.style.backgroundColor = '#1a202c';
+    }, 10);
+
+    // Start credits after background fade
+    setTimeout(() => {
+        showCredits();
+    }, 1000);
+}
+
+/*  ----------------- */
 /*    GAME FUNCTIONS  */
 /*  ----------------- */
 // Handle the player interaction with the areas
@@ -1286,9 +1385,8 @@ function handleInteraction(clientX, clientY){
     }
 }
 
-
 // Kill the player when they die
-function killPlayer() {
+function killPlayer(){
     if (isPaused) return; // Prevent multiple executions of killPlayer
     const bloodDrip = document.getElementsByClassName("blood")[0];
     const popupContainer = document.getElementById("popupContainer");
@@ -1417,7 +1515,7 @@ function handleBoss() {
                 updateStats(); // Ensure stats are updated after the wave
                 startWave2(); // Trigger wave 2
             }
-        }, 12000);
+        }, 10000);
     }
 
     function startWave2() {
@@ -1459,10 +1557,43 @@ function handleBoss() {
     }
 
     function endGame() {
-        showPopup("nocancel", 0, 0, 0, 0, 0, "You have defeated the boss! Congratulations!");
+        const boss = areas["Ponorogo"]; // Assuming the boss is in the "Ponorogo" area
+        const shakeDuration = 1000; // Duration of the shake in milliseconds
+        const shakeIntensity = 5; // Intensity of the shake (pixels)
+        const originalX = boss.x; // Store the original position
+        const originalY = boss.y;
+    
+        // Function to apply the shake effect
+        const startShake = () => {
+            const startTime = Date.now();
+    
+            const shakeInterval = setInterval(() => {
+                const elapsedTime = Date.now() - startTime;
+    
+                if (elapsedTime >= shakeDuration) {
+                    clearInterval(shakeInterval);
+                    boss.x = originalX; // Reset to the original position
+                    boss.y = originalY;
+                    return;
+                }
+    
+                // Apply random offsets to simulate shaking
+                boss.x = originalX + (Math.random() * shakeIntensity * 2 - shakeIntensity);
+                boss.y = originalY + (Math.random() * shakeIntensity * 2 - shakeIntensity);
+            }, 50); // Update every 50ms
+        };
+    
+        // Start the shake effect
+        startShake();
+    
+        // After the shake, show the victory popup
         setTimeout(() => {
-            console.log("win!");
-        }, 5000);
+            showPopup("nocancel", 0, 0, 0, 0, 0, "You have defeated the boss! Congratulations!");
+        }, shakeDuration + 500); // Add a small delay after the shake
+
+        setTimeout(() => {
+            handleVictory(); // Call the victory function
+        }, shakeDuration + 2000); // Add a small delay after the victory popup
     }
 
     // add thunder effect
@@ -1474,11 +1605,6 @@ function handleBoss() {
         thunderEffect.classList.add("hidden");
     }, 3000);
     startWave1();
-}
-
-// Roll the credits scene
-function handleVictory() {
-    console.log("You have defeated the boss! Congratulations!");
 }
 
 // Draw the player and areas

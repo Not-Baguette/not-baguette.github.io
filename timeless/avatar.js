@@ -25,7 +25,7 @@ const elements = {
 };
 
 // Try preloading all assets to improve server runtime performance
-function preloadAssets() {
+function preloadAssets(){
     const imagePromises = avatars.map(avatar => {
         return new Promise((resolve, reject) => {
             const img = new Image();
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Toggle container visibility
-function toggleContainer(container, show = true) {
+function toggleContainer(container, show = true){
     container.classList.toggle('hidden', !show);
     
     const clickSound = document.getElementById('clickSound');
@@ -98,7 +98,7 @@ function toggleContainer(container, show = true) {
 
 /* ===== Avatars ===== */
 // Update the avatar selection display
-function updateAvatarDisplay() {
+function updateAvatarDisplay(){
     const leftIndex = (currentAvatarIndex - 1 + avatars.length) % avatars.length; // circular index
     const rightIndex = (currentAvatarIndex + 1) % avatars.length;
     
@@ -118,13 +118,13 @@ function updateAvatarDisplay() {
 }
 
 // Handle avatar navigation
-function navigateAvatars(direction) {
+function navigateAvatars(direction){
     currentAvatarIndex = (currentAvatarIndex + direction + avatars.length) % avatars.length;
     updateAvatarDisplay();
 }
 
 // Show character story
-function handleAvatarClick() {
+function handleAvatarClick(){
     const current = avatars[currentAvatarIndex];
     elements.characterName.textContent = `${current.name}'s Story`;
     elements.characterDescription.textContent = current.description;
@@ -132,7 +132,7 @@ function handleAvatarClick() {
 }
 
 // Handle avatar selection confirm
-function handleAvatarSelect(index) {
+function handleAvatarSelect(index){
     currentAvatarIndex = index;
     elements.avatarImage.src = avatars[index].src;
     toggleContainer(elements.avatarSelectionContainer, false);
@@ -140,7 +140,7 @@ function handleAvatarSelect(index) {
 
 /* ===== Intro Sequence ===== */
 // Start game if username is already set
-function handleStartGame() {
+function handleStartGame(){
     const username = document.getElementById('avatarName').value;
     if (!username) return alert('Please enter a username.');
     const introSequence = document.getElementById('introSequence');
@@ -167,9 +167,8 @@ function handleStartGame() {
     }, 1000);
 }
 
-
 // Show the intro sequence after the user presses start game
-function startIntroSequence(username) {
+function startIntroSequence(username){
     const introMusic = document.getElementById('introMusic');
     const introText = document.getElementById('introText');
     const introLogo = document.getElementById('introLogo');
@@ -220,7 +219,7 @@ function startIntroSequence(username) {
 }
 
 // Type messages in a sequence elegantly :3
-function typeOrderedMessages(element, messages, onComplete) {
+function typeOrderedMessages(element, messages, onComplete){
     let currentMessage = 0;
 
     // yes this function is recursive, no i wont make it iterative
