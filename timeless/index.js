@@ -1233,6 +1233,7 @@ function checkFirstTimeUser() {
 /*  ----------------- */
 // Show the credits
 function showCredits() {
+    const outroSequence = document.getElementById('outroSequence');
     const creditsContainer = document.getElementById("creditsContainer");
     const outroMusic = document.getElementById('outroMusic');
     outroMusic.volume = 0.1;
@@ -1243,6 +1244,7 @@ function showCredits() {
     const creditsDuration = 45000; // IF CHANGED: Match the duration of the CSS animation
     setTimeout(() => {
         creditsContainer.classList.add("hidden");
+        outroSequence.classList.remove('hidden');
         outroStoryteller();
     }, creditsDuration);
     
@@ -1250,23 +1252,21 @@ function showCredits() {
 
 // after the outro
 function outroStoryteller(){
-    const outroSequence = document.getElementById('outroSequence');
     const outroTale = document.getElementById('outroTale');
     const outroLogo = document.getElementById('outroLogo');
     const creditsContainer = document.getElementById("creditsContainer");
     const outroMusic = document.getElementById('outroMusic');
     const messages = [
         `and thus, the story of ${usernameParam} ends.`,
-        `Or.. did it?`
+        `Or.. did it?`,
+        `The world is always full of secrets,`,
+        `Don't you think so, ${usernameParam}?`,
     ];
 
     const fade = (element, type, duration) => {
         element.style.transition = `opacity ${duration}ms ease`;
         element.style.opacity = type === 'in' ? 1 : 0;
     };
-
-    // transition to blueish screen for storyteller
-    outroSequence.classList.remove('hidden');
 
     typeOrderedMessages(outroTale, messages, () => {
         fade(outroTale, 'out', 500);
@@ -1321,7 +1321,6 @@ function typeOrderedMessages(element, messages, onComplete) {
 
     typeNextMessage(); // Start typing the first message
 }
-
 
 // Handle transition to outro
 function handleVictory(){
@@ -1503,7 +1502,7 @@ function handleBoss() {
         showPopupAdvanced(12000, -40, -90, -10, -40, 0, "You dare to challenge me? Let us see who wins!", "nocancel");
         playerEffect("happiness", 10, -1);
         playerEffect("energy", 10, -1);
-        playerEffect("hygiene", 10, -1);
+        playerEffect("hygiene", 9, -1);
         playerEffect("hunger", 5, -5);
 
         setTimeout(() => {
@@ -1540,9 +1539,9 @@ function handleBoss() {
 
     function startWave3() {
         console.log("Wave 3 started!");
-        showPopupAdvanced(10000, -20, 0, 1, 0, -10, "LAST CHANCE TO BACK OFF HUMAN, STAY AWAY", "");
-        playerEffect("happiness", 10, -1);
-        playerEffect("energy", 10, -0.5);
+        showPopupAdvanced(10000, -20, 0, 1, 0, -10, "Perish.", "");
+        playerEffect("happiness", 5, -2);
+        playerEffect("energy", 5, -1);
 
         setTimeout(() => {
             console.log("Wave 3 completed!");
@@ -1553,7 +1552,7 @@ function handleBoss() {
                 updateStats(); // Ensure stats are updated after the wave
                 endGame(); // Trigger end game
             }
-        }, 10000);
+        }, 5000);
     }
 
     function endGame() {
