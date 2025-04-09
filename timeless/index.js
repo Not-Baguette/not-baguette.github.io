@@ -219,7 +219,7 @@ const areaActions = {
     "Home": {
         action1: "Rest",
         action2: "Eat",
-        action3: "Use Medkit"
+        action3: "Play"
     },
     "Pontianak": {
         action1: "Fight",
@@ -1135,6 +1135,7 @@ function startTutorial() {
     showTutorialStep(currentTutorialStep);
 }
 
+// Show the tutorial step
 function showTutorialStep(stepIndex) {
     if (stepIndex >= TUTORIALSTEPS.length) {
         endTutorial();
@@ -1172,6 +1173,7 @@ function showTutorialStep(stepIndex) {
     };
 }
 
+// Highlight the target element
 function highlightTargetElement(elementId, tutorialBox) {
     const targetElement = document.getElementById(elementId);
     if (!targetElement) return;
@@ -1199,6 +1201,7 @@ function highlightTargetElement(elementId, tutorialBox) {
     tutorialBox.style.left = `${left}px`;
 }
 
+// center popup for mobile & nonspecific elements
 function centerTutorialBox(tutorialBox) {
     tutorialBox.style.position = "absolute";
     tutorialBox.style.top = "50%";
@@ -1206,6 +1209,7 @@ function centerTutorialBox(tutorialBox) {
     tutorialBox.style.transform = "translate(-50%, -50%)";
 }
 
+// End the tutorial
 function endTutorial() {
     const TutorialContainer = document.getElementById("TutorialContainer");
     const tutorialBox = document.getElementById("tutorialBox");
