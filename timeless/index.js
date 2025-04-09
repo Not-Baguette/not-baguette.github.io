@@ -97,7 +97,7 @@ const TUTORIALSTEPS = [{
         element: null,
     },
     {
-        text: "For Mobile users, use the buttons on the bottom to move your character or click to move!",
+        text: "For Mobile users, use the buttons on the bottom to move your character or click to other areas to move!",
         element: "controls",
     },
     {
@@ -571,6 +571,7 @@ function isMouseOverArea(clientX, clientY){
 
 // return user to last valid position
 function resetPlayerPosition(){
+    if(isMoving) return;
     // hacky fix for ponorogo bug, I literally cant reproduce this bug without knowing what went wrong
     if (lastValidPosition.area === "ponorogo" && isAreaUnlocked(areas["ponorogo"])){
         lastValidPosition.x = areas["home"].x;
@@ -932,6 +933,9 @@ function handleArrival(){
 
     // Update player
     player.hunger = Math.max(0, player.hunger - destination.cost);
+    lastValidPosition.x = player.x;
+    lastValidPosition.y = player.y;
+    lastValidPosition.area = player.area;
     visitedAreas.add(destination.area);
     destination = null;
     isMoving = false;
@@ -1017,7 +1021,7 @@ function movePlayer(dx, dy){
             resetPlayerPosition();
             return;
         }
-
+        // if the area is unlocked and the player is not moving, then set the destination
         if (player.area !== areaName && !isMoving && isPlayerInValidArea()){
             destination = { 
                 x: loc.x + loc.width / 2,
@@ -1643,6 +1647,7 @@ function gameLoop(){
         update();
         draw();
         updateStats();
+        console.log(isMoving); // DEBUG PRIO
     }
     requestAnimationFrame(gameLoop);
 }

@@ -1,6 +1,7 @@
 /* Mobile Support */
 @media (max-width:1050px) {
     .stats-pad {margin-top: 100px;}
+    .bar-container {min-width: 100px !important;}
     .gap-10, .gap-4 {gap: 20px !important;}
     .interaction-box {min-width: 90% !important;}
     .username {
@@ -14,7 +15,7 @@
 }
 
 @media (max-width:820px) {
-    .bar-container {min-width: 100px !important;}
+    .control-gap {padding-right: 35px;}
     .stats-pad {margin-top: 200px !important;}
     .username {font-size: 20px !important;}
     #greeting {font-size: medium !important;}
@@ -190,6 +191,7 @@ canvas {
 }
 
 .ctrl-btn {
+    user-select: none;
     border-radius: 50%;
     background-color: black;
     width: 50px;
@@ -204,7 +206,6 @@ canvas {
     background-size: cover;
     background-position: center;
 }
-
 
 /* ===== Tutorial ===== */
 .tutorial-container {
