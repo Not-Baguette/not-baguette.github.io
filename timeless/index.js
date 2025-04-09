@@ -474,11 +474,6 @@ function playClickSound() {
     clickSound.play();
 }
 
-function playGameOverSound() {
-    gameOverSound.currentTime = 0; // Reset to the beginning
-    gameOverSound.play();
-}
-
 function playNightAmbiance() {
     if (!nightAmbianceSound.paused) return; // check if it's already playing
 
@@ -1647,7 +1642,6 @@ function gameLoop(){
         update();
         draw();
         updateStats();
-        console.log(isMoving); // DEBUG PRIO
     }
     requestAnimationFrame(gameLoop);
 }
