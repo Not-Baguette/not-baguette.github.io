@@ -11,7 +11,6 @@ let inGameTime = new Date(); // ingame time
 let moveInterval; // button movement interval
 let lastHour; // store the last hour for day-night cycle & status decay
 let isDead = false; // player death status
-let isPaused = false; // game pause status
 // tutorial
 let currentTutorialStep = 0;
 let isTutorialActive = true;
@@ -1344,7 +1343,6 @@ function handleVictory(){
         backgroundMusic.currentTime = 0; // Reset to the beginning
     }
 
-
     setTimeout(() => {
         outroSequence.style.transition = 'background-color 1s ease';
         outroSequence.style.backgroundColor = '#1a202c';
@@ -1400,7 +1398,9 @@ function handleInteraction(clientX, clientY){
 
 // Kill the player when they die
 function killPlayer(){
-    if (isPaused) return; // Prevent multiple executions of killPlayer
+    if (isDead) return; // Prevent multiple executions of killPlayer
+    if (player.hunger === 50 || player.energy === 50 || 
+        player.hygiene === 50 || player.happiness === 50) return;
     const bloodDrip = document.getElementsByClassName("blood")[0];
     const popupContainer = document.getElementById("popupContainer");
     const popupMessage = document.getElementById("popupMessage");
@@ -1413,7 +1413,6 @@ function killPlayer(){
 
     let cancelcounter = 0;
     isDead = true; // Set the isDead flag to true
-    isPaused = true; // mutex
 
     // Pause the game loop
     bloodDrip.classList.remove("hidden");
@@ -1478,21 +1477,22 @@ function killPlayer(){
 
         // Resume the game loop
         bloodDrip.classList.add("hidden");
-        isPaused = false;
+        isDead = false;
     }, 3000); // Wait for 3 seconds
 }
 
 // DEBUG: Cheat code for testing
 function cheatCode(code){
     if(code === "op"){
+        // max stat
         player.happiness = 100;
         player.energy = 100;
         player.hygiene = 100;
         player.hunger = 100;
         player.money = 1000;
         updateStats();
-        return "Cheat code activated!";
     } else if(code === "unlock"){
+        // unlock area
         visitedAreas.add("Pontianak");
         visitedAreas.add("Jayapura");
         visitedAreas.add("Padang");
@@ -1500,14 +1500,43 @@ function cheatCode(code){
         visitedAreas.add("Secret");
         visitedAreas.add("Jambi");
         updateStats();
-        return "All areas unlocked!";
     } else if(code === "test"){
+        // simulate boss fight
         cheatCode("unlock");
         cheatCode("op");
         player.hunger -= 20;
         handleBoss();
-    }
-
+    } else if(code === "iwantwin"){
+        // immediately win
+        handleVictory();
+    } else if(code === "nepotism"){
+        // infinite money
+        setInterval(() => {
+            player.money += 1312;
+            updateStats();
+        }, 50)
+    } else if(code === "happychemnicals"){
+        setInterval(() => {
+            player.happiness = 100;
+            updateStats();
+        }, 1000)
+    } else if(code === "OCD"){
+        setInterval(() => {
+            player.hygiene = 100;
+            updateStats();
+        }, 1000)
+    } else if(code === "ADHD"){
+        setInterval(() => {
+            player.energy = 100;
+            updateStats();
+        }, 1000)
+    } else if(code === "makansianggratis"){
+        setInterval(() => {
+            player.hunger = 100;
+            updateStats();
+        }, 1000)
+    } else {return;}
+    return 'Cheat code activated!'
 }
 
 // Handle the boss fight (3 waves)
@@ -1660,7 +1689,7 @@ function gameLoop(){
     if(player.hunger === 0 || player.energy === 0 || 
         player.hygiene === 0 || player.happiness === 0){
         killPlayer();
-    } else if (!isPaused){
+    } else if (!isDead){
         updatePlayerPosition();
         update();
         draw();
