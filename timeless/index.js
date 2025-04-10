@@ -404,7 +404,7 @@ function addEventListeners(){
         const actions = (areaActions[player.area]).action2;
         playClickSound();
         if(player.area === "Home"){
-            showPopup(actions, 0, 0, 10, 0, maxDebt);
+            showPopup(actions, 0, 0, 10, 0, 0);
         } else if(player.area === "Pontianak"){
             if(!hasEnoughResources(0, 0, 0, 20, maxDebt)) return;
             showPopup(actions, 0, 0, 0, -20, 5);
