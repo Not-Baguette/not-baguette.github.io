@@ -1535,7 +1535,7 @@ function cheatCode(code){
             player.hunger = 100;
             updateStats();
         }, 1000)
-    } else {return;}
+    } else return;
     return 'Cheat code activated!'
 }
 
