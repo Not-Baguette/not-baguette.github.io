@@ -98,6 +98,10 @@ const TUTORIALSTEPS = [{
         element: null,
     },
     {
+        text: "It is best to enjoy this game on 67% zoom on smaller laptops, so you can see the whole map!",
+        element: null,
+    },
+    {
         text: "For Mobile users, use the buttons on the bottom to move your character or click to other areas to move!",
         element: "controls",
     },
