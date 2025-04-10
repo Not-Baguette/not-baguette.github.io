@@ -381,15 +381,19 @@ function addEventListeners(){
         if(player.area === "Home"){
             showPopup(actions, 0, 0, 0, 10, 0); 
         } else if(player.area === "Pontianak"){
+            isDead = false; 
             if(!hasEnoughResources(10, 20, 0, 0, maxDebt)) return;
             showPopup(actions, -10, -20, 0, 0, 10);
         } else if(player.area === "Jayapura"){
+            isDead = false; 
             if(!hasEnoughResources(20, 30, 0, 0, maxDebt)) return;
             showPopup(actions, -10, -20, 0, 0, 15)
         } else if(player.area === "Padang"){
+            isDead = false; 
             if(!hasEnoughResources(0, 0, 0, 0, 5)) return;
             showPopup(actions, 0, 0, 0, 20, -5);
         } else if(player.area === "Jambi"){
+            isDead = false; 
             if(!hasEnoughResources(0, 0, 0, 0, maxDebt)) return;
             showPopup(actions, -10, -20, 0, 0, 20);
         }
@@ -401,15 +405,19 @@ function addEventListeners(){
         if(player.area === "Home"){
             showPopup(actions, 0, 0, 10, 0, 0);
         } else if(player.area === "Pontianak"){
+            isDead = false; 
             if(!hasEnoughResources(0, 0, 0, 20, maxDebt)) return;
             showPopup(actions, 0, 0, 0, -20, 5);
         } else if(player.area === "Jayapura"){
+            isDead = false; 
             if(!hasEnoughResources(0, 0, 0, 30, maxDebt)) return;
             showPopup(actions, 0, 0, 0, -30, 10)
         } else if(player.area === "Padang"){
+            isDead = false; 
             if(!hasEnoughResources(0, 0, 0, 0, 5)) return;
             showPopup(actions, 0, 0, 20, 0, -5);
         } else if(player.area === "Jambi"){
+            isDead = false; 
             if(!hasEnoughResources(0, 0, 0, 0, maxDebt)) return;
             showPopup(actions, 0, 0, 0, -10, 15);
         }
@@ -890,7 +898,7 @@ function updateClock(overrule){
 
 // Greeting Function to get the greeting based on the current time
 function getGreeting() {
-    // get it from ingame time
+    // get it from ingame time, should merge this to upper function later if needed
     const hours = inGameTime.getHours();
     if(hours < 4) {
         return "You're up late";
@@ -1395,8 +1403,6 @@ function handleInteraction(clientX, clientY){
 // Kill the player when they die
 function killPlayer(){
     if (isDead) return; // Prevent multiple executions of killPlayer
-    if (player.hunger === 50 || player.energy === 50 || 
-        player.hygiene === 50 || player.happiness === 50) return;
     const bloodDrip = document.getElementsByClassName("blood")[0];
     const popupContainer = document.getElementById("popupContainer");
     const popupMessage = document.getElementById("popupMessage");
@@ -1513,27 +1519,36 @@ function opcode(code){
         }, 50)
     } else if(code === "happychemicals"){
         setInterval(() => {
+            // infinite happiness
             player.happiness = 100;
             updateStats();
         }, 1000)
     } else if(code === "OCD"){
+        // infinite hygiene
         setInterval(() => {
             player.hygiene = 100;
             updateStats();
         }, 1000)
     } else if(code === "ADHD"){
+        // infinite energy
         setInterval(() => {
             player.energy = 100;
             updateStats();
         }, 1000)
     } else if(code === "makansianggratis"){
+        // infinite food
         setInterval(() => {
             player.hunger = 100;
             updateStats();
         }, 1000)
+    } else if(code === "befaster"){
+        // fasten ingame time speed
+        setInterval(() => {
+            inGameTime.setHours(inGameTime.getHours() + 1); // Increment in-game time by 1 minute
+        }, 2000);
     } else if(code === "all"){
+        // unlock all areas, unlimited stats
         opcode("unlock");
-        opcode("op");
         opcode("happychemicals");
         opcode("OCD");
         opcode("ADHD");
