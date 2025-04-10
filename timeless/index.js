@@ -10,7 +10,7 @@ let moveDirection = {dx: 0, dy: 0}; // Store the current movement direction
 let inGameTime = new Date(); // ingame time
 let moveInterval; // button movement interval
 let lastHour; // store the last hour for day-night cycle & status decay
-let isDead = false; // player death status
+let isDead = false; // death status (NOT ACCURATE, JUST FOR BOSS)
 // tutorial
 let currentTutorialStep = 0;
 let isTutorialActive = true;
@@ -121,11 +121,7 @@ const TUTORIALSTEPS = [{
         element: "clockContainer",   
     },
     {
-        text: "In order to win, You need to defeat the boss in Ponorogo. But be careful, you need to unlock the areas first.",
-        element: "gameCanvas",
-    },
-    {
-        text: "You can also find a secret area! Good luck! ;)",
+        text: "In order to win, You need to defeat the boss in Ponorogo. But be careful, you need to unlock the areas first. You can also find a secret area! Good luck! ;)",
         element: "gameCanvas",
     },
     {
@@ -427,7 +423,6 @@ function addEventListeners(){
         } else if(player.area === "Padang"){
             showPopup(actions, 0, 20, 0, 0, 0);
         } else if(player.area === "Ponorogo"){
-            isDead = false; // hacky fix but should work
             handleBoss();
         } 
     });
@@ -1173,7 +1168,7 @@ function showTutorialStep(stepIndex) {
     } else {
         centerTutorialBox(tutorialBox);
     }
-
+    
     // Add event listeners for buttons
     skipButton.onclick = endTutorial;
     nextButton.onclick = () => {
@@ -1196,14 +1191,14 @@ function highlightTargetElement(elementId, tutorialBox) {
         // Position for PC
         top = targetRect.top + window.scrollY + (targetRect.height / 2) - (tutorialBox.offsetHeight / 2) + 250;
         left = targetRect.left + window.scrollX + (targetRect.width / 2) - (tutorialBox.offsetWidth / 2) + 50;
+        if (targetElement.id === "helpButton") {
+            top -= 275; // Adjust for home button, terrible fix but works
+        }
     } else {
         // Center for mobile
         centerTutorialBox(tutorialBox);
         return;
     }
-
-    // Adjust position for specific elements
-    if (elementId === "gameCanvas") left += 800;
 
     tutorialBox.style.position = "absolute";
     tutorialBox.style.top = `${top}px`;
@@ -1477,7 +1472,6 @@ function killPlayer(){
 
         // Resume the game loop
         bloodDrip.classList.add("hidden");
-        isDead = false;
     }, 3000); // Wait for 3 seconds
 }
 
@@ -1505,6 +1499,7 @@ function cheatCode(code){
         cheatCode("unlock");
         cheatCode("op");
         player.hunger -= 20;
+        isDead = false; // hacky fix but should work
         handleBoss();
     } else if(code === "iwantwin"){
         // immediately win
@@ -1551,16 +1546,11 @@ function handleBoss() {
 
         setTimeout(() => {
             console.log("Wave 1 completed!");
-            if(isDead){
-                killPlayer();
-                return;
-            } else{
-                updateStats(); // Ensure stats are updated after the wave
-                startWave2(); // Trigger wave 2
-            }
+            if(isDead) return;
+            updateStats(); // Ensure stats are updated after the wave
+            startWave2(); // Trigger wave 2
         }, 10000);
     }
-
     function startWave2(){
         console.log("Wave 2 started!");
         showPopupAdvanced(10000, -20, 0, -10, -20, 0, "You think you can win? EVEN Cancelling won't save you now!", "cancel");
@@ -1571,16 +1561,11 @@ function handleBoss() {
 
         setTimeout(() => {
             console.log("Wave 2 completed!");
-            if(isDead){
-                killPlayer();
-                return;
-            } else{
-                updateStats(); // Ensure stats are updated after the wave
-                startWave3(); // Trigger wave 3
-            }
+            if(isDead) return;
+            updateStats(); // Ensure stats are updated after the wave
+            startWave3(); // Trigger wave 3
         }, 5000);
     }
-
     function startWave3(){
         console.log("Wave 3 started!");
         showPopupAdvanced(10000, -10, 0, 1, 0, 0, "Perish.", "");
@@ -1589,16 +1574,12 @@ function handleBoss() {
 
         setTimeout(() => {
             console.log("Wave 3 completed!");
-            if(isDead){
-                killPlayer();
-                return;
-            } else {
-                updateStats(); // Ensure stats are updated after the wave
-                endGame(); // Trigger end game
-            }
+            if(isDead) return;
+            updateStats(); // Ensure stats are updated after the wave
+            endGame(); // Trigger end game
+        
         }, 5000);
     }
-
     function endGame(){
         const boss = areas["Ponorogo"]; // Assuming the boss is in the "Ponorogo" area
         const shakeDuration = 1000; // Duration of the shake in milliseconds
@@ -1606,10 +1587,7 @@ function handleBoss() {
         const originalX = boss.x; // Store the original position
         const originalY = boss.y;
         
-        if(isDead){
-            killPlayer();
-            return;
-        }
+        if(isDead) return;
 
         // Function to apply the shake effect
         const startShake = () => {
@@ -1644,6 +1622,7 @@ function handleBoss() {
         }, shakeDuration + 2000); // Add a small delay after the victory popup
     }
 
+    isDead = false; // reset the isDead flag
     isMoving = true; //disable movement while boss
     // add thunder effect
     const thunderEffect = document.createElement("div");
@@ -1689,7 +1668,7 @@ function gameLoop(){
     if(player.hunger === 0 || player.energy === 0 || 
         player.hygiene === 0 || player.happiness === 0){
         killPlayer();
-    } else if (!isDead){
+    } else {
         updatePlayerPosition();
         update();
         draw();
