@@ -391,7 +391,7 @@ function addEventListeners(){
             if(!hasEnoughResources(0, 0, 0, 0, 5)) return;
             showPopup(actions, 0, 0, 0, 20, -5);
         } else if(player.area === "Jambi"){
-            if(!hasEnoughResources(0, 0, 0, 0, 0)) return;
+            if(!hasEnoughResources(0, 0, 0, 0, maxDebt)) return;
             showPopup(actions, -10, -20, 0, 0, 20);
         }
     });
@@ -400,7 +400,7 @@ function addEventListeners(){
         const actions = (areaActions[player.area]).action2;
         playClickSound();
         if(player.area === "Home"){
-            showPopup(actions, 0, 0, 10, 0, 0);
+            showPopup(actions, 0, 0, 10, 0, maxDebt);
         } else if(player.area === "Pontianak"){
             if(!hasEnoughResources(0, 0, 0, 20, maxDebt)) return;
             showPopup(actions, 0, 0, 0, -20, 5);
@@ -411,7 +411,7 @@ function addEventListeners(){
             if(!hasEnoughResources(0, 0, 0, 0, 5)) return;
             showPopup(actions, 0, 0, 20, 0, -5);
         } else if(player.area === "Jambi"){
-            if(!hasEnoughResources(0, 0, 0, 0, 0)) return;
+            if(!hasEnoughResources(0, 0, 0, 0, maxDebt)) return;
             showPopup(actions, 0, 0, 0, -10, 15);
         }
     });
@@ -1106,6 +1106,7 @@ function preloadImages(sources, callback) {
 function firstrun(){
     inGameTime = new Date(); // re-Initialize in-game time incase of death
     lastHour = inGameTime.getHours(); // set the last hour to the current hour
+    isMoving = false;
     const greetingMessage = `${getGreeting()}! Welcome to Timeless Adventure!`;
 
     // Grab the url param for avatar and username, only run this once
@@ -1610,6 +1611,7 @@ function handleBoss() {
         }, shakeDuration + 2000); // Add a small delay after the victory popup
     }
 
+    isMoving = true; //disable movement while boss
     // add thunder effect
     const thunderEffect = document.createElement("div");
     thunderEffect.className = "thunder-effect";
