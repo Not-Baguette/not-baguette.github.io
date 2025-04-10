@@ -132,6 +132,8 @@ canvas {
 
 .logo, #profilePic {
     width: 150px; 
+}
+#profilePic {
     margin-top: -50px !important;
 }
 
