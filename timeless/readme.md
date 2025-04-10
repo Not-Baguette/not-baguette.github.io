@@ -40,8 +40,6 @@ You can hover or click on your stats to show a tooltip. But remember, your statu
 
 This game also has a day/night cycle that changes the background dynamically depending on the time! This is complemented with the amount of Region backgrounds, this meant we have 12 different backgrounds depending on the Region you're on and the time!
 
-## Death screen
-
 ## Boss fight
 <img src="assets/backgrounds/wave3.gif" alt="Boss" style="display: block; margin: 0 auto;">
 
