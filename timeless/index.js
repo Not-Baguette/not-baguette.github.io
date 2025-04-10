@@ -1541,7 +1541,7 @@ function cheatCode(code){
 
 // Handle the boss fight (3 waves)
 function handleBoss() {
-    function startWave1() {
+    function startWave1(){
         console.log("Wave 1 started!");
         showPopupAdvanced(12000, -40, -85, -10, -40, 0, "You dare to challenge me? Let us see who wins!", "nocancel");
         playerEffect("happiness", 10, -1);
@@ -1561,7 +1561,7 @@ function handleBoss() {
         }, 10000);
     }
 
-    function startWave2() {
+    function startWave2(){
         console.log("Wave 2 started!");
         showPopupAdvanced(10000, -20, 0, -10, -20, 0, "You think you can win? EVEN Cancelling won't save you now!", "cancel");
         playerEffect("happiness", 5, -4);
@@ -1581,7 +1581,7 @@ function handleBoss() {
         }, 5000);
     }
 
-    function startWave3() {
+    function startWave3(){
         console.log("Wave 3 started!");
         showPopupAdvanced(10000, -10, 0, 1, 0, 0, "Perish.", "");
         playerEffect("happiness", 5, -2);
@@ -1599,7 +1599,7 @@ function handleBoss() {
         }, 5000);
     }
 
-    function endGame() {
+    function endGame(){
         const boss = areas["Ponorogo"]; // Assuming the boss is in the "Ponorogo" area
         const shakeDuration = 1000; // Duration of the shake in milliseconds
         const shakeIntensity = 5; // Intensity of the shake (pixels)
