@@ -1509,7 +1509,7 @@ function cheatCode(code){
 function handleBoss() {
     function startWave1() {
         console.log("Wave 1 started!");
-        showPopupAdvanced(12000, -40, -90, -10, -40, 0, "You dare to challenge me? Let us see who wins!", "nocancel");
+        showPopupAdvanced(12000, -40, -85, -10, -40, 0, "You dare to challenge me? Let us see who wins!", "nocancel");
         playerEffect("happiness", 10, -1);
         playerEffect("energy", 10, -1);
         playerEffect("hygiene", 9, -1);
@@ -1529,10 +1529,10 @@ function handleBoss() {
 
     function startWave2() {
         console.log("Wave 2 started!");
-        showPopupAdvanced(10000, -20, 0, -20, -20, 0, "You think you can win? EVEN Cancelling won't save you now!", "cancel");
-        playerEffect("happiness", 10, -2);
-        playerEffect("energy", 10, -2);
-        playerEffect("hunger", 5, -10);
+        showPopupAdvanced(10000, -20, 0, -10, -20, 0, "You think you can win? EVEN Cancelling won't save you now!", "cancel");
+        playerEffect("happiness", 5, -4);
+        playerEffect("energy", 5, -4);
+        playerEffect("hunger", 3, -10);
         playerEffect("hygiene", 3, 1);
 
         setTimeout(() => {
@@ -1544,12 +1544,12 @@ function handleBoss() {
                 updateStats(); // Ensure stats are updated after the wave
                 startWave3(); // Trigger wave 3
             }
-        }, 10000);
+        }, 5000);
     }
 
     function startWave3() {
         console.log("Wave 3 started!");
-        showPopupAdvanced(10000, -20, 0, 1, 0, 0, "Perish.", "");
+        showPopupAdvanced(10000, -10, 0, 1, 0, 0, "Perish.", "");
         playerEffect("happiness", 5, -2);
         playerEffect("energy", 5, -1);
 
@@ -1571,7 +1571,12 @@ function handleBoss() {
         const shakeIntensity = 5; // Intensity of the shake (pixels)
         const originalX = boss.x; // Store the original position
         const originalY = boss.y;
-    
+        
+        if(isDead){
+            killPlayer();
+            return;
+        }
+
         // Function to apply the shake effect
         const startShake = () => {
             const startTime = Date.now();
