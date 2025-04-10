@@ -11,6 +11,7 @@ let inGameTime = new Date(); // ingame time
 let moveInterval; // button movement interval
 let lastHour; // store the last hour for day-night cycle & status decay
 let isDead = false; // player death status
+let isPaused = false; // game pause status
 // tutorial
 let currentTutorialStep = 0;
 let isTutorialActive = true;
@@ -1394,6 +1395,7 @@ function handleInteraction(clientX, clientY){
 
 // Kill the player when they die
 function killPlayer(){
+    if (isPaused) return; // Prevent multiple executions of killPlayer
     const bloodDrip = document.getElementsByClassName("blood")[0];
     const popupContainer = document.getElementById("popupContainer");
     const popupMessage = document.getElementById("popupMessage");
@@ -1406,6 +1408,7 @@ function killPlayer(){
 
     let cancelcounter = 0;
     isDead = true; // Set the isDead flag to true
+    isPaused = true; // mutex
 
     // Pause the game loop
     bloodDrip.classList.remove("hidden");
@@ -1470,6 +1473,7 @@ function killPlayer(){
 
         // Resume the game loop
         bloodDrip.classList.add("hidden");
+        isPaused = false;
     }, 3000); // Wait for 3 seconds
 }
 
@@ -1645,7 +1649,7 @@ function gameLoop(){
     if(player.hunger === 0 || player.energy === 0 || 
         player.hygiene === 0 || player.happiness === 0){
         killPlayer();
-    } else{
+    } else if (!isPaused){
         updatePlayerPosition();
         update();
         draw();
