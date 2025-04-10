@@ -878,6 +878,7 @@ function updateClock(overrule){
         body.classList.add(backgroundColors.night);
         if (nightAmbianceSound.paused) playNightAmbiance();
     }
+    getGreeting(); // Update greeting based on the current time
 
     if(overrule) return; // prevent overrule from updating the stats, just day-night cycle
 
@@ -889,8 +890,8 @@ function updateClock(overrule){
 
 // Greeting Function to get the greeting based on the current time
 function getGreeting() {
-    const now = new Date();
-    const hours = now.getHours();
+    // get it from ingame time
+    const hours = inGameTime.getHours();
     if(hours < 4) {
         return "You're up late";
     } else if(hours < 12) {
@@ -1476,7 +1477,7 @@ function killPlayer(){
 }
 
 // DEBUG: Cheat code for testing
-function cheatCode(code){
+function opcode(code){
     if(code === "op"){
         // max stat
         player.happiness = 100;
@@ -1496,8 +1497,8 @@ function cheatCode(code){
         updateStats();
     } else if(code === "test"){
         // simulate boss fight
-        cheatCode("unlock");
-        cheatCode("op");
+        opcode("unlock");
+        opcode("op");
         player.hunger -= 20;
         isDead = false; // hacky fix but should work
         handleBoss();
@@ -1510,7 +1511,7 @@ function cheatCode(code){
             player.money += 1312;
             updateStats();
         }, 50)
-    } else if(code === "happychemnicals"){
+    } else if(code === "happychemicals"){
         setInterval(() => {
             player.happiness = 100;
             updateStats();
@@ -1530,6 +1531,13 @@ function cheatCode(code){
             player.hunger = 100;
             updateStats();
         }, 1000)
+    } else if(code === "all"){
+        opcode("unlock");
+        opcode("op");
+        opcode("happychemicals");
+        opcode("OCD");
+        opcode("ADHD");
+        opcode("makansianggratis");
     } else return;
     return 'Cheat code activated!'
 }
