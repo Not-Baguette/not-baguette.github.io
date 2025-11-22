@@ -19,9 +19,6 @@ export const ProjectsPage: React.FC = () => {
               <li>Open source contributions</li>
               <li>Personal side projects</li>
             </ul>
-            <div className="construction-note">
-              Repositories loaded dynamically from GitHub!
-            </div>
           </div>
         </div>
         <GitHubRepos />
