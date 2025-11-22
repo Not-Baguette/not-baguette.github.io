@@ -42,6 +42,7 @@ jobs:
         VITE_SPOTIFY_CLIENT_ID: ${{ secrets.VITE_SPOTIFY_CLIENT_ID }}
         VITE_SPOTIFY_CLIENT_SECRET: ${{ secrets.VITE_SPOTIFY_CLIENT_SECRET }}
         VITE_SPOTIFY_REFRESH_TOKEN: ${{ secrets.VITE_SPOTIFY_REFRESH_TOKEN }}
+        VITE_STEAM_API: ${{ secrets.VITE_STEAM_API }}
         
     - name: Setup Pages
       uses: actions/configure-pages@v4
