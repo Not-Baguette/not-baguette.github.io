@@ -57,37 +57,35 @@ function App() {
         ✨ Welcome to My Personal Space! ✨ Last Updated: {lastUpdated}
       </div>
 
-      {/* Main Layout */}
-      <div className="main-layout">
-        {/* Left Sidebar */}
-        <div className="left-sidebar">
-          {/* Profile Box */}
-          <Profile currentAge={currentAge} />
+      {/* Main Content Wrapper */}
+      <div className="main-content-wrapper">
+        {/* Main Layout */}
+        <div className="main-layout">
+          {/* Left Sidebar */}
+          <div className="left-sidebar">
+            {/* Profile Box */}
+            <Profile currentAge={currentAge} />
+            <Navigation />
+            <SteamWidget />
+          </div>
 
-          {/* Navigation Menu */}
-          <Navigation />
+          {/* Main Content */}
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<AboutMe />} />
+            <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/organizations" element={<OrganizationsPage />} />
+            <Route path="/skills" element={<SkillsPage />} />
+            <Route path="/guestbook" element={<GuestbookPage />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/blog" element={<BlogPage />} />
+          </Routes>
 
-          {/* Experiences */}
-          <Experiences />
-        </div>
-
-        {/* Main Content */}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<AboutMe />} />
-          <Route path="/projects" element={<ProjectsPage />} />
-          <Route path="/organizations" element={<OrganizationsPage />} />
-          <Route path="/skills" element={<SkillsPage />} />
-          <Route path="/guestbook" element={<GuestbookPage />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/blog" element={<BlogPage />} />
-        </Routes>
-
-        {/* Right Sidebar */}
-        <div className="right-sidebar">
-          <SteamWidget />
-          <LatestComments />
-          <SpotifyWidget />
+          {/* Right Sidebar */}
+          <div className="right-sidebar">
+            <LatestComments />
+            <SpotifyWidget />
+          </div>
         </div>
       </div>
 
