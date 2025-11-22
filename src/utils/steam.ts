@@ -25,64 +25,42 @@ export const fetchRecentGames = async (): Promise<SteamGame[]> => {
     
     if (!STEAM_API_KEY) {
       console.warn('Steam API key not found');
-      return getSampleGames();
+      return [];
     }
 
-    const url = `https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v1/?key=${STEAM_API_KEY}&steamid=${STEAM_ID}&format=json`;
+    // Use CORS proxy directly to avoid CORS errors
+    const apiUrl = `https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v1/?key=${STEAM_API_KEY}&steamid=${STEAM_ID}&format=json`;
+    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(apiUrl)}`;
     
-    // Try direct access first
-    let response = await fetch(url);
-    
-    // If CORS fails, try with proxy
-    if (!response.ok) {
-      const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
-      response = await fetch(proxyUrl);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+    const response = await fetch(proxyUrl, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
       }
-      
-      const data = await response.json();
-      const steamData: SteamRecentGamesResponse = JSON.parse(data.contents);
-      return steamData.response.games.slice(0, 4); // Show top 4 games
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Proxy request failed: ${response.status}`);
     }
     
-    const steamData: SteamRecentGamesResponse = await response.json();
+    const proxyData = await response.json();
+    
+    if (!proxyData.contents) {
+      throw new Error('No data received from proxy');
+    }
+    
+    const steamData: SteamRecentGamesResponse = JSON.parse(proxyData.contents);
+    
+    if (!steamData.response || !steamData.response.games) {
+      throw new Error('Invalid Steam API response');
+    }
+    
     return steamData.response.games.slice(0, 4); // Show top 4 games
     
   } catch (error) {
-    console.error('Error fetching Steam games:', error);
-    return getSampleGames();
+    console.error('Failed to fetch Steam games:', error);
+    return [];
   }
-};
-
-/**
- * Get sample games for fallback
- */
-const getSampleGames = (): SteamGame[] => {
-  return [
-    {
-      appid: 1206560,
-      name: "WorldBox - God Simulator",
-      playtime_2weeks: 314,
-      playtime_forever: 44925,
-      img_icon_url: "8f619ad226e578bcdc8be419f7b73e583b5b9cad"
-    },
-    {
-      appid: 2386250,
-      name: "It gets so lonely here",
-      playtime_2weeks: 194,
-      playtime_forever: 194,
-      img_icon_url: "4c7ca16b7f2ae792bae811f31af54a9bb1c28923"
-    },
-    {
-      appid: 1118200,
-      name: "People Playground",
-      playtime_2weeks: 82,
-      playtime_forever: 16999,
-      img_icon_url: "41b6bdf6fb9feae9c966d414c2acddd77aaafa7f"
-    }
-  ];
 };
 
 /**

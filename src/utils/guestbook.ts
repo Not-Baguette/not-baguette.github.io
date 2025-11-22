@@ -17,14 +17,11 @@ export const GOOGLE_FORM_URL = 'https://forms.gle/nPSg36mZ9EMkEDcv9';
  */
 export const fetchGuestbookEntries = async (): Promise<GuestbookEntry[]> => {
   try {
-    console.log('Fetching guestbook entries from Google Sheets...');
-    
     // Try direct access first
     let response = await fetch(SHEETS_CSV_URL);
     
     // If direct access fails due to CORS, try with CORS proxy
     if (!response.ok) {
-      console.log('Direct access failed, trying with CORS proxy...');
       const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(SHEETS_CSV_URL)}`;
       response = await fetch(proxyUrl);
       
@@ -41,7 +38,6 @@ export const fetchGuestbookEntries = async (): Promise<GuestbookEntry[]> => {
     
   } catch (error) {
     console.error('Error fetching guestbook entries:', error);
-    console.log('Make sure your Google Sheet is publicly accessible (Anyone with the link can view)');
     // Return empty array on error
     return [];
   }

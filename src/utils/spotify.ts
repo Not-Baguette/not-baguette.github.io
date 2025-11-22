@@ -19,15 +19,27 @@ let tokenExpirationTime: number = 0;
  */
 export const getAccessToken = async (): Promise<string> => {
   try {
+    console.log('Starting getAccessToken...');
+    console.log('Environment check:', {
+      has_client_id: !!client_id,
+      has_client_secret: !!client_secret,
+      has_refresh_token: !!refresh_token,
+      client_id_length: client_id?.length || 0,
+      client_secret_length: client_secret?.length || 0,
+      refresh_token_length: refresh_token?.length || 0,
+      refresh_token_preview: refresh_token ? refresh_token.substring(0, 10) + '...' : 'none'
+    });
+
     // Check if we have a cached token that hasn't expired
     const currentTime = Date.now();
     if (cachedAccessToken && currentTime < tokenExpirationTime) {
-      console.log('Using cached access token');
+      console.log('Using cached token');
       return cachedAccessToken;
     }
 
     // Use your personal refresh token if available
     if (refresh_token && refresh_token !== 'YOUR_REFRESH_TOKEN_HERE' && client_id && client_secret) {
+      console.log('Making token refresh request...');
       const basic = btoa(`${client_id}:${client_secret}`);
       
       const response = await fetch(TOKEN_ENDPOINT, {
@@ -42,9 +54,16 @@ export const getAccessToken = async (): Promise<string> => {
         }).toString(),
       });
 
+      console.log('Token refresh response:', {
+        ok: response.ok,
+        status: response.status,
+        statusText: response.statusText,
+        headers: Object.fromEntries(response.headers.entries())
+      });
+
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('Spotify token refresh failed:', {
+        console.error('Token refresh failed:', {
           status: response.status,
           statusText: response.statusText,
           error: errorText,
@@ -56,6 +75,11 @@ export const getAccessToken = async (): Promise<string> => {
       }
 
       const data = await response.json();
+      console.log('Token refresh successful:', {
+        has_access_token: !!data.access_token,
+        expires_in: data.expires_in,
+        token_type: data.token_type
+      });
       
       // Cache the token
       cachedAccessToken = data.access_token;
@@ -64,8 +88,10 @@ export const getAccessToken = async (): Promise<string> => {
       return data.access_token;
     }
     
+    console.error('No valid credentials found');
     throw new Error('No valid Spotify credentials found. Please set up your refresh token.');
   } catch (error) {
+    console.error('getAccessToken error:', error);
     throw error;
   }
 };
@@ -87,12 +113,21 @@ export const hasSpotifyCredentials = (): boolean => {
  */
 async function fetchSpotifyApi(endpoint: string, method: string = 'GET', body?: any, retryCount: number = 0) {
   try {
+    console.log('fetchSpotifyApi called:', {
+      endpoint,
+      method,
+      retryCount,
+      has_body: !!body
+    });
+
     const access_token = await getAccessToken();
 
     if (!access_token) {
+      console.error('No access token available');
       throw new Error('No Spotify access token available');
     }
 
+    console.log('Making API request with token...');
     const response = await fetch(endpoint, {
       headers: {
         'Authorization': `Bearer ${access_token}`,
@@ -102,38 +137,56 @@ async function fetchSpotifyApi(endpoint: string, method: string = 'GET', body?: 
       body: body ? JSON.stringify(body) : undefined,
     });
 
+    console.log('API response:', {
+      ok: response.ok,
+      status: response.status,
+      statusText: response.statusText,
+      headers: Object.fromEntries(response.headers.entries())
+    });
+
     if (!response.ok) {
       if (response.status === 401 && retryCount === 0) {
+        console.log('401 error, clearing cache and retrying...');
         // Token expired, clear cache and retry once
         cachedAccessToken = null;
         tokenExpirationTime = 0;
         return fetchSpotifyApi(endpoint, method, body, 1);
       } else if (response.status === 204) {
+        console.log('204 No content - user not playing anything');
         // No content - user not playing anything
         return null;
       }
+      
+      const errorText = await response.text();
+      console.error('API error response:', errorText);
       
       // For 403 errors, provide more helpful error message
       if (response.status === 403) {
         throw new Error(`Spotify API access denied (403). Check if your app has the required scopes: user-read-currently-playing, user-read-recently-played, user-top-read`);
       }
       
-      throw new Error(`Spotify API error: ${response.status} ${response.statusText}`);
+      throw new Error(`Spotify API error: ${response.status} ${response.statusText} - ${errorText}`);
     }
 
     // Handle empty responses (common for currently-playing when nothing is playing)
     const text = await response.text();
+    console.log('Response text length:', text?.length || 0);
+    
     if (!text || text.length === 0) {
+      console.log('Empty response body');
       return null;
     }
     
     try {
-      return JSON.parse(text);
+      const parsed = JSON.parse(text);
+      console.log('Successfully parsed JSON response');
+      return parsed;
     } catch (error) {
+      console.error('Failed to parse JSON:', error);
       return null;
     }
   } catch (error) {
-    console.error('Spotify API request failed:', error);
+    console.error('fetchSpotifyApi error:', error);
     throw error;
   }
 }
