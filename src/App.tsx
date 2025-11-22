@@ -4,7 +4,6 @@ import { SpotifyWidget } from './components/SpotifyWidget';
 import { SteamWidget } from './components/SteamWidget';
 import { Profile } from './components/sections/Profile';
 import { Navigation } from './components/sections/Navigation';
-import { Experiences } from './components/sections/Experiences';
 import { Home } from './pages/Home';
 import { AboutMe } from './pages/AboutMe';
 import { ProjectsPage } from './pages/ProjectsPage';
