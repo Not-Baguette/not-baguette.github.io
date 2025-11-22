@@ -231,3 +231,43 @@ body.dark-mode .close-post:hover {
   background: #4B5563;
   border-color: #D4A574;
 }
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Mobile (768px and below) */
+@media (max-width: 768px) {
+  .dark-mode-toggle.floating {
+    right: 15px;
+    bottom: 15px;
+    width: 45px;
+    height: 45px;
+  }
+  
+  .moon-icon {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .toggle-text {
+    font-size: 9px;
+  }
+}
+
+/* Small Mobile (480px and below) */
+@media (max-width: 480px) {
+  .dark-mode-toggle.floating {
+    right: 12px;
+    bottom: 12px;
+    width: 40px;
+    height: 40px;
+  }
+  
+  .moon-icon {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .toggle-text {
+    font-size: 8px;
+  }
+}

@@ -515,3 +515,138 @@ body.dark-mode .post-text {
 body.dark-mode .calendar-loading {
   color: #F7F6F9;
 }
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablet (768px and below) */
+@media (max-width: 768px) {
+  .blog-calendar {
+    padding: 12px;
+  }
+  
+  .calendar-title {
+    font-size: 13px;
+  }
+  
+  .calendar-description {
+    font-size: 10px;
+  }
+  
+  .current-month {
+    font-size: 13px;
+  }
+  
+  .calendar-grid {
+    gap: 2px;
+  }
+  
+  .calendar-day {
+    height: 40px;
+    padding: 4px;
+  }
+  
+  .day-number {
+    font-size: 11px;
+  }
+  
+  .post-dot {
+    width: 3px;
+    height: 3px;
+  }
+  
+  .post-count {
+    font-size: 7px;
+  }
+  
+  .nav-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+  }
+  
+  .post-selector {
+    width: 90%;
+    max-width: 350px;
+    padding: 15px;
+  }
+  
+  .sticky-notes {
+    gap: 8px;
+  }
+  
+  .sticky-note {
+    padding: 8px;
+  }
+  
+  .selected-post {
+    padding: 12px;
+  }
+}
+
+/* Mobile (480px and below) */
+@media (max-width: 480px) {
+  .blog-calendar {
+    padding: 10px;
+  }
+  
+  .calendar-title {
+    font-size: 12px;
+  }
+  
+  .calendar-description {
+    font-size: 9px;
+  }
+  
+  .current-month {
+    font-size: 12px;
+  }
+  
+  .calendar-day {
+    height: 35px;
+    padding: 2px;
+  }
+  
+  .day-number {
+    font-size: 10px;
+  }
+  
+  .nav-btn {
+    width: 25px;
+    height: 25px;
+    font-size: 12px;
+  }
+  
+  .post-selector {
+    width: 95%;
+    max-width: 300px;
+    padding: 12px;
+  }
+  
+  .selector-title {
+    font-size: 11px;
+  }
+  
+  .sticky-note {
+    padding: 6px;
+  }
+  
+  .sticky-text {
+    font-size: 9px;
+  }
+  
+  .sticky-author {
+    font-size: 8px;
+  }
+  
+  .selected-post {
+    padding: 10px;
+  }
+  
+  .post-title {
+    font-size: 11px;
+  }
+  
+  .post-text {
+    font-size: 10px;
+  }
+}

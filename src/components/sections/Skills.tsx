@@ -156,22 +156,24 @@ export const Skills: React.FC = () => {
               }}
             >
               {skillCategories.map((category, categoryIndex) => (
-                <div key={categoryIndex} className="skill-category carousel-slide">
-                  <h3 className="category-title">
-                    {category.title}
-                  </h3>
-                  
-                  <div className="skills-list">
-                    {category.skills.map((skill, skillIndex) => (
-                      <div key={skillIndex} className="skill-item">
-                        <span className="skill-icon">
-                          {skill.icon}
-                        </span>
-                        <span className="skill-name">
-                          {skill.name}
-                        </span>
-                      </div>
-                    ))}
+                <div key={categoryIndex} className="carousel-slide">
+                  <div className="skill-category">
+                    <h3 className="category-title">
+                      {category.title}
+                    </h3>
+                    
+                    <div className="skills-list">
+                      {category.skills.map((skill, skillIndex) => (
+                        <div key={skillIndex} className="skill-item">
+                          <span className="skill-icon">
+                            {skill.icon}
+                          </span>
+                          <span className="skill-name">
+                            {skill.name}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               ))}

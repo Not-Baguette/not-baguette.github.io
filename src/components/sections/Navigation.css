@@ -65,3 +65,52 @@ body.dark-mode .nav-link.active {
   background: #D4A574;
   color: #1a1a1a;
 }
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablet (768px and below) */
+@media (max-width: 768px) {
+  .nav-links {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+  }
+  
+  .nav-link {
+    font-size: 10px;
+    padding: 6px 12px;
+    border-radius: 15px;
+    text-align: center;
+    min-width: auto;
+  }
+  
+  .nav-title {
+    font-size: 11px;
+    margin-bottom: 10px;
+  }
+  
+  .nav-box {
+    padding: 12px;
+  }
+}
+
+/* Mobile (480px and below) */
+@media (max-width: 480px) {
+  .nav-links {
+    gap: 4px;
+  }
+  
+  .nav-link {
+    font-size: 9px;
+    padding: 5px 10px;
+  }
+  
+  .nav-title {
+    font-size: 10px;
+  }
+  
+  .nav-box {
+    padding: 10px;
+  }
+}

@@ -314,3 +314,103 @@ body.dark-mode .org-period {
   color: #D1D5DB;
   text-shadow: none;
 }
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablet (768px and below) */
+@media (max-width: 768px) {
+  .organizations-scroll-container {
+    max-height: 300px;
+    padding: 8px;
+  }
+  
+  .organization-item {
+    padding: 12px;
+    max-height: 110px;
+  }
+  
+  .org-name {
+    font-size: 13px;
+  }
+  
+  .org-description {
+    font-size: 10px;
+  }
+  
+  .org-role {
+    font-size: 11px;
+    padding: 3px 6px;
+  }
+  
+  .org-period {
+    font-size: 9px;
+    padding: 2px 5px;
+  }
+  
+  .organizations-title {
+    font-size: 16px;
+  }
+  
+  .organizations-description {
+    font-size: 11px;
+  }
+  
+  .org-link-indicator {
+    font-size: 9px;
+    padding: 2px 5px;
+    bottom: 8px;
+    right: 12px;
+  }
+}
+
+/* Mobile (480px and below) */
+@media (max-width: 480px) {
+  .organizations-scroll-container {
+    max-height: 250px;
+    padding: 6px;
+  }
+  
+  .organization-item {
+    padding: 10px;
+    max-height: 100px;
+  }
+  
+  .org-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  
+  .org-name {
+    font-size: 12px;
+  }
+  
+  .org-description {
+    font-size: 9px;
+  }
+  
+  .org-role {
+    font-size: 10px;
+    padding: 2px 5px;
+  }
+  
+  .org-period {
+    font-size: 8px;
+    padding: 2px 4px;
+  }
+  
+  .organizations-title {
+    font-size: 15px;
+  }
+  
+  .organizations-description {
+    font-size: 10px;
+  }
+  
+  .org-link-indicator {
+    font-size: 8px;
+    padding: 1px 4px;
+    bottom: 6px;
+    right: 10px;
+  }
+}

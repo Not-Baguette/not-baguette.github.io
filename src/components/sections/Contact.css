@@ -122,3 +122,51 @@ body.dark-mode .contact-link:hover {
 body.dark-mode .contact-handle {
   color: #F7F6F9;
 }
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Mobile (768px and below) */
+@media (max-width: 768px) {
+  .contact-item {
+    padding: 10px;
+    gap: 10px;
+  }
+  
+  .contact-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+  
+  .contact-label {
+    font-size: 9px;
+  }
+  
+  .contact-link,
+  .contact-handle {
+    font-size: 10px;
+  }
+}
+
+/* Small Mobile (480px and below) */
+@media (max-width: 480px) {
+  .contact-item {
+    padding: 8px;
+    gap: 8px;
+  }
+  
+  .contact-icon {
+    width: 25px;
+    height: 25px;
+    font-size: 11px;
+  }
+  
+  .contact-label {
+    font-size: 8px;
+  }
+  
+  .contact-link,
+  .contact-handle {
+    font-size: 9px;
+  }
+}

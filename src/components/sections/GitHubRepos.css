@@ -328,3 +328,67 @@ body.dark-mode .error-message {
   color: #D4A574;
   border-color: #D4A574;
 }
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablet (768px and below) */
+@media (max-width: 768px) {
+  .repos-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .repo-card {
+    padding: 12px;
+  }
+  
+  .repo-name {
+    font-size: 12px;
+  }
+  
+  .repo-description {
+    font-size: 10px;
+  }
+  
+  .repos-title {
+    font-size: 16px;
+  }
+  
+  .repos-description {
+    font-size: 11px;
+  }
+}
+
+/* Mobile (480px and below) */
+@media (max-width: 480px) {
+  .repo-card {
+    padding: 10px;
+  }
+  
+  .repo-name {
+    font-size: 11px;
+  }
+  
+  .repo-description {
+    font-size: 9px;
+  }
+  
+  .repos-title {
+    font-size: 15px;
+  }
+  
+  .repos-description {
+    font-size: 10px;
+  }
+  
+  .repo-meta {
+    gap: 8px;
+  }
+  
+  .repo-language,
+  .repo-stars,
+  .repo-forks {
+    font-size: 8px;
+    padding: 3px 6px;
+  }
+}

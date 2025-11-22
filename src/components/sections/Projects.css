@@ -95,3 +95,53 @@ body.dark-mode .project-link:hover {
 body.dark-mode .project-link:hover .project-name {
   color: #D4A574;
 }
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Mobile (768px and below) */
+@media (max-width: 768px) {
+  .project-item {
+    padding: 10px;
+    font-size: 10px;
+  }
+  
+  .project-name {
+    font-size: 11px;
+  }
+  
+  .project-desc {
+    font-size: 9px;
+  }
+  
+  .project-tech {
+    font-size: 9px;
+  }
+  
+  .projects-title {
+    font-size: 13px;
+  }
+}
+
+/* Small Mobile (480px and below) */
+@media (max-width: 480px) {
+  .project-item {
+    padding: 8px;
+    font-size: 9px;
+  }
+  
+  .project-name {
+    font-size: 10px;
+  }
+  
+  .project-desc {
+    font-size: 8px;
+  }
+  
+  .project-tech {
+    font-size: 8px;
+  }
+  
+  .projects-title {
+    font-size: 12px;
+  }
+}
