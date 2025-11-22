@@ -495,3 +495,23 @@ body.dark-mode .day-cell.has-posts {
   border-color: #D4A574;
   color: #F7F6F9;
 }
+
+body.dark-mode .selector-title {
+  color: #F7F6F9;
+}
+
+body.dark-mode .sticky-text {
+  color: #F7F6F9;
+}
+
+body.dark-mode .post-title {
+  color: #F7F6F9;
+}
+
+body.dark-mode .post-text {
+  color: #F7F6F9;
+}
+
+body.dark-mode .calendar-loading {
+  color: #F7F6F9;
+}

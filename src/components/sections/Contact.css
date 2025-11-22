@@ -92,11 +92,15 @@ body.dark-mode .contact-link-item:hover {
 }
 
 body.dark-mode .contact-icon {
-  filter: brightness(0) saturate(100%) invert(98%) sepia(13%) saturate(342%) hue-rotate(319deg) brightness(106%) contrast(96%);
+  background-color: #F7F6F9;
+  border-color: #9CA3AF;
+  color: #374151;
 }
 
 body.dark-mode .contact-item:hover .contact-icon {
-  filter: brightness(0) saturate(100%) invert(71%) sepia(27%) saturate(533%) hue-rotate(8deg) brightness(91%) contrast(86%);
+  background-color: #F7F6F9;
+  border-color: #D4A574;
+  color: #C59667;
 }
 
 body.dark-mode .contact-text {
@@ -104,7 +108,17 @@ body.dark-mode .contact-text {
 }
 
 body.dark-mode .contact-label {
-  color: #D1D5DB;
+  color: #D4A574;
 }
 
+body.dark-mode .contact-link {
+  color: #F7F6F9;
+}
 
+body.dark-mode .contact-link:hover {
+  color: #D4A574;
+}
+
+body.dark-mode .contact-handle {
+  color: #F7F6F9;
+}

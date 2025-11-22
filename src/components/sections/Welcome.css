@@ -33,3 +33,21 @@
   font-style: italic;
   max-width: none;
 }
+
+/* Dark mode styles */
+body.dark-mode .welcome-box {
+  background: #374151;
+  border-color: #9CA3AF;
+}
+
+body.dark-mode .welcome-title {
+  color: #F7F6F9;
+}
+
+body.dark-mode .welcome-text {
+  color: #F7F6F9;
+}
+
+body.dark-mode .welcome-footer {
+  color: #F7F6F9;
+}

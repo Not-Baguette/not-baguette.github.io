@@ -292,3 +292,31 @@ body.dark-mode .comment-date {
 body.dark-mode .comment-text-full {
   color: #F7F6F9;
 }
+
+body.dark-mode .loading-message {
+  color: #F7F6F9;
+}
+
+body.dark-mode .comments-container-wrapper::before {
+  background: linear-gradient(to bottom, rgba(42, 44, 48, 0.9), transparent);
+}
+
+body.dark-mode .comments-container-wrapper::after {
+  background: linear-gradient(to top, rgba(42, 44, 48, 0.9), transparent);
+}
+
+body.dark-mode .comments-scroll-container::before {
+  background: linear-gradient(to bottom, rgba(42, 44, 48, 0.9), transparent);
+}
+
+body.dark-mode .comments-scroll-container::after {
+  background: linear-gradient(to top, rgba(42, 44, 48, 0.9), transparent);
+}
+
+body.dark-mode .comments-scroll-container {
+  scrollbar-color: #D4A574 #2A2C30;
+}
+
+body.dark-mode .comments-title-integrated {
+  color: #F7F6F9;
+}

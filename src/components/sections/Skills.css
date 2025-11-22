@@ -284,14 +284,15 @@ body.dark-mode .skill-item:hover {
 }
 
 body.dark-mode .skill-icon {
-  background: #374151;
+  background-color: #F7F6F9;
   border-color: #9CA3AF;
-  color: #D4A574;
+  color: #374151;
 }
 
 body.dark-mode .skill-item:hover .skill-icon {
-  background: #4B5563;
-  color: #F7F6F9;
+  background-color: #F7F6F9;
+  border-color: #D4A574;
+  color: #C59667;
 }
 
 body.dark-mode .skill-name {

@@ -58,3 +58,40 @@
 .project-link:hover .project-name {
   color: #C59667;
 }
+
+/* Dark mode styles */
+body.dark-mode .projects-box {
+  background: #374151;
+  border-color: #9CA3AF;
+}
+
+body.dark-mode .projects-title {
+  color: #F7F6F9;
+}
+
+body.dark-mode .project-item {
+  background: #2A2C30;
+  border-color: #374151;
+  color: #F7F6F9;
+}
+
+body.dark-mode .project-name {
+  color: #F7F6F9;
+}
+
+body.dark-mode .project-desc {
+  color: #D1D5DB;
+}
+
+body.dark-mode .project-tech {
+  color: #9CA3AF;
+}
+
+body.dark-mode .project-link:hover {
+  background: #4B5563;
+  border-color: #D4A574;
+}
+
+body.dark-mode .project-link:hover .project-name {
+  color: #D4A574;
+}

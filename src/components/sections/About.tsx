@@ -1,6 +1,8 @@
 import { Container } from '../layout/Container';
 import './About.css';
 
+
+/* unused component for now */
 export const About = () => {
   return (
     <section id="about" className="about-section">

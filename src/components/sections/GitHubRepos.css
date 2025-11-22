@@ -316,3 +316,15 @@ body.dark-mode .repo-topic {
   border-color: #9CA3AF;
   color: #D4A574;
 }
+
+body.dark-mode .loading-message,
+body.dark-mode .error-message {
+  background: #374151;
+  border-color: #9CA3AF;
+  color: #F7F6F9;
+}
+
+body.dark-mode .error-message {
+  color: #D4A574;
+  border-color: #D4A574;
+}
