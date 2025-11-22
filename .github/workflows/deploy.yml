@@ -44,6 +44,9 @@ jobs:
         VITE_SPOTIFY_REFRESH_TOKEN: ${{ secrets.VITE_SPOTIFY_REFRESH_TOKEN }}
         VITE_STEAM_API: ${{ secrets.VITE_STEAM_API }}
         
+    - name: Add .nojekyll file
+      run: touch dist/.nojekyll
+        
     - name: Setup Pages
       uses: actions/configure-pages@v4
       
