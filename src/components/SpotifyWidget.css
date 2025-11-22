@@ -1,0 +1,204 @@
+/* SpotifyWidget.css - Spotify Music Widget Styles */
+
+@keyframes bobbing {
+  0%, 100% { 
+    transform: translateY(0px); 
+  }
+  50% { 
+    transform: translateY(-2px); 
+  }
+}
+
+.spotify-widget {
+  background: white;
+  border: 2px solid #D9D7E0;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.spotify-widget-loading {
+  background: white;
+  border: 2px solid #D9D7E0;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  color: #32343A;
+  font-size: 10px;
+}
+
+.spotify-setup {
+  text-align: center;
+  padding: 10px;
+}
+
+.spotify-setup p {
+  margin: 0 0 5px 0;
+  color: #32343A;
+  font-size: 10px;
+}
+
+.spotify-setup-note {
+  font-size: 8px;
+  color: #666;
+}
+
+.spotify-widget-title {
+  margin: 0 0 8px 0;
+  color: #32343A;
+  font-size: 12px;
+}
+
+.now-playing-section {
+  background: #F7F6F9;
+  border: 1px solid #D9D7E0;
+  border-radius: 5px;
+  padding: 6px;
+  margin-bottom: 8px;
+  font-size: 9px;
+  color: #32343A;
+}
+
+.now-playing-label {
+  font-weight: bold;
+  margin-bottom: 3px;
+  color: #C59667;
+  font-size: 10px;
+}
+
+.now-playing-track {
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+
+.now-playing-track.bobbing {
+  animation: bobbing 1.5s ease-in-out infinite;
+}
+
+.track-image {
+  width: 16px;
+  height: 16px;
+  border-radius: 2px;
+  margin-right: 4px;
+}
+
+.track-info {
+  flex: 1;
+}
+
+.track-name {
+  font-weight: bold;
+  font-size: 9px;
+}
+
+.track-artist {
+  font-size: 8px;
+  opacity: 0.8;
+}
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  margin-top: 3px;
+  gap: 3px;
+}
+
+.progress-time {
+  font-size: 7px;
+  color: #666;
+  min-width: 22px;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 3px;
+  background-color: #E0E0E0;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #C59667;
+  transition: width 1s linear;
+  border-radius: 2px;
+}
+
+.play-status {
+  font-size: 8px;
+  color: #C59667;
+  margin-left: 4px;
+}
+
+.nothing-playing {
+  text-align: center;
+  opacity: 0.7;
+  font-size: 8px;
+}
+
+.top-songs-section {
+  background: #F7F6F9;
+  border: 1px solid #D9D7E0;
+  border-radius: 5px;
+  padding: 6px;
+  font-size: 9px;
+  color: #32343A;
+}
+
+.top-songs-label {
+  font-weight: bold;
+  margin-bottom: 4px;
+  color: #C59667;
+  font-size: 10px;
+}
+
+.top-song-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 3px;
+  font-size: 8px;
+}
+
+.song-number {
+  margin-right: 4px;
+  color: #C59667;
+  font-weight: bold;
+  min-width: 8px;
+  font-size: 7px;
+}
+
+.top-song-image {
+  width: 12px;
+  height: 12px;
+  border-radius: 1px;
+  margin-right: 3px;
+}
+
+.top-song-info {
+  flex: 1;
+}
+
+.top-song-name {
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+.top-song-artist {
+  font-size: 7px;
+  opacity: 0.8;
+  line-height: 1.1;
+}
+
+.no-top-songs {
+  text-align: center;
+  opacity: 0.7;
+  font-size: 8px;
+}
+
+.spotify-footer {
+  margin-top: 6px;
+  text-align: center;
+  font-size: 7px;
+  color: #32343A;
+  opacity: 0.5;
+}

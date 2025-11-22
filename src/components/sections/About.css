@@ -1,0 +1,96 @@
+.about-section {
+  padding: var(--space-16) 0;
+  background-color: var(--color-primary);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+  align-items: center;
+}
+
+.about-caption {
+  color: var(--color-accent);
+  margin-bottom: var(--space-4);
+}
+
+.about-title {
+  margin-bottom: var(--space-6);
+}
+
+.about-content {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.about-text-large {
+  color: var(--color-text-light);
+}
+
+.about-text {
+  color: var(--color-text-light);
+  line-height: var(--line-height-relaxed);
+}
+
+.about-resume-section {
+  margin-top: var(--space-8);
+}
+
+.stats-title {
+  margin-bottom: var(--space-8);
+  text-align: center;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+}
+
+.stat-item {
+  text-align: center;
+  padding: var(--space-4);
+  background-color: var(--color-primary);
+  border-radius: var(--radius-button);
+  border: 1px solid var(--color-border);
+}
+
+.stat-number {
+  font-size: var(--font-h2);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--color-accent);
+  margin-bottom: var(--space-2);
+}
+
+.stat-label {
+  color: var(--color-text-light);
+}
+
+.learning-section {
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
+  text-align: center;
+}
+
+.learning-caption {
+  color: var(--color-text-light);
+  margin-bottom: var(--space-4);
+}
+
+.learning-tags {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.learning-tag {
+  background-color: var(--color-accent);
+  color: var(--color-white);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-input);
+  font-weight: 600;
+}

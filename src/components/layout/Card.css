@@ -1,0 +1,6 @@
+.card-container {
+  background: #fff;
+  border-radius: var(--radius);
+  border: 1px solid var(--muted);
+  padding: var(--space-3);
+}

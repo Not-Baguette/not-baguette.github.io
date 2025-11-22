@@ -1,0 +1,73 @@
+.contact-list {
+  display: grid;
+  gap: 15px;
+  margin: 15px 0;
+}
+
+.contact-item {
+  background: #F7F6F9;
+  border: 1px solid #D9D7E0;
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s ease;
+}
+
+.contact-link-item {
+  text-decoration: none;
+  color: inherit;
+}
+
+.contact-item:hover {
+  background: #EDEAEF;
+  border-color: #C59667;
+  transform: translateY(-1px);
+}
+
+.contact-icon {
+  font-size: 14px;
+  background-color: #F7F6F9;
+  border: 1px solid #D9D7E0;
+  border-radius: 5px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #C59667;
+}
+
+.contact-info {
+  flex: 1;
+}
+
+.contact-label {
+  font-size: 10px;
+  color: #C59667;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-bottom: 3px;
+}
+
+.contact-link {
+  font-size: 11px;
+  color: #32343A;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.contact-link:hover {
+  color: #C59667;
+}
+
+.contact-handle {
+  font-size: 11px;
+  color: #32343A;
+  font-weight: 500;
+}
+
+
