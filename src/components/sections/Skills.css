@@ -267,6 +267,8 @@ body.dark-mode .skills-description {
 }
 
 body.dark-mode .skill-category {
+  background: #2A2C30;
+  border-color: #404040;
   color: #F7F6F9;
 }
 
@@ -282,9 +284,53 @@ body.dark-mode .skill-item:hover {
 }
 
 body.dark-mode .skill-icon {
-  filter: brightness(0) saturate(100%) invert(98%) sepia(13%) saturate(342%) hue-rotate(319deg) brightness(106%) contrast(96%);
+  background: #374151;
+  border-color: #9CA3AF;
+  color: #D4A574;
+}
+
+body.dark-mode .skill-item:hover .skill-icon {
+  background: #4B5563;
+  color: #F7F6F9;
 }
 
 body.dark-mode .skill-name {
   color: #F7F6F9;
+}
+
+body.dark-mode .carousel-container {
+  background: #2A2C30;
+  border-color: #404040;
+}
+
+body.dark-mode .category-title {
+  color: #F7F6F9;
+  border-bottom-color: #404040;
+}
+
+body.dark-mode .indicator {
+  background: #374151;
+  border-color: #9CA3AF;
+}
+
+body.dark-mode .indicator:hover {
+  background: #4B5563;
+  border-color: #D4A574;
+}
+
+body.dark-mode .indicator.active {
+  background: #D4A574;
+  border-color: #D4A574;
+}
+
+body.dark-mode .carousel-nav-btn {
+  background: rgba(42, 44, 48, 0.9);
+  border-color: #9CA3AF;
+  color: #D4A574;
+}
+
+body.dark-mode .carousel-nav-btn:hover {
+  background: #D4A574;
+  color: #2A2C30;
+  border-color: #D4A574;
 }

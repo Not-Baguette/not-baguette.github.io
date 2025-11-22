@@ -113,6 +113,8 @@
   position: relative;
   overflow: hidden;
   cursor: pointer;
+  min-height: 100px;
+  max-height: 130px;
 }
 
 .organization-item:hover {
@@ -204,6 +206,7 @@
 /* Dark mode styles */
 body.dark-mode .organizations-scroll-container {
   background: #2A2C30;
+  border-color: #374151;
 }
 
 body.dark-mode .organizations-scroll-container::-webkit-scrollbar-track {
@@ -222,11 +225,13 @@ body.dark-mode .organization-item {
   background: #374151;
   border-color: #9CA3AF;
   color: #F7F6F9;
+  box-shadow: inset 0 0 0 1000px rgba(26, 26, 26, 0.6);
 }
 
 body.dark-mode .organization-item:hover {
   border-color: #D4A574;
   background: #4B5563;
+  box-shadow: inset 0 0 0 1000px rgba(26, 26, 26, 0.4);
 }
 
 body.dark-mode .org-name {
@@ -241,4 +246,71 @@ body.dark-mode .construction-note {
   background: #374151;
   border-color: #D4A574;
   color: #D4A574;
+}
+
+body.dark-mode .organizations-section {
+  background: #1a1a1a;
+}
+
+body.dark-mode .organizations-container {
+  color: #F7F6F9;
+}
+
+body.dark-mode .organizations-title {
+  color: #F7F6F9;
+}
+
+body.dark-mode .organizations-description {
+  color: #D1D5DB;
+}
+
+body.dark-mode .organizations-caption {
+  color: #D4A574;
+}
+
+body.dark-mode .organizations-scroll-container::before {
+  background: linear-gradient(to bottom, rgba(42, 44, 48, 1), rgba(42, 44, 48, 0));
+}
+
+body.dark-mode .organizations-scroll-container::after {
+  background: linear-gradient(to top, rgba(42, 44, 48, 1), rgba(42, 44, 48, 0));
+}
+
+body.dark-mode .org-period {
+  background: #374151;
+  border-color: #9CA3AF;
+  color: #D1D5DB;
+}
+
+body.dark-mode .org-role {
+  background: #374151;
+  color: #F7F6F9;
+}
+
+body.dark-mode .org-link-indicator {
+  background: rgba(42, 44, 48, 0.95);
+  border-color: #D4A574;
+  color: #F7F6F9;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .org-name {
+  color: #F7F6F9;
+}
+
+body.dark-mode .org-description {
+  color: #F7F6F9;
+}
+
+body.dark-mode .org-role {
+  background: rgba(55, 65, 81, 0.9);
+  color: #F7F6F9;
+  text-shadow: none;
+}
+
+body.dark-mode .org-period {
+  background: rgba(55, 65, 81, 0.9);
+  border-color: #9CA3AF;
+  color: #D1D5DB;
+  text-shadow: none;
 }

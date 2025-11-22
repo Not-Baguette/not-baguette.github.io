@@ -19,7 +19,7 @@ export const AboutMe: React.FC = () => {
               <li>Fun facts about me</li>
             </ul>
             <div className="construction-note">
-              ✨ Coming soon! Check back later for more content ✨
+              Coming soon! Check back later for more content ^^
             </div>
           </div>
         </div>
