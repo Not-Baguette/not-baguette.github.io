@@ -1,5 +1,4 @@
 .github-repos {
-  font-family: 'Comic Sans MS', cursive;
   color: #32343A;
   margin-top: 15px;
 }
@@ -225,4 +224,65 @@
   .repo-card {
     height: 200px;
   }
+}
+
+/* Dark mode styles */
+body.dark-mode .github-repos {
+  color: #F7F6F9;
+}
+
+body.dark-mode .repos-header {
+  background: #2A2C30;
+  border-color: #D4A574;
+  color: #F7F6F9;
+}
+
+body.dark-mode .repos-title {
+  color: #F7F6F9;
+}
+
+body.dark-mode .repos-description {
+  color: #D1D5DB;
+}
+
+body.dark-mode .repo-card {
+  background: #374151;
+  border-color: #9CA3AF;
+}
+
+body.dark-mode .repo-card:hover {
+  border-color: #D4A574;
+  background: #4B5563;
+}
+
+body.dark-mode .repo-name {
+  color: #F7F6F9;
+}
+
+body.dark-mode .repo-name:hover {
+  color: #D4A574;
+}
+
+body.dark-mode .repo-description {
+  color: #D1D5DB;
+}
+
+body.dark-mode .repo-language {
+  color: #9CA3AF;
+}
+
+body.dark-mode .repo-stars {
+  color: #9CA3AF;
+}
+
+body.dark-mode .view-all-link {
+  background: #374151;
+  border-color: #9CA3AF;
+  color: #F7F6F9;
+}
+
+body.dark-mode .view-all-link:hover {
+  background: #4B5563;
+  border-color: #D4A574;
+  color: #D4A574;
 }

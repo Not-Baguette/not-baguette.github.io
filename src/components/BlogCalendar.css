@@ -1,5 +1,4 @@
 .blog-calendar {
-  font-family: 'Comic Sans MS', cursive;
   background: white;
   border: 2px solid #D9D7E0;
   border-radius: 10px;
@@ -56,7 +55,6 @@
   color: #32343A;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-family: 'Comic Sans MS', cursive;
 }
 
 .nav-btn:hover {
@@ -287,7 +285,6 @@
   border-radius: 8px;
   color: #32343A;
   padding: 8px 15px;
-  font-family: 'Comic Sans MS', cursive;
   font-size: 11px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -440,4 +437,61 @@
     height: 24px;
     font-size: 10px;
   }
+}
+
+/* Dark mode styles */
+body.dark-mode .blog-calendar {
+  background: #2A2C30;
+  border-color: #D4A574;
+  color: #F7F6F9;
+}
+
+body.dark-mode .calendar-title {
+  color: #F7F6F9;
+}
+
+body.dark-mode .calendar-description {
+  color: #D1D5DB;
+}
+
+body.dark-mode .current-month {
+  color: #F7F6F9;
+}
+
+body.dark-mode .day-number {
+  color: #F7F6F9;
+}
+
+body.dark-mode .blog-post-title {
+  color: #D4A574;
+}
+
+body.dark-mode .blog-post-date {
+  color: #D1D5DB;
+}
+
+body.dark-mode .nav-btn {
+  background: #374151;
+  border-color: #9CA3AF;
+  color: #F7F6F9;
+}
+
+body.dark-mode .nav-btn:hover {
+  background: #4B5563;
+  border-color: #D4A574;
+  color: #D4A574;
+}
+
+body.dark-mode .calendar-grid {
+  color: #F7F6F9;
+}
+
+body.dark-mode .day-cell {
+  color: #D1D5DB;
+}
+
+body.dark-mode .day-cell.has-posts {
+  background: #374151;
+  border-color: #D4A574;
+  color: #F7F6F9;
 }

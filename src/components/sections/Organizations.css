@@ -200,3 +200,45 @@
   color: #C59667;
   font-style: italic;
 }
+
+/* Dark mode styles */
+body.dark-mode .organizations-scroll-container {
+  background: #2A2C30;
+}
+
+body.dark-mode .organizations-scroll-container::-webkit-scrollbar-track {
+  background: #374151;
+}
+
+body.dark-mode .organizations-scroll-container::-webkit-scrollbar-thumb {
+  background: #D4A574;
+}
+
+body.dark-mode .organizations-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #C59667;
+}
+
+body.dark-mode .organization-item {
+  background: #374151;
+  border-color: #9CA3AF;
+  color: #F7F6F9;
+}
+
+body.dark-mode .organization-item:hover {
+  border-color: #D4A574;
+  background: #4B5563;
+}
+
+body.dark-mode .org-name {
+  color: #F7F6F9;
+}
+
+body.dark-mode .org-description {
+  color: #D1D5DB;
+}
+
+body.dark-mode .construction-note {
+  background: #374151;
+  border-color: #D4A574;
+  color: #D4A574;
+}

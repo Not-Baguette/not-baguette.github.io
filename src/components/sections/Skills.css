@@ -248,3 +248,43 @@
   font-weight: 500;
   color: #32343A;
 }
+
+/* Dark mode styles */
+body.dark-mode .skills-section {
+  background: #2A2C30;
+}
+
+body.dark-mode .skills-header {
+  color: #F7F6F9;
+}
+
+body.dark-mode .skills-title {
+  color: #F7F6F9;
+}
+
+body.dark-mode .skills-description {
+  color: #D1D5DB;
+}
+
+body.dark-mode .skill-category {
+  color: #F7F6F9;
+}
+
+body.dark-mode .skill-item {
+  background: #374151;
+  border-color: #9CA3AF;
+  color: #F7F6F9;
+}
+
+body.dark-mode .skill-item:hover {
+  background: #4B5563;
+  border-color: #D4A574;
+}
+
+body.dark-mode .skill-icon {
+  filter: brightness(0) saturate(100%) invert(98%) sepia(13%) saturate(342%) hue-rotate(319deg) brightness(106%) contrast(96%);
+}
+
+body.dark-mode .skill-name {
+  color: #F7F6F9;
+}

@@ -1,5 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Creepster&family=Bungee:wght@400&family=Press+Start+2P&family=Fredoka+One:wght@400&family=Righteous&family=Orbitron:wght@400;700;900&display=swap');
 
+@font-face {
+  font-family: 'Effra';
+  src: url('/Effra_Std_Rg.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* Pastel Retro Color Palette */
   /* Primary (Background - 60%) */

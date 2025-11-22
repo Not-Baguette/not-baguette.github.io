@@ -48,6 +48,27 @@
 
 .comment-form-button {
   margin-top: 8px;
+}
+
+/* Dark mode styles */
+body.dark-mode .comments-box {
+  background: #2A2C30;
+  border-color: #404040;
+}
+
+body.dark-mode .comments-title {
+  color: #F7F6F9;
+}
+
+body.dark-mode .comment-item {
+  background: #374151;
+  border-color: #4B5563;
+  color: #D1D5DB;
+}
+
+body.dark-mode .comment-date {
+  color: #9CA3AF;
+}
   text-align: center;
 }
 

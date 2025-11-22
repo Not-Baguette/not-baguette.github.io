@@ -250,3 +250,45 @@
     font-size: 10px;
   }
 }
+
+/* Dark mode styles */
+body.dark-mode .comments-scroll-container {
+  background: #2A2C30;
+}
+
+body.dark-mode .comments-scroll-container::-webkit-scrollbar-track {
+  background: #374151;
+}
+
+body.dark-mode .comments-scroll-container::-webkit-scrollbar-thumb {
+  background: #D4A574;
+}
+
+body.dark-mode .comments-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #C59667;
+}
+
+body.dark-mode .comments-scroll-container::-webkit-scrollbar-thumb:active {
+  background: #B8875A;
+}
+
+body.dark-mode .comments-scroll-container::-webkit-scrollbar-corner {
+  background: #374151;
+}
+
+body.dark-mode .comment-item-full {
+  background: #374151;
+  border-color: #9CA3AF;
+}
+
+body.dark-mode .comment-author {
+  color: #D4A574;
+}
+
+body.dark-mode .comment-date {
+  color: #9CA3AF;
+}
+
+body.dark-mode .comment-text-full {
+  color: #F7F6F9;
+}

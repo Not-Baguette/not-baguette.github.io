@@ -16,6 +16,7 @@ import { BlogPage } from './pages/BlogPage';
 import { useState, useEffect } from 'react';
 import { getLastUpdated } from './utils/github';
 import { LatestComments } from './components/LatestComments';
+import { DarkModeToggle } from './components/DarkModeToggle';
 
 function App() {
   const [lastUpdated, setLastUpdated] = useState<string>('Loading...');
@@ -94,6 +95,9 @@ function App() {
         © 2025 Baguette ♡ Made with love and lots of Cursing! ♡<br/>
         Best viewed in 1024x768 resolution
       </div>
+      
+      {/* Floating Dark Mode Toggle */}
+      <DarkModeToggle />
     </div>
     </Router>
   );

@@ -10,6 +10,7 @@
   margin: 0 0 8px 0;
   color: #32343A;
   font-size: 12px;
+  text-align: center;
 }
 
 .steam-games-list {
@@ -47,6 +48,32 @@
 
 .steam-game-link:active {
   transform: translateY(0);
+}
+
+/* Dark mode styles */
+body.dark-mode .steam-widget-box {
+  background: #2A2C30;
+  border-color: #404040;
+}
+
+body.dark-mode .steam-title {
+  color: #F7F6F9;
+}
+
+body.dark-mode .steam-game-item {
+  background: #374151;
+  border-color: #4B5563;
+  color: #D1D5DB;
+}
+
+body.dark-mode .steam-game-link:hover {
+  background: #4B5563;
+  border-color: #D4A574;
+}
+
+body.dark-mode .steam-game-fallback {
+  background: #4B5563;
+  color: #D1D5DB;
 }
 
 .steam-game-icon {

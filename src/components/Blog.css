@@ -1,5 +1,4 @@
 .blog-section {
-  font-family: 'Comic Sans MS', cursive;
   color: #32343A;
   margin-top: 15px;
 }
@@ -118,7 +117,6 @@
   color: #C59667;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-family: 'Comic Sans MS', cursive;
 }
 
 .blog-expand-btn:hover {

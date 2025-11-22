@@ -70,4 +70,41 @@
   font-weight: 500;
 }
 
+/* Dark mode styles */
+body.dark-mode .contact-item {
+  background: #374151;
+  border-color: #9CA3AF;
+  color: #F7F6F9;
+}
+
+body.dark-mode .contact-item:hover {
+  background: #4B5563;
+  border-color: #D4A574;
+  color: #D4A574;
+}
+
+body.dark-mode .contact-link-item {
+  color: #F7F6F9;
+}
+
+body.dark-mode .contact-link-item:hover {
+  color: #D4A574;
+}
+
+body.dark-mode .contact-icon {
+  filter: brightness(0) saturate(100%) invert(98%) sepia(13%) saturate(342%) hue-rotate(319deg) brightness(106%) contrast(96%);
+}
+
+body.dark-mode .contact-item:hover .contact-icon {
+  filter: brightness(0) saturate(100%) invert(71%) sepia(27%) saturate(533%) hue-rotate(8deg) brightness(91%) contrast(86%);
+}
+
+body.dark-mode .contact-text {
+  color: #F7F6F9;
+}
+
+body.dark-mode .contact-label {
+  color: #D1D5DB;
+}
+
 

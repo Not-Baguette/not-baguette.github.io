@@ -12,7 +12,7 @@ export const Navigation: React.FC = () => {
   return (
     <div className="nav-box">
       <h4 className="nav-title">
-        ♡ Navigation ♡
+        Navigation
       </h4>
       <div className="nav-links">
         <Link to="/" className={`nav-link ${isActive('/') ? 'active' : ''}`}>

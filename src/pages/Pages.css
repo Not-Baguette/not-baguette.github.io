@@ -35,6 +35,8 @@
 
 .page-text p {
   margin: 0 0 10px 0;
+  max-width: none;
+  text-align: justify;
 }
 
 .page-text ul {
@@ -57,6 +59,21 @@
   font-size: 11px;
   color: #C59667;
   font-style: italic;
+}
+
+/* Dark mode styles */
+body.dark-mode .page-text ul {
+  color: #D1D5DB;
+}
+
+body.dark-mode .page-text li {
+  color: #D1D5DB;
+}
+
+body.dark-mode .construction-note {
+  background: #374151;
+  border-color: #D4A574;
+  color: #D4A574;
 }
 
 .guestbook-button-container {

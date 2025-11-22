@@ -41,3 +41,27 @@
   color: white;
   font-weight: bold;
 }
+
+/* Dark mode styles */
+body.dark-mode .nav-box {
+  background: #2A2C30;
+  border-color: #404040;
+}
+
+body.dark-mode .nav-title {
+  color: #F7F6F9;
+}
+
+body.dark-mode .nav-link {
+  color: #D1D5DB;
+}
+
+body.dark-mode .nav-link:hover {
+  background: #374151;
+  color: #D4A574;
+}
+
+body.dark-mode .nav-link.active {
+  background: #D4A574;
+  color: #1a1a1a;
+}

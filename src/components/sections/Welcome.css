@@ -20,6 +20,8 @@
   line-height: 1.4;
   font-size: 12px;
   color: #32343A;
+  max-width: none;
+  text-align: justify;
 }
 
 .welcome-footer {
@@ -29,4 +31,5 @@
   color: #32343A;
   text-align: center;
   font-style: italic;
+  max-width: none;
 }

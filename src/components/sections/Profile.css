@@ -43,3 +43,27 @@
   line-height: 1.4;
   text-align: left;
 }
+
+/* Dark mode styles */
+body.dark-mode .profile-box {
+  background: #2A2C30;
+  border-color: #404040;
+}
+
+body.dark-mode .profile-title {
+  color: #F7F6F9;
+}
+
+body.dark-mode .profile-photo {
+  border-color: #404040;
+}
+
+body.dark-mode .profile-photo-placeholder {
+  background: #374151;
+  border-color: #4B5563;
+  color: #9CA3AF;
+}
+
+body.dark-mode .profile-details {
+  color: #D1D5DB;
+}

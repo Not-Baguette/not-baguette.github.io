@@ -155,7 +155,7 @@ export const SpotifyWidget = () => {
   return (
     <div className="spotify-widget">
       <h4 className="spotify-widget-title">
-        ♪ My Music ♪
+        My Music ♪
       </h4>
 
       {/* Now Playing */}
