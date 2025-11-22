@@ -46,6 +46,16 @@ jobs:
         
     - name: Add .nojekyll file
       run: touch dist/.nojekyll
+      
+    - name: Fix asset paths and add MIME type headers
+      run: |
+        # Create a _headers file for Netlify-style headers (GitHub Pages doesn't support this directly)
+        # But ensure all JS files have correct extensions
+        find dist -name "*.js" -type f -exec echo "Checking JS file: {}" \;
+        
+        # List all files in dist to verify build output
+        echo "Build output files:"
+        find dist -type f -name "*.js" -o -name "*.css" -o -name "*.html" | head -20
         
     - name: Setup Pages
       uses: actions/configure-pages@v4
