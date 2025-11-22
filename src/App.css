@@ -26,7 +26,7 @@
 
 .main-layout {
   display: grid;
-  grid-template-columns: 200px 1fr 180px;
+  grid-template-columns: 200px 570px 180px;
   gap: 15px;
   padding: 15px;
   max-width: 1000px;
