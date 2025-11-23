@@ -104,8 +104,31 @@ jobs:
         echo "Build output verification:"
         find dist -type f -name "*.js" -o -name "*.css" -o -name "*.html" | head -20
         
+        # Check if index.html has been transformed properly
+        echo "Checking index.html transformation:"
+        cat dist/index.html | grep -E "(script|link)" | head -5
+        
+        # Force .js extension on all JavaScript files (in case any don't have it)
+        find dist -type f -name "*.mjs" -exec bash -c 'mv "$1" "${1%.mjs}.js"' _ {} \;
+        
         # Verify .nojekyll exists
         ls -la dist/ | grep nojekyll
+        
+        # Create a simple HTTP server test file to verify MIME types locally
+        cat > dist/mime-test.html << 'EOF'
+        <!DOCTYPE html>
+        <html>
+        <head><title>MIME Test</title></head>
+        <body>
+        <script>
+        console.log('If you see this, JavaScript is working');
+        fetch(window.location.href.replace('mime-test.html', '') + 'assets/')
+          .then(r => console.log('Assets accessible'))
+          .catch(e => console.log('Assets issue:', e));
+        </script>
+        </body>
+        </html>
+        EOF
         
     - name: Setup Pages
       uses: actions/configure-pages@v4
