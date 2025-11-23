@@ -13,7 +13,7 @@ export const AboutSection: React.FC = () => {
         incorporating new technologies and things I've learned along the way.
 
         The first version (<a href="https://github.com/Not-Baguette/not-baguette.github.io/commit/f737144bd701fe99367b34dceae84cca5b933199" target="_blank" rel="noopener noreferrer" className="version-link">V1</a>) was a simple HTML/CSS site, while the second (<a href="https://github.com/Not-Baguette/not-baguette.github.io/tree/v2-last-ver" target="_blank" rel="noopener noreferrer" className="version-link">V2</a>) introduced
-        proper Javascript for interactivity, That's where I started learning React as well (Seen with <a href="https://github.com/Not-Baguette/not-baguette.github.io/tree/v2-last-ver/timeless" target="_blank" rel="noopener noreferrer" className="version-link">timeless</a>).
+        proper Javascript for interactivity, That's where I started learning React as well (Seen with <a href="https://github.com/Not-Baguette/not-baguette.github.io/Thornsoul" target="_blank" rel="noopener noreferrer" className="version-link">Thornsoul</a>).
         <a href="https://github.com/Not-Baguette/not-baguette.github.io" target="_blank" rel="noopener noreferrer" className="version-link"> V3</a> is built with React and TypeScript, with actual API endpoints usage :D
       </p>
       
