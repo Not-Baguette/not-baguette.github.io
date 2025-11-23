@@ -10,12 +10,19 @@ export default defineConfig({
     assetsDir: 'assets',
     sourcemap: false,
     minify: 'esbuild',
+    copyPublicDir: true,
     rollupOptions: {
       output: {
         manualChunks: undefined,
         entryFileNames: 'assets/[name]-[hash].js',
         chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]'
+        assetFileNames: (assetInfo) => {
+          // Keep font files in root for easier access
+          if (assetInfo.name && assetInfo.name.endsWith('.woff')) {
+            return '[name].[ext]'
+          }
+          return 'assets/[name]-[hash].[ext]'
+        }
       }
     }
   },
@@ -23,5 +30,6 @@ export default defineConfig({
     fs: {
       strict: true
     }
-  }
+  },
+  assetsInclude: ['**/*.woff', '**/*.woff2', '**/*.png', '**/*.jpg', '**/*.jpeg']
 })
