@@ -19,27 +19,15 @@ let tokenExpirationTime: number = 0;
  */
 export const getAccessToken = async (): Promise<string> => {
   try {
-    console.log('Starting getAccessToken...');
-    console.log('Environment check:', {
-      has_client_id: !!client_id,
-      has_client_secret: !!client_secret,
-      has_refresh_token: !!refresh_token,
-      client_id_length: client_id?.length || 0,
-      client_secret_length: client_secret?.length || 0,
-      refresh_token_length: refresh_token?.length || 0,
-      refresh_token_preview: refresh_token ? refresh_token.substring(0, 10) + '...' : 'none'
-    });
 
     // Check if we have a cached token that hasn't expired
     const currentTime = Date.now();
     if (cachedAccessToken && currentTime < tokenExpirationTime) {
-      console.log('Using cached token');
       return cachedAccessToken;
     }
 
     // Use your personal refresh token if available
     if (refresh_token && refresh_token !== 'YOUR_REFRESH_TOKEN_HERE' && client_id && client_secret) {
-      console.log('Making token refresh request...');
       const basic = btoa(`${client_id}:${client_secret}`);
       
       const response = await fetch(TOKEN_ENDPOINT, {
@@ -52,13 +40,6 @@ export const getAccessToken = async (): Promise<string> => {
           grant_type: 'refresh_token',
           refresh_token: refresh_token,
         }).toString(),
-      });
-
-      console.log('Token refresh response:', {
-        ok: response.ok,
-        status: response.status,
-        statusText: response.statusText,
-        headers: Object.fromEntries(response.headers.entries())
       });
 
       if (!response.ok) {
@@ -75,11 +56,6 @@ export const getAccessToken = async (): Promise<string> => {
       }
 
       const data = await response.json();
-      console.log('Token refresh successful:', {
-        has_access_token: !!data.access_token,
-        expires_in: data.expires_in,
-        token_type: data.token_type
-      });
       
       // Cache the token
       cachedAccessToken = data.access_token;
@@ -113,12 +89,6 @@ export const hasSpotifyCredentials = (): boolean => {
  */
 async function fetchSpotifyApi(endpoint: string, method: string = 'GET', body?: any, retryCount: number = 0) {
   try {
-    console.log('fetchSpotifyApi called:', {
-      endpoint,
-      method,
-      retryCount,
-      has_body: !!body
-    });
 
     const access_token = await getAccessToken();
 
@@ -127,7 +97,6 @@ async function fetchSpotifyApi(endpoint: string, method: string = 'GET', body?: 
       throw new Error('No Spotify access token available');
     }
 
-    console.log('Making API request with token...');
     const response = await fetch(endpoint, {
       headers: {
         'Authorization': `Bearer ${access_token}`,
@@ -169,9 +138,7 @@ async function fetchSpotifyApi(endpoint: string, method: string = 'GET', body?: 
     }
 
     // Handle empty responses (common for currently-playing when nothing is playing)
-    const text = await response.text();
-    console.log('Response text length:', text?.length || 0);
-    
+    const text = await response.text();    
     if (!text || text.length === 0) {
       console.log('Empty response body');
       return null;
@@ -179,7 +146,6 @@ async function fetchSpotifyApi(endpoint: string, method: string = 'GET', body?: 
     
     try {
       const parsed = JSON.parse(text);
-      console.log('Successfully parsed JSON response');
       return parsed;
     } catch (error) {
       console.error('Failed to parse JSON:', error);
