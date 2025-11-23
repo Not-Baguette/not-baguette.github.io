@@ -51,49 +51,69 @@ function App() {
   }, []);
   return (
     <Router>
-    <div className="app-container">
+    <div className="app-container" itemScope itemType="https://schema.org/WebPage">
+      {/* SEO: Hidden structured data for search engines */}
+      <h1 style={{ position: 'absolute', left: '-9999px', visibility: 'hidden' }}>
+        Clemens Putra Kusmeri (Not-Baguette) - Creative Developer Portfolio & Blog
+      </h1>
+      
       {/* Top Navigation Bar */}
-      <div className="top-nav">
-        ✨ Welcome to My Personal Space! ✨ Last Updated: {lastUpdated}
-      </div>
+      <header className="top-nav" role="banner">
+        <span itemProp="headline">✨ Welcome to My Personal Space! ✨</span>
+        <span>Last Updated: <time itemProp="dateModified">{lastUpdated}</time></span>
+      </header>
 
       {/* Main Content Wrapper */}
-      <div className="main-content-wrapper">
+      <div className="main-content-wrapper" role="main">
         {/* Main Layout */}
-        <div className="main-layout">
+        <div className="main-layout" itemScope itemType="https://schema.org/BlogPosting">
           {/* Left Sidebar */}
-          <div className="left-sidebar">
+          <aside className="left-sidebar" role="complementary" aria-label="Profile and Navigation">
             {/* Profile Box */}
-            <Profile currentAge={currentAge} />
-            <Navigation />
-            <SteamWidget />
-          </div>
+            <section itemScope itemType="https://schema.org/Person">
+              <Profile currentAge={currentAge} />
+            </section>
+            <nav role="navigation" aria-label="Main Navigation">
+              <Navigation />
+            </nav>
+            <section aria-label="Gaming Activity">
+              <SteamWidget />
+            </section>
+          </aside>
 
           {/* Main Content */}
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<AboutMe />} />
-            <Route path="/projects" element={<ProjectsPage />} />
-            <Route path="/organizations" element={<OrganizationsPage />} />
-            <Route path="/skills" element={<SkillsPage />} />
-            <Route path="/guestbook" element={<GuestbookPage />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/blog" element={<BlogPage />} />
-          </Routes>
+          <main role="main" itemProp="mainContentOfPage">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<AboutMe />} />
+              <Route path="/projects" element={<ProjectsPage />} />
+              <Route path="/organizations" element={<OrganizationsPage />} />
+              <Route path="/skills" element={<SkillsPage />} />
+              <Route path="/guestbook" element={<GuestbookPage />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/blog" element={<BlogPage />} />
+            </Routes>
+          </main>
 
           {/* Right Sidebar */}
-          <div className="right-sidebar">
-            <LatestComments />
-            <SpotifyWidget />
-          </div>
+          <aside className="right-sidebar" role="complementary" aria-label="Social Updates">
+            <section aria-label="Latest Guestbook Comments">
+              <LatestComments />
+            </section>
+            <section aria-label="Currently Playing Music" itemScope itemType="https://schema.org/MusicRecording">
+              <SpotifyWidget />
+            </section>
+          </aside>
         </div>
       </div>
 
       {/* Footer */}
-      <div className="footer">
-        © 2025 Baguette ♡ Made with love and lots of Cursing! ♡<br/>
-        Best viewed in 1024x768 resolution
-      </div>
+      <footer className="footer" role="contentinfo">
+        <p itemScope itemType="https://schema.org/Person">
+          © 2025 <span itemProp="alternateName">Baguette</span> ♡ Made with love and lots of Cursing! ♡<br/>
+          <small>Best viewed in 1024x768 resolution</small>
+        </p>
+      </footer>
       
       {/* Floating Dark Mode Toggle */}
       <DarkModeToggle />
