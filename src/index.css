@@ -2,8 +2,7 @@
 
 @font-face {
   font-family: 'Effra';
-  src: url('/Effra_Std_Rg.woff') format('woff'),
-       url('./assets/Effra_Std_Rg.woff') format('woff');
+  src: url('./Effra_Std_Rg.woff') format('woff');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
