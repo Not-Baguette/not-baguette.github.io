@@ -11,15 +11,21 @@ export default defineConfig({
     sourcemap: false,
     minify: 'esbuild',
     copyPublicDir: true,
+    target: 'es2015', // Better compatibility
     rollupOptions: {
       output: {
         manualChunks: undefined,
-        entryFileNames: 'assets/[name]-[hash].js',
-        chunkFileNames: 'assets/[name]-[hash].js',
+        // Use .js extension explicitly to avoid MIME type issues
+        entryFileNames: 'assets/main-[hash].js',
+        chunkFileNames: 'assets/chunk-[hash].js',
         assetFileNames: (assetInfo) => {
           // Keep font files in root for easier access
           if (assetInfo.name && assetInfo.name.endsWith('.woff')) {
             return '[name].[ext]'
+          }
+          // Keep CSS files with .css extension
+          if (assetInfo.name && assetInfo.name.endsWith('.css')) {
+            return 'assets/style-[hash].css'
           }
           return 'assets/[name]-[hash].[ext]'
         }
@@ -31,5 +37,10 @@ export default defineConfig({
       strict: true
     }
   },
-  assetsInclude: ['**/*.woff', '**/*.woff2', '**/*.png', '**/*.jpg', '**/*.jpeg']
+  assetsInclude: ['**/*.woff', '**/*.woff2', '**/*.png', '**/*.jpg', '**/*.jpeg'],
+  // Ensure proper module resolution
+  esbuild: {
+    target: 'es2015',
+    format: 'esm'
+  }
 })
