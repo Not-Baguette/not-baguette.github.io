@@ -19,7 +19,7 @@ export const Profile: React.FC<ProfileProps> = ({ currentAge }) => {
       <div className="profile-details">
         <strong>Age:</strong> {currentAge} ♡<br/>
         <strong>Location:</strong> Jakarta, Indonesia<br/>
-        <strong>Status:</strong> Single D:<br/>
+        <strong>Uni:</strong> Universitas Multimedia Nusantara<br/>
         <strong>Languages:</strong> English (C1), Indonesian (Native), German (A1/A2)<br/>
       </div>
     </div>

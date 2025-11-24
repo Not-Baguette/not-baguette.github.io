@@ -29,49 +29,49 @@ export const Projects: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   // Define the specific repositories we want to show
-  const targetRepos = ['not-baguette.github.io', 'HOI4-German-Country-Names', 'trigonoapp', 'WS2P'];
+  const targetRepos = [
+    { owner: 'Not-Baguette', name: 'not-baguette.github.io' },
+    { owner: 'Not-Baguette', name: 'HOI4-German-Country-Names' },
+    { owner: 'SimpulAksaraJawa', name: 'beng-frontend' },
+    { owner: 'SimpulAksaraJawa', name: 'beng-backend' }
+  ];
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         setLoading(true);
-        const response = await fetch(
-          `https://api.github.com/users/Not-Baguette/repos?sort=updated&per_page=50&type=public`,
-          {
-            headers: {
-              'Accept': 'application/vnd.github.v3+json',
-              'User-Agent': 'Portfolio-Site'
-            }
-          }
-        );
+        const allProjects: Project[] = [];
         
-        if (!response.ok) {
-          throw new Error(`GitHub API error: ${response.status}`);
+        // Fetch each repository individually
+        for (const repo of targetRepos) {
+          try {
+            const response = await fetch(
+              `https://api.github.com/repos/${repo.owner}/${repo.name}`,
+              {
+                headers: {
+                  'Accept': 'application/vnd.github.v3+json',
+                  'User-Agent': 'Portfolio-Site'
+                }
+              }
+            );
+            
+            if (response.ok) {
+              const repoData: GitHubRepo = await response.json();
+              allProjects.push({
+                name: repoData.name,
+                desc: repoData.description || 'No description available',
+                tech: repoData.language || 'Mixed',
+                url: repoData.html_url
+              });
+            }
+          } catch (error) {
+            console.error(`Failed to fetch ${repo.owner}/${repo.name}:`, error);
+          }
         }
         
-        const repos: GitHubRepo[] = await response.json();
-        
-        // Filter and map to get only the target repositories
-        const filteredProjects = targetRepos
-          .map(repoName => repos.find(repo => repo.name === repoName))
-          .filter(repo => repo !== undefined)
-          .map((repo: GitHubRepo) => ({
-            name: repo.name,
-            desc: repo.description || 'No description available',
-            tech: repo.language || 'Mixed',
-            url: repo.html_url
-          }));
-        
-        setProjects(filteredProjects);
+        setProjects(allProjects);
       } catch (error) {
         console.error('Failed to fetch projects:', error);
-        // Fallback to static data if API fails
-        setProjects([
-          { name: 'not-baguette.github.io', desc: 'My personal portfolio website', tech: 'JavaScript', url: 'https://github.com/Not-Baguette/not-baguette.github.io' },
-          { name: 'HOI4-German-Country-Names', desc: 'HOI4 mod for German country names', tech: 'AMPL', url: 'https://github.com/Not-Baguette/HOI4-German-Country-Names' },
-          { name: 'trigonoapp', desc: 'Trigonometric learning app', tech: 'Python', url: 'https://github.com/Not-Baguette/trigonoapp' },
-          { name: 'WS2P', desc: 'Windows Suicide Prevention Protocol', tech: 'Python', url: 'https://github.com/Not-Baguette/WS2P' }
-        ]);
       } finally {
         setLoading(false);
       }
