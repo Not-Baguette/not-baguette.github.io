@@ -44,94 +44,10 @@ jobs:
         VITE_SPOTIFY_REFRESH_TOKEN: ${{ secrets.VITE_SPOTIFY_REFRESH_TOKEN }}
         VITE_STEAM_API: ${{ secrets.VITE_STEAM_API }}
         
-    - name: Add .nojekyll file and fix MIME types
+    - name: Prepare for GitHub Pages
       run: |
         # Add .nojekyll to prevent Jekyll processing
         touch dist/.nojekyll
-        
-        # Create a web.config for IIS-style MIME type handling (GitHub Pages may use this)
-        cat > dist/web.config << 'EOF'
-        <?xml version="1.0" encoding="utf-8"?>
-        <configuration>
-          <system.webServer>
-            <staticContent>
-              <mimeMap fileExtension=".js" mimeType="application/javascript" />
-              <mimeMap fileExtension=".mjs" mimeType="application/javascript" />
-              <mimeMap fileExtension=".woff" mimeType="font/woff" />
-              <mimeMap fileExtension=".woff2" mimeType="font/woff2" />
-            </staticContent>
-            <httpErrors errorMode="Custom" defaultResponseMode="File">
-              <remove statusCode="404" subStatusCode="-1" />
-              <error statusCode="404" path="index.html" responseMode="ExecuteURL" />
-            </httpErrors>
-          </system.webServer>
-        </configuration>
-        EOF
-        
-        # Create .htaccess for Apache-style servers
-        cat > dist/.htaccess << 'EOF'
-        # MIME type fixes
-        AddType application/javascript .js
-        AddType application/javascript .mjs
-        AddType font/woff .woff
-        AddType font/woff2 .woff2
-        
-        # Enable compression
-        <IfModule mod_deflate.c>
-          AddOutputFilterByType DEFLATE text/plain
-          AddOutputFilterByType DEFLATE text/html
-          AddOutputFilterByType DEFLATE text/xml
-          AddOutputFilterByType DEFLATE text/css
-          AddOutputFilterByType DEFLATE application/xml
-          AddOutputFilterByType DEFLATE application/xhtml+xml
-          AddOutputFilterByType DEFLATE application/rss+xml
-          AddOutputFilterByType DEFLATE application/javascript
-          AddOutputFilterByType DEFLATE application/x-javascript
-        </IfModule>
-        
-        # Handle client-side routing
-        <IfModule mod_rewrite.c>
-          RewriteEngine On
-          RewriteBase /
-          RewriteRule ^index\.html$ - [L]
-          RewriteCond %{REQUEST_FILENAME} !-f
-          RewriteCond %{REQUEST_FILENAME} !-d
-          RewriteRule . /index.html [L]
-        </IfModule>
-        EOF
-        
-        # List all built files to verify structure
-        echo "Build output verification:"
-        find dist -type f -name "*.js" -o -name "*.css" -o -name "*.html" | head -20
-        
-        # Check if index.html has been transformed properly
-        echo "Checking index.html transformation:"
-        cat dist/index.html | grep -E "(script|link)" | head -10
-        
-        echo "Full script tags in built HTML:"
-        cat dist/index.html | grep -A1 -B1 script
-        
-        # Force .js extension on all JavaScript files (in case any don't have it)
-        find dist -type f -name "*.mjs" -exec bash -c 'mv "$1" "${1%.mjs}.js"' _ {} \;
-        
-        # Verify .nojekyll exists
-        ls -la dist/ | grep nojekyll
-        
-        # Create a simple HTTP server test file to verify MIME types locally
-        cat > dist/mime-test.html << 'EOF'
-        <!DOCTYPE html>
-        <html>
-        <head><title>MIME Test</title></head>
-        <body>
-        <script>
-        console.log('If you see this, JavaScript is working');
-        fetch(window.location.href.replace('mime-test.html', '') + 'assets/')
-          .then(r => console.log('Assets accessible'))
-          .catch(e => console.log('Assets issue:', e));
-        </script>
-        </body>
-        </html>
-        EOF
         
     - name: Setup Pages
       uses: actions/configure-pages@v4
