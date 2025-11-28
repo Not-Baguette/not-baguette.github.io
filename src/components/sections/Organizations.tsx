@@ -12,14 +12,6 @@ export const Organizations: React.FC = () => {
       backgroundImage: "/org-backgrounds/HMIF.png"
     },
     {
-      name: "UMN Medical Center",
-      role: "-",
-      period: "Applying",
-      description: "Applying for UMN Medical Center right now! Wish me luck ♡",
-      link: "https://www.instagram.com/io.umn/",
-      backgroundImage: "/org-backgrounds/Medic.jpg"
-    },
-    {
       name: "International Office - Exchange Student Buddy",
       role: "Buddy",
       period: "2025 - Present",
