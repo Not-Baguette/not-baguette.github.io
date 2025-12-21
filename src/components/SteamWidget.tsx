@@ -5,15 +5,18 @@ import './SteamWidget.css';
 export const SteamWidget: React.FC = () => {
   const [games, setGames] = useState<SteamGame[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadGames = async () => {
       try {
         setLoading(true);
+        setError(null);
         const recentGames = await fetchRecentGames();
         setGames(recentGames);
       } catch (error) {
         console.error('Error loading Steam games:', error);
+        setError('Failed to load Steam games');
       } finally {
         setLoading(false);
       }
@@ -30,6 +33,11 @@ export const SteamWidget: React.FC = () => {
       <div className="steam-games-list">
         {loading ? (
           <div className="steam-loading">Loading games... ✨</div>
+        ) : error ? (
+          <div className="steam-error">
+            <div>🎮 Unable to load games right now</div>
+            <div style={{ fontSize: '0.8em', opacity: 0.7 }}>Steam API temporarily unavailable</div>
+          </div>
         ) : games.length > 0 ? (
           games.map((game) => (
             <a 

@@ -124,9 +124,18 @@ body.dark-mode .steam-game-fallback {
 }
 
 .steam-loading,
-.steam-no-games {
+.steam-no-games,
+.steam-error {
   text-align: center;
   padding: 10px;
   color: #8B8B8B;
   font-style: italic;
+}
+
+.steam-error {
+  color: #E74C3C;
+}
+
+body.dark-mode .steam-error {
+  color: #F08080;
 }
