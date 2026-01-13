@@ -99,6 +99,510 @@ body.dark-mode .construction-note {
   color: #32343A;
 }
 
+/* Tools Page Specific Styles */
+
+.tools-selector-box {
+  background: white;
+  border: 2px solid #D9D7E0;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 15px;
+}
+
+.toolbox-title {
+  color: #32343A;
+  font-size: 16px;
+  margin: 0 0 8px 0;
+  text-align: center;
+  text-shadow: none;
+}
+
+.tools-selector-title {
+  color: #C59667;
+  font-size: 14px;
+  margin: 0 0 15px 0;
+  font-weight: bold;
+  text-align: center;
+}
+
+.tools-selector-description {
+  font-size: 11px;
+  color: #666;
+  margin: 0 auto 12px auto;
+  text-align: center;
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.tool-button {
+  background: #F7F6F9;
+  border: 1px solid #D9D7E0;
+  border-radius: 6px;
+  padding: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  color: #32343A;
+  font-family: inherit;
+  position: relative;
+  min-height: 60px;
+}
+
+.tool-button:hover {
+  background: #EDEAEF;
+  border-color: #C59667;
+  transform: translateY(-1px);
+}
+
+.tool-button.active {
+  background: #E8D5C0;
+  border-color: #C59667;
+  box-shadow: 0 2px 6px rgba(197, 150, 103, 0.2);
+}
+
+.tool-name {
+  font-size: 11px;
+  font-weight: bold;
+  color: #32343A;
+  margin-bottom: 2px;
+}
+
+.tool-description {
+  font-size: 9px;
+  color: #666;
+  line-height: 1.2;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  right: 4px;
+}
+
+.tool-button:hover .tool-description {
+  opacity: 1;
+}
+
+.tool-display-box {
+  background: white;
+  border: 2px solid #D9D7E0;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 15px;
+  min-height: 500px;
+}
+
+.tool-header {
+  text-align: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px dotted #D9D7E0;
+  width: 100%;
+  display: block;
+}
+
+.active-tool-title {
+  color: #C59667;
+  font-size: 16px;
+  margin: 0 0 8px 0;
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+}
+
+.active-tool-description {
+  font-size: 11px;
+  color: #666;
+  margin: 0 auto;
+  font-style: italic;
+  text-align: center;
+  width: 100%;
+  display: block;
+  padding: 0;
+}
+
+.tool-content {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.tool-component {
+  font-family: inherit;
+  color: #32343A;
+  font-size: 12px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.tool-section {
+  margin-bottom: 20px;
+}
+
+.tool-section-title {
+  color: #C59667;
+  font-size: 13px;
+  margin: 0 0 10px 0;
+  font-weight: bold;
+  text-align: center;
+}
+
+.tool-input-group {
+  margin-bottom: 12px;
+}
+
+.tool-label {
+  display: block;
+  font-size: 11px;
+  color: #32343A;
+  margin-bottom: 4px;
+  font-weight: normal;
+  text-align: center;
+}
+
+.tool-input {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #D9D7E0;
+  border-radius: 5px;
+  background: #F7F6F9;
+  font-size: 11px;
+  color: #32343A;
+  font-family: inherit;
+}
+
+.tool-input:focus {
+  outline: none;
+  border-color: #C59667;
+  background: white;
+}
+
+.tool-select {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #D9D7E0;
+  border-radius: 5px;
+  background: white;
+  font-size: 11px;
+  color: #32343A;
+  font-family: inherit;
+}
+
+.tool-select:focus {
+  outline: none;
+  border-color: #C59667;
+}
+
+.tool-button-primary {
+  background: #C59667;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.tool-button-primary:hover {
+  background: #B8875A;
+}
+
+.tool-button-secondary {
+  background: #F7F6F9;
+  color: #32343A;
+  border: 1px solid #D9D7E0;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tool-button-secondary:hover {
+  background: #EDEAEF;
+  border-color: #C59667;
+}
+
+.tool-result-box {
+  background: #F7F6F9;
+  border: 1px dotted #C59667;
+  border-radius: 8px;
+  padding: 12px;
+  margin: 15px auto 0 auto;
+  text-align: center;
+  max-width: 100%;
+  display: block;
+}
+
+.tool-result-text {
+  font-size: 12px;
+  color: #32343A;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.tool-result-highlight {
+  color: #C59667;
+  font-weight: bold;
+}
+
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.tool-card {
+  background: #F7F6F9;
+  border: 1px solid #D9D7E0;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.tool-card-title {
+  color: #C59667;
+  font-size: 11px;
+  font-weight: bold;
+  margin: 0 0 6px 0;
+  text-align: center;
+}
+
+.tool-card-content {
+  font-size: 10px;
+  color: #32343A;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* Dark Mode Support for Tools */
+body.dark-mode .tools-selector-box,
+body.dark-mode .tool-display-box {
+  background: #2A2C30;
+  border-color: #404040;
+}
+
+body.dark-mode .tools-selector-title,
+body.dark-mode .active-tool-title,
+body.dark-mode .tool-section-title,
+body.dark-mode .tool-card-title,
+body.dark-mode .toolbox-title {
+  color: #D4A574;
+}
+
+/* Specific text elements that should be white */
+body.dark-mode .tools-selector-description {
+  color: #F7F6F9;
+}
+
+body.dark-mode .tool-button {
+  background: #2A2C30;
+  border-color: #404040;
+  color: #F7F6F9;
+}
+
+body.dark-mode .tool-button:hover {
+  background: #404040;
+  border-color: #D4A574;
+}
+
+body.dark-mode .tool-button.active {
+  background: #92672F;
+  border-color: #D4A574;
+}
+
+body.dark-mode .tool-name,
+body.dark-mode .tool-label,
+body.dark-mode .tool-result-text,
+body.dark-mode .tool-card-content {
+  color: #F7F6F9;
+}
+
+body.dark-mode .tool-description,
+body.dark-mode .active-tool-description {
+  color: #F7F6F9;
+}
+
+body.dark-mode .tool-input,
+body.dark-mode .tool-select {
+  background: #2A2C30;
+  border-color: #404040;
+  color: #F7F6F9;
+}
+
+body.dark-mode .tool-input:focus,
+body.dark-mode .tool-select:focus {
+  border-color: #D4A574;
+  background: #404040;
+}
+
+body.dark-mode .tool-component select,
+body.dark-mode .tool-component option {
+  background: #374151 !important;
+  color: #F7F6F9 !important;
+  border-color: #404040 !important;
+}
+
+body.dark-mode .tool-component div[style*="background: #F7F6F9"],
+body.dark-mode .tool-component div[style*="background:#F7F6F9"],
+body.dark-mode .tool-component div[style*="background: rgb(247, 246, 249)"],
+body.dark-mode .tool-component div[style*="borderRadius: '8px'"],
+body.dark-mode .tool-component div[style*="border: '1px dotted #C59667'"] {
+  background: #374151 !important;
+  border-color: #404040 !important;
+}
+
+body.dark-mode .tool-button-secondary {
+  background: #2A2C30;
+  border-color: #404040;
+  color: #F7F6F9;
+}
+
+body.dark-mode .tool-button-secondary:hover {
+  background: #404040;
+  border-color: #D4A574;
+}
+
+body.dark-mode .tool-result-box {
+  background: #2A2C30;
+  border-color: #D4A574;
+}
+
+body.dark-mode .tool-result-highlight {
+  color: #D4A574;
+}
+
+body.dark-mode .tool-card {
+  background: #374151;
+  border-color: #404040;
+}
+
+/* Override specific inline styled divs that create white borders around tables */
+body.dark-mode .tool-component div[style*="background: rgb(248, 249, 250)"],
+body.dark-mode .tool-component div[style*="background: rgb(248,249,250)"],
+body.dark-mode .tool-component div[style*="background:#f8f9fa"],
+body.dark-mode .tool-component div[style*="background: #f8f9fa"] {
+  background: #374151 !important;
+}
+
+/* Specific styles for checkbox labels */
+body.dark-mode .tool-section label span {
+  color: #D1D5D8;
+}
+
+/* Override inline styles in dark mode for various tool elements */
+body.dark-mode .tool-component *,
+body.dark-mode .tool-section *,
+body.dark-mode .tool-content *,
+body.dark-mode .tool-result-box * {
+  color: #F7F6F9 !important;
+}
+
+/* Preserve accent colors for specific elements */
+body.dark-mode .tool-section-title,
+body.dark-mode .tool-card-title,
+body.dark-mode .active-tool-title,
+body.dark-mode .toolbox-title {
+  color: #D4A574 !important;
+}
+
+/* Style for Grade Scale labels and ranges */
+body.dark-mode .tool-component div[style*="color: #666"],
+body.dark-mode .tool-component div[style*="color: #32343A"],
+body.dark-mode .tool-component span[style*="color: #666"],
+body.dark-mode .tool-component span[style*="color: #32343A"],
+body.dark-mode .tool-component div[style*="color: rgb(50, 52, 58)"],
+body.dark-mode .tool-component span[style*="color: rgb(50, 52, 58)"] {
+  color: #F7F6F9 !important;
+}
+
+/* Grade progress bar text */
+body.dark-mode .tool-component div[style*="fontSize: '11px'"] {
+  color: #F7F6F9 !important;
+}
+
+/* Override any hardcoded light colors in tool components */
+body.dark-mode .tool-component h1,
+body.dark-mode .tool-component h2, 
+body.dark-mode .tool-component h3,
+body.dark-mode .tool-component h4,
+body.dark-mode .tool-component h5,
+body.dark-mode .tool-component p,
+body.dark-mode .tool-component span,
+body.dark-mode .tool-component div:not([class*="color"]):not([style*="background"]) {
+  color: #F7F6F9 !important;
+}
+
+/* Table styling for dark mode */
+body.dark-mode .tool-component table,
+body.dark-mode .tool-component thead,
+body.dark-mode .tool-component tbody,
+body.dark-mode .tool-component tr,
+body.dark-mode .tool-component th,
+body.dark-mode .tool-component td {
+  background: #374151 !important;
+  border-color: #404040 !important;
+  color: #F7F6F9 !important;
+}
+
+body.dark-mode .tool-component table {
+  border: 1px solid #404040 !important;
+}
+
+body.dark-mode .tool-component th {
+  background: #2A2C30 !important;
+  color: #D4A574 !important;
+}
+
+/* Responsive Design for Tools */
+@media (max-width: 768px) {
+  .tools-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+  
+  .tool-button {
+    padding: 6px;
+    min-height: 50px;
+  }
+  
+  .tool-display-box {
+    padding: 15px;
+    min-height: 400px;
+  }
+  
+  .tool-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .tools-selector-box,
+  .tool-display-box {
+    padding: 12px;
+  }
+  
+  .tools-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tool-button {
+    padding: 8px;
+    min-height: 45px;
+  }
+  
+  .active-tool-title {
+    font-size: 14px;
+  }
+}
+
 /* Organizations Section Styles */
 
 .organizations-list {

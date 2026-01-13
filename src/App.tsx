@@ -12,6 +12,7 @@ import { Contact } from './pages/Contact';
 import { OrganizationsPage } from './pages/OrganizationsSkills';
 import { SkillsPage } from './pages/SkillsPage';
 import { BlogPage } from './pages/BlogPage';
+import { ToolsPage } from './pages/ToolsPage';
 import { useState, useEffect } from 'react';
 import { getLastUpdated } from './utils/github';
 import { LatestComments } from './components/LatestComments';
@@ -92,6 +93,7 @@ function App() {
               <Route path="/guestbook" element={<GuestbookPage />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/blog" element={<BlogPage />} />
+              <Route path="/tools" element={<ToolsPage />} />
             </Routes>
           </main>
 

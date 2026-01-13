@@ -33,6 +33,9 @@ export const Navigation: React.FC = () => {
         <Link to="/blog" className={`nav-link ${isActive('/blog') ? 'active' : ''}`}>
           • My Blog
         </Link>
+        <Link to="/tools" className={`nav-link ${isActive('/tools') ? 'active' : ''}`}>
+          • Tools
+        </Link>
         <Link to="/guestbook" className={`nav-link ${isActive('/guestbook') ? 'active' : ''}`}>
           • Guestbook
         </Link>
