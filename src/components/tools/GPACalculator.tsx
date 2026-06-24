@@ -112,6 +112,22 @@ const CURRICULUM_2024: Semester[] = [
       { id: 6, name: "IF111 Ethics in Informatics", classSection: "ZZ", unit: 2, weight: 0.00, grade: "", gradePoint: 0.00 },
       { id: 7, name: "CE449 Computer Network", classSection: "ZZ", unit: 2, weight: 0.00, grade: "", gradePoint: 0.00 }
     ]
+  },
+  {
+    id: "ganjil-2026-2027",
+    name: "Semester Ganjil 2026/2027",
+    ips: 0.00,
+    totalUnit: 19,
+    totalWeight: 0.00,
+    courses: [
+      { id: 1, name: "EM105 Technopreneurship", classSection: "ZZ", unit: 3, weight: 0.00, grade: "", gradePoint: 0.00 },
+      { id: 2, name: "UM321 English 3", classSection: "ZZ", unit: 2, weight: 0.00, grade: "", gradePoint: 0.00 },
+      { id: 3, name: "IF570 Mobile App Programming", classSection: "ZZ", unit: 3, weight: 0.00, grade: "", gradePoint: 0.00 },
+      { id: 4, name: "IF590 Information Technology Research", classSection: "ZZ", unit: 2, weight: 0.00, grade: "", gradePoint: 0.00 },
+      { id: 5, name: "IF542 Deep Learning", classSection: "ZZ", unit: 3, weight: 0.00, grade: "", gradePoint: 0.00 },
+      { id: 6, name: "IF571 Cybersecurity", classSection: "ZZ", unit: 2, weight: 0.00, grade: "", gradePoint: 0.00 },
+      { id: 7, name: "IF581 Game Development", classSection: "ZZ", unit: 3, weight: 0.00, grade: "", gradePoint: 0.00 }
+    ]
   }
 ];
 
@@ -142,7 +158,7 @@ const CURRICULUM_2025: Semester[] = [
     totalWeight: 0.00,
     courses: [
       { id: 1, name: "IF 233 Algorithms & Data Structure", classSection: "ZZ", unit: 3, weight: 0.00, grade: "", gradePoint: 0.00 },
-      { id: 2, name: "IF 260 Operating System", classSection: "ZZ", unit: 2, weight: 0.00, grade: "", gradePoint: 0.00 },
+      { id: 2, name: "IF 260 Operating System", classSection: "ZZ", unit: 3, weight: 0.00, grade: "", gradePoint: 0.00 },
       { id: 3, name: "CE 319 Probability and Statistics", classSection: "ZZ", unit: 3, weight: 0.00, grade: "", gradePoint: 0.00 },
       { id: 4, name: "CE 332 Computer Architecture & Organization", classSection: "ZZ", unit: 3, weight: 0.00, grade: "", gradePoint: 0.00 },
       { id: 5, name: "EPM 101 Calculus", classSection: "ZZ", unit: 4, weight: 0.00, grade: "", gradePoint: 0.00 },
